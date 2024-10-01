@@ -28,5 +28,6 @@ Wnioski
 Literatura:	
  
 
-Raczek, J., Cyman, J. Weakly connected Roman domination in graphs. DISCRETE APPLIED MATHEMATICS, 267, (2019) 151-159. https://doi.org/10.1016/j.dam.2019.05.002
-Raczek J, Zuazua R. Progress on Roman and Weakly Connected Roman Graphs. Mathematics. 2021; 9(16):1846. https://doi.org/10.3390/math9161846
+Raczek, J., Cyman, J. Weakly connected Roman domination in graphs. DISCRETE APPLIED MATHEMATICS, 267, (2019) 151-159. https://doi.org/10.1016/j.dam.2019.05.002 - pobrane
+Raczek J, Zuazua R. Progress on Roman and Weakly Connected Roman Graphs. Mathematics. 2021; 9(16):1846. https://doi.org/10.3390/math9161846 - pobrane
+w grasp są błędy
