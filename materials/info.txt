@@ -1,0 +1,32 @@
+	
+Temat:	
+Analiza algorytmów dla dominowania rzymskiego słabo spójnego
+
+Temat po angielsku:	
+Analysis of algorithms for weakly connected Roman domination
+
+Cel:	Celem pracy jest opisanie istniejących i opracowanie własnych algorytmów znajdujących funkcje dominujące rzymskie słabo spójne, ich analiza i wyciągnięcie wniosków na temat możliwości ich praktycznego zastosowania
+Charakter:	teoretyczno-eksperymentalna
+Charakter po angielsku:	theoretical-experimental work
+Typ dyplomu	Standardowa praca dyplomowa
+Data wydruku:	
+Komentarz:	
+Rezerwacja.
+
+Zadania do wykonania:	
+ 
+
+Przedstawienie problemu dominowania rzymskiego słabo spójnego oraz jego złożoności obliczeniowej
+
+Przedstawienie algorytmów znajdujących funkcje dominujące rzymskie słabo spójne (dokładne, przybliżone) stosując różne techniki do wyboru (programowanie liniowe, algorytmy kwantowe, mrówkowe, algorytmy wielomianowe dla wybranych klas grafów, algorytmy przybliżone, programowanie dynamiczne itp.)
+
+Implementacja i testy algorytmów
+
+Wnioski
+ 
+
+Literatura:	
+ 
+
+Raczek, J., Cyman, J. Weakly connected Roman domination in graphs. DISCRETE APPLIED MATHEMATICS, 267, (2019) 151-159. https://doi.org/10.1016/j.dam.2019.05.002
+Raczek J, Zuazua R. Progress on Roman and Weakly Connected Roman Graphs. Mathematics. 2021; 9(16):1846. https://doi.org/10.3390/math9161846
