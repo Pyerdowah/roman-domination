@@ -18,15 +18,15 @@ def is_connected_subgraph(graph, node_set):
 def find_all_connected_dominating_sets(graph):
     nodes = list(graph.nodes)
     connected_dominating_sets = []
-    for r in range(1, len(nodes) + 1):  #
+    for r in range(1, len(nodes) + 1):
         for subset in combinations(nodes, r):
             if is_dominating_set(graph, subset) and is_connected_subgraph(graph, subset):
                 connected_dominating_sets.append(set(subset))
     return connected_dominating_sets
 
 
-G = nx.binomial_tree(3)
-# G = nx.erdos_renyi_graph(7, 0.4, seed=42)
+# G = nx.binomial_tree(3)
+G = nx.erdos_renyi_graph(7, 0.4, seed=42)
 
 all_connected_dominating_sets = find_all_connected_dominating_sets(G)
 
