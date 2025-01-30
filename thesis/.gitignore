@@ -1,0 +1,32 @@
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.synctex.gz
+*.bbl
+*.blg
+*.run.xml
+*.bcf
+
+# Editor backup files
+*~
+*.swp
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# Hidden system files
+.DS_Store
+Thumbs.db
+
+# Generated directories
+_build/
+out/

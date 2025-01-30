@@ -1,0 +1,75 @@
+Znalezienie minimalnego zbioru dominacji rzymskiej słabospójnej (ang. minimum weak Roman dominating set) jest problemem kombinatorycznym, który można rozwiązać za pomocą różnych algorytmów sztucznej inteligencji (AI). Oto najważniejsze podejścia:
+1. Algorytmy przeszukiwania stochastycznego (heurystyczne)
+
+Te algorytmy nie gwarantują znalezienia rozwiązania optymalnego, ale mogą znaleźć dobre rozwiązanie w rozsądnym czasie.
+a) Algorytm genetyczny (GA)
+
+    Używa populacji potencjalnych rozwiązań (chromosomów), które są ewoluowane poprzez krzyżowanie, mutacje i selekcję.
+    Reprezentacja rozwiązania: Każdy wierzchołek w grafie może mieć wartość R = 0, R = 1, lub R = 2.
+    Funkcja dopasowania: Minimalizuje liczbę wierzchołków R = 2, zapewniając jednocześnie spełnienie warunków dominacji rzymskiej.
+
+b) Algorytm symulowanego wyżarzania (Simulated Annealing)
+
+    Szuka rozwiązania przez iteracyjne przeszukiwanie przestrzeni stanów, pozwalając na tymczasowe pogorszenie jakości rozwiązania w celu uniknięcia utknięcia w lokalnym minimum.
+    Stan: Wektor R przypisujący wartości 0, 1, 2 do wierzchołków.
+    Energia: Liczba wierzchołków R = 2 oraz kara za niespełnienie warunków dominacji.
+
+c) Algorytm mrówkowy (Ant Colony Optimization)
+
+    Symuluje zachowanie kolonii mrówek w poszukiwaniu optymalnych ścieżek.
+    Mrówki eksplorują różne konfiguracje R w grafie, budując zbiór dominacji rzymskiej, a feromony wskazują najbardziej obiecujące ścieżki.
+
+2. Algorytmy oparte na logice i wnioskowaniu
+a) SAT Solver (Zadania spełnialności)
+
+    Problem dominacji rzymskiej można sformułować jako problem SAT, gdzie celem jest znalezienie wartości logicznych zmiennych przypisujących R = 0, 1, 2 do wierzchołków, spełniających określone warunki.
+    Przykład: Warunek, że wierzchołek v z R = 1 musi mieć sąsiada z R = 2, może być zapisany jako formuła logiczna.
+
+b) Algorytmy programowania całkowitoliczbowego (Integer Linear Programming, ILP)
+
+    Problem można sformułować jako ILP:
+        Funkcja celu: Minimalizuje liczbę wierzchołków z R = 2.
+        Ograniczenia: Spełnienie warunków dominacji rzymskiej.
+    Narzędzia: CPLEX, Gurobi.
+
+3. Algorytmy oparte na uczeniu maszynowym
+a) Reinforcement Learning (RL)
+
+    Uczy agenta, jak budować zbiór dominacji rzymskiej poprzez eksplorację grafu i nagradzanie za poprawne decyzje.
+    Stan: Aktualny zbiór wierzchołków z przypisanymi wartościami R.
+    Akcje: Przypisanie wartości R do kolejnych wierzchołków.
+    Nagroda: Nagroda za spełnienie warunków dominacji oraz minimalizację liczby wierzchołków R = 2.
+
+b) Deep Learning w kombinacji z RL (Deep Q-Learning)
+
+    Używa sieci neuronowej do aproksymacji wartości Q dla różnych stanów w przestrzeni rozwiązań.
+    Może być efektywny w dużych grafach.
+
+4. Algorytmy dokładne (Exact Methods)
+a) Branch and Bound
+
+    Przeszukuje przestrzeń wszystkich możliwych rozwiązań, odcinając te, które nie mogą prowadzić do optymalnego rozwiązania.
+    Stosuje się, gdy liczba wierzchołków jest mała, ponieważ złożoność rośnie eksponencjalnie.
+
+b) Dynamic Programming (Programowanie dynamiczne)
+
+    Działa efektywnie na specjalnych klasach grafów, takich jak drzewa.
+    Rozwiązuje problem w sposób rekurencyjny, dzieląc go na mniejsze podproblemy.
+
+5. Algorytmy hybrydowe
+
+    Połączenie algorytmu genetycznego z ILP: Algorytm genetyczny generuje początkowe populacje, a ILP optymalizuje najlepsze rozwiązania.
+    Reinforcement Learning z heurystykami: RL prowadzi eksplorację, ale korzysta z heurystyk, by przyspieszyć konwergencję.
+
+Wybór algorytmu w zależności od problemu:
+
+    Dla małych grafów: Algorytmy dokładne (ILP, Branch and Bound).
+    Dla dużych grafów: Algorytmy heurystyczne (GA, Simulated Annealing, Ant Colony).
+    Dla specyficznych struktur (np. drzew): Programowanie dynamiczne.
+    Dla trudnych grafów: Hybrydowe podejścia z elementami uczenia maszynowego.
+
+Narzędzia do implementacji:
+
+    R: GA, lpSolve, Rsymphony.
+    Python: Pyomo (ILP), DEAP (algorytmy genetyczne), Pulp.
+    C++/Java: Gurobi, CPLEX, SAT solvery (np. MiniSat, Z3).
