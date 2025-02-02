@@ -1,76 +1,110 @@
+from itertools import product
+
 import matplotlib.pyplot as plt
 import networkx as nx
-from itertools import combinations, permutations
 
 
-def is_dominating_set(graph, node_set):
-    dominated = set(node_set)
-    for node in node_set:
-        dominated.update(graph.neighbors(node))
-    return len(dominated) == len(graph.nodes)
+def is_valid_roman_dominating_set(graph, node_values):
+    for node in graph.nodes:
+        if node_values[node] == 0:
+            if not any(node_values[neighbor] == 2 for neighbor in graph.neighbors(node)):
+                return False
+
+    if sum(1 for node in graph.nodes if node_values[node] in {1, 2}) == 1:
+        return True
+
+    for node in graph.nodes:
+        if node_values[node] in {1, 2}:
+            found_valid_neighbor = False
+
+            for neighbor in graph.neighbors(node):
+                if node_values[neighbor] in {1, 2}:
+                    found_valid_neighbor = True
+                    break
+
+                if node_values[neighbor] == 0:
+                    for second_neighbor in graph.neighbors(neighbor):
+                        if second_neighbor != node and node_values[second_neighbor] in {1, 2}:
+                            found_valid_neighbor = True
+                            break
+            if found_valid_neighbor:
+                break
+
+            if not found_valid_neighbor:
+                return False
+
+    return True
 
 
-def is_connected_subgraph(graph, node_set):
-    subgraph = graph.subgraph(node_set)
-    return nx.is_connected(subgraph)
-
-
-def find_all_connected_dominating_sets(graph):
+def find_minimal_roman_dominating_set(graph):
     nodes = list(graph.nodes)
-    connected_dominating_sets = []
-    for r in range(1, len(nodes) + 1):
-        for subset in combinations(nodes, r):
-            if is_dominating_set(graph, subset) and is_connected_subgraph(graph, subset):
-                connected_dominating_sets.append(set(subset))
-    return connected_dominating_sets
+    min_roman_number = float('inf')
+    best_node_values = None
+
+    # Iterujemy po wszystkich możliwych przypisaniach wartości (0, 1, 2) dla wierzchołków
+    for values in product([0, 1, 2], repeat=len(nodes)):
+        node_values = dict(zip(nodes, values))
+
+        # Sprawdzanie warunków dominacji rzymskiej
+        if is_valid_roman_dominating_set(graph, node_values):
+            roman_number = sum(node_values.values())  # Oblicz rzymską wartość zbioru
+            if roman_number < min_roman_number:
+                min_roman_number = roman_number
+                best_node_values = node_values.copy()
+
+    return min_roman_number, best_node_values
 
 
-# G = nx.binomial_tree(3)
-G = nx.erdos_renyi_graph(7, 0.4, seed=42)
+def create_graph_from_edges(nodes, edges):
+    G = nx.Graph()
+    G.add_nodes_from(nodes)
+    G.add_edges_from(edges)
+    return G
 
-all_connected_dominating_sets = find_all_connected_dominating_sets(G)
 
-min_roman_number = float('inf')
-best_perm = None
-best_dom_set = None
-best_node_values = {node: 0 for node in G.nodes}
+# Tworzenie grafu na podstawie danych wejściowych
+# nodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+# edges = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (7, 9)]
 
-for dom_set in all_connected_dominating_sets:
-    perm = permutations(dom_set, len(dom_set))
+nodes = [0, 1, 2, 3, 4, 5, 6, 7]
+edges = [(0, 1), (0, 4), (0, 5), (0, 7), (1, 3), (1, 5), (1, 7), (2, 3), (2, 4), (2, 6), (2, 7), (3, 4), (3, 5), (3, 7), (4, 6), (4, 7), (5, 6), (5, 7), (6, 7)]
 
-    for p in perm:
-        roman_number = 0
-        G_copy = G.copy()
-        node_values = {node: 0 for node in G.nodes}
-        for node in p:
-            has_only_neighbors_in_dominating_set = all(neighbor in dom_set for neighbor in G_copy.neighbors(node))
+# Tworzenie grafu z danych wejściowych
+# G = create_graph_from_edges(nodes, edges)
+G = nx.erdos_renyi_graph(8, 0.4)
 
-            if G_copy.degree(node) > 0 and not has_only_neighbors_in_dominating_set:
-                roman_number += 2
-                node_values[node] = 2
-            else:
-                roman_number += 1
-                node_values[node] = 1
+# Znajdowanie optymalnego zbioru dominującego rzymskiego
+min_roman_number, best_node_values = None, None
 
-            G_copy.remove_node(node)
+if nx.is_connected(G):
+    min_roman_number, best_node_values = find_minimal_roman_dominating_set(G)
 
-        if roman_number < min_roman_number:
-            min_roman_number = roman_number
-            best_perm = p
-            best_dom_set = dom_set
-            best_node_values = node_values.copy()
+if best_node_values is not None:
+    # Przygotowanie kolorów wierzchołków na podstawie ich wartości
+    node_colors = ['red' if best_node_values[node] == 2 else
+                   'blue' if best_node_values[node] == 1 else 'yellow'
+                   for node in G.nodes]
 
-if best_perm is not None:
-    for node in G.nodes:
-        if node not in best_dom_set:
-            node_values[node] = 0
-
-    node_colors = ['red' if value == 2 else 'blue' if value == 1 else 'yellow' for value in best_node_values.values()]
+    # Rysowanie grafu
     pos = nx.spring_layout(G, seed=42)
     plt.figure(figsize=(8, 6))
     nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=800)
-    plt.title(f"Graf z najlepszą permutacją (roman_number: {min_roman_number})")
+    plt.title(f"Minimalny rzymski słabospójny zbiór dominujący (roman_number: {min_roman_number})")
     plt.show()
-    print(f"Minimalna liczba dominowania rzymskiego słabospójnego: {min_roman_number})")
+
+    # Wypisanie wszystkich krawędzi grafu
+    print("\nKrawędzie w grafie:")
+    for edge in G.edges:
+        u, v = edge
+        print(f"({u}, {v}),")
+
+    # Wypisanie krawędzi łączących wierzchołki dominujące (wartość 1 lub 2)
+    print("\nKrawędzie łączące wierzchołki dominujące (wartość 1 lub 2):")
+    for u, v in G.edges:
+        if best_node_values[u] in {1, 2} and best_node_values[v] in {1, 2}:
+            print(f"{u} -- {v} (wartości: {best_node_values[u]} - {best_node_values[v]})")
+
+    print(f"\nMinimalna liczba dominowania rzymskiego słabospójnego: {min_roman_number}")
+    print("Przypisane wartości wierzchołków:", best_node_values)
 else:
-    print("Nie znaleziono zbiorów dominujących.")
+    print("Nie znaleziono zbioru dominującego rzymskiego.")
