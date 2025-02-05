@@ -128,9 +128,9 @@ gtestree <- function(){
   # T <- add_vertices(T, 10, color = "white", n1 = 0, n00 = 0, n01 = 0,
   #                   child = 0, n2 = 0, R = 0, sw = 0, ch = 0)
   # T <- add_edges(T, c(1,2, 2,3, 3,4, 4,5, 5,6, 6,7, 7,8, 8,9, 8,10))
-  T <- add_vertices(T, 8, color = "white", n1 = 0, n00 = 0, n01 = 0,
+  T <- add_vertices(T, 13, color = "white", n1 = 0, n00 = 0, n01 = 0,
                     child = 0, n2 = 0, R = 0, sw = 0, ch = 0)
-  T <- add_edges(T, c(1,2, 1,3, 1,5, 3,4, 5,6, 5,7, 7,8))
+  T <- add_edges(T, c(1,2,1,9,1,11,9,10,11,12,11,13,2,3,3,4,4,5,5,6,6,7,6,8))
   return(T)
 }
 

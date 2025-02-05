@@ -16,17 +16,25 @@ class TreeLinear(AlgorithmBase):
             T.nodes[node]['child'] = 0
             T.nodes[node]['color'] = "white"
 
-    def phase1(self, T, root=0):
-        post_order_nodes = list(nx.dfs_postorder_nodes(T, source=root))
+    def get_father_map(self, T, root):
+        father_map = {root: None}
+        for parent, child in nx.bfs_edges(T, source=root):
+            father_map[child] = parent
+        return father_map
 
-        for v in post_order_nodes:
+    def phase1(self, T, root=0):
+        father_map = self.get_father_map(T, root)
+        nodes_ids = list(T.nodes)
+        for v in reversed(nodes_ids):
             neighbors = list(T.neighbors(v))
-            father = None if v == root else neighbors[0]
+            father = father_map[v]
+
+            if father is not None:
+                T.nodes[father]['child'] = v
 
             if len(neighbors) == 1 and v != root:  # Liść
                 if father is not None:
                     T.nodes[father]['n00'] += 1
-                    T.nodes[father]['child'] = v
             else:
                 if T.nodes[v]['n00'] == 1 and father is not None and T.nodes[v]['n01'] == 0:
                     T.nodes[father]['sw'] += 1
@@ -68,13 +76,11 @@ class TreeLinear(AlgorithmBase):
         return T
 
     def phase2(self, T, root=0):
-        post_order_nodes = list(nx.dfs_postorder_nodes(T, source=root))
-
-        for v in post_order_nodes:
-            neighbors = list(T.neighbors(v))
-            father = None if v == root else neighbors[0]
-
-            if father:
+        father_map = self.get_father_map(T, root)
+        nodes_ids = list(T.nodes)
+        for v in reversed(nodes_ids):
+            father = father_map[v]
+            if father is not None:
                 if T.nodes[v]['n00'] == 1 and T.nodes[father]['ch'] and T.nodes[v]['n01'] == 0:
                     T.nodes[v]['R'] = 0
                     T.nodes[T.nodes[v]['child']]['R'] = 1

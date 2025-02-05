@@ -1,7 +1,6 @@
 from itertools import product
-
+import networkx as nx
 from .Algorithm import AlgorithmBase
-
 
 class BruteForce(AlgorithmBase):
     def is_valid_roman_dominating_set(self, graph, node_values):
@@ -10,29 +9,20 @@ class BruteForce(AlgorithmBase):
                 if not any(node_values[neighbor] == 2 for neighbor in graph.neighbors(node)):
                     return False
 
-        if sum(1 for node in graph.nodes if node_values[node] in {1, 2}) == 1:
-            return True
+        induced_set = set(node for node in graph.nodes if node_values[node] in {1, 2})
 
-        for node in graph.nodes:
+        for node in list(induced_set):
+            induced_set.update(graph.neighbors(node))
+
+        induced_graph = nx.Graph()
+        for node in induced_set:
             if node_values[node] in {1, 2}:
-                found_valid_neighbor = False
-
                 for neighbor in graph.neighbors(node):
-                    if node_values[neighbor] in {1, 2}:
-                        found_valid_neighbor = True
-                        break
+                    if neighbor in induced_set:
+                        induced_graph.add_edge(node, neighbor)
 
-                    if node_values[neighbor] == 0:
-                        for second_neighbor in graph.neighbors(neighbor):
-                            if second_neighbor != node and node_values[second_neighbor] in {1, 2}:
-                                found_valid_neighbor = True
-                                break
-
-                if found_valid_neighbor:
-                    continue
-
-                if not found_valid_neighbor:
-                    return False
+        if not nx.is_connected(induced_graph):
+            return False
 
         return True
 

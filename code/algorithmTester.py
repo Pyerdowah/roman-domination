@@ -1,17 +1,23 @@
 import networkx as nx
-import timeMeasurer
+
 import graphPlotter
+import timeMeasurer
 from algorithms.BruteForce import BruteForce
 from algorithms.TreeLinear import TreeLinear
+
 
 def create_custom_graph():
     nodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     edges = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8), (7, 9)]
 
+    # nodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    # edges = [(0, 1), (0, 8), (0, 10), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (5, 7), (8, 9), (10, 11), (10, 12)]
+
     G = nx.Graph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
     return G
+
 
 def create_random_tree():
     tree = nx.random_unlabeled_rooted_tree(13)
@@ -56,6 +62,7 @@ def main():
         results.append((algorithm_name, best_node_values, min_roman_number))
 
     graphPlotter.plot_graphs(G, results)
+
 
 if __name__ == "__main__":
     main()
