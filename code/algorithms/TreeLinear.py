@@ -26,10 +26,9 @@ class TreeLinear(AlgorithmBase):
         father_map = self.get_father_map(T, root)
         nodes_ids = list(T.nodes)
         for v in reversed(nodes_ids):
-            neighbors = list(T.neighbors(v))
             father = father_map[v]
 
-            if len(neighbors) == 1 and v != root:  # Liść
+            if len(list(nx.ego_graph(T, v, radius=1).nodes)) - 1 - T.nodes[v]['n1'] == 1:  # Liść
                 if father is not None:
                     T.nodes[father]['n00'] += 1
                     T.nodes[father]['child'] = v
@@ -87,34 +86,11 @@ class TreeLinear(AlgorithmBase):
 
         return T
 
-    def handle_root_special_case(self, graph, root):
-        """ Obsługa specjalnego przypadku korzenia z jednym dzieckiem i dzieckiem o R = 1. """
-        neighbors = list(graph.neighbors(root))
-
-        if len(neighbors) == 1:
-            child = neighbors[0]
-            if graph.nodes[child]['R'] == 1:
-                graph.nodes[child]['R'] = 2
-                graph.nodes[root]['R'] = 0
-        if len(neighbors) == 2:
-            child = neighbors[0]
-            child2 = neighbors[1]
-            if graph.nodes[child]['R'] == 1 and graph.nodes[child2]['R'] == 1:
-                graph.nodes[root]['R'] = 1
-            if graph.nodes[root]['R'] == 1 and graph.nodes[child]['R'] == 2 and graph.nodes[child2]['R'] == 0:
-                graph.nodes[root]['R'] = 0
-                graph.nodes[child2]['R'] = 1
-            if graph.nodes[root]['R'] == 1 and graph.nodes[child]['R'] == 0 and graph.nodes[child2]['R'] == 2:
-                graph.nodes[root]['R'] = 0
-                graph.nodes[child]['R'] = 1
-
     def execute(self, graph):
         root = 0
         self.reset_tree(graph)
         graph = self.phase1(graph, root)
         graph = self.phase2(graph, root)
-        #
-        self.handle_root_special_case(graph, root)
 
         min_roman_number = sum(graph.nodes[node]['R'] for node in graph.nodes)
         best_node_values = {node: graph.nodes[node]['R'] for node in graph.nodes}
