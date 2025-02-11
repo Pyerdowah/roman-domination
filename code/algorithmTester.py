@@ -2,9 +2,10 @@ import networkx as nx
 
 import graphPlotter
 import timeMeasurer
-from algorithms.TreeLinear import TreeLinear
-from algorithms.BruteForce import BruteForce
 from algorithms.AntColony import AntColony
+from algorithms.BruteForce import BruteForce
+from algorithms.ILP import ILP
+from algorithms.TreeLinear import TreeLinear
 
 
 def create_custom_graph():
@@ -24,7 +25,9 @@ def create_custom_graph():
              (12, 25), (12, 26), (13, 27), (13, 28), (14, 29), (14, 30)]
 
     nodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    edges = [(0, 1),(1, 2),(1, 3),(3, 4),(3, 6),(3, 7),(3, 8),(4, 5),(8, 9)]
+    edges = [(0, 1), (1, 2), (1, 3), (3, 4), (3, 6), (3, 7), (3, 8), (4, 5), (8, 9)]
+
+    edges = [(0, 1), (0, 2), (0, 4), (2, 3), (4, 5), (4, 9), (5, 6), (6, 7), (7, 8)]
 
     G = nx.Graph()
     G.add_nodes_from(nodes)
@@ -44,8 +47,8 @@ def create_random_tree():
 
 
 def main():
-    # G = nx.erdos_renyi_graph(12, 0.4)
-    G = create_random_tree()
+    G = nx.erdos_renyi_graph(10, 0.4)
+    # G = create_random_tree()
 
     print("\nKrawędzie w grafie:")
     for edge in G.edges:
@@ -59,7 +62,8 @@ def main():
     algorithms = [
         BruteForce(),
         TreeLinear(),
-        AntColony()
+        AntColony(),
+        ILP()
     ]
 
     results = []

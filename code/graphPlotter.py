@@ -31,7 +31,7 @@ def plot_graphs(graph, results):
         # pos = nx.spring_layout(graph, seed=42)
         pos = graphviz_layout(graph, prog="dot")
         nx.draw(graph, pos, with_labels=True, node_color=node_colors, node_size=800, ax=ax)
-        ax.set_title(f"{algorithm_name}\nWeakly roman dominating number: {min_roman_number}")
+        ax.set_title(f"{algorithm_name}\nWeakly roman domination number: {min_roman_number}")
 
     plt.tight_layout()
     plt.show()
