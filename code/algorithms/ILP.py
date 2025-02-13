@@ -1,52 +1,51 @@
+import gurobipy as gp
 import networkx as nx
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpInteger, LpBinary, value
+from gurobipy import GRB
+
 from .Algorithm import AlgorithmBase
+
 
 class ILP(AlgorithmBase):
     def execute(self, graph):
-        # Tworzenie problemu programowania liniowego
-        problem = LpProblem("RomanWeaklyDominatingSet", LpMinimize)
+        V = list(graph.nodes)
+        E = list(graph.edges)
 
-        # Zmienne decyzyjne: x_i ∈ {0, 1, 2} dla każdego wierzchołka i
-        node_vars = {node: LpVariable(f"x_{node}", 0, 2, LpInteger) for node in graph.nodes}
+        model = gp.Model("WCRDP_ILP")
+        model.setParam("OutputFlag", 1)
 
-        # Pomocnicze zmienne binarne do wymuszania logicznych ograniczeń
-        is_two = {node: LpVariable(f"is_two_{node}", 0, 1, LpBinary) for node in graph.nodes}
-        is_one = {node: LpVariable(f"is_one_{node}", 0, 1, LpBinary) for node in graph.nodes}
+        x = model.addVars(E, vtype=GRB.BINARY, name="x")  # Czy krawędź e należy do G'
+        y = model.addVars(E, vtype=GRB.BINARY, name="y")  # Czy krawędź e należy do drzewa rozpinającego T'
+        a = model.addVars(V, vtype=GRB.BINARY, name="a")  # Wierzchołki V1 ∪ V2
+        b = model.addVars(V, vtype=GRB.BINARY, name="b")  # Wierzchołki V2
 
-        # Zmienna binarna do sprawdzania osiągalności między wierzchołkami
-        reachable = {node: LpVariable(f"reachable_{node}", 0, 1, LpBinary) for node in graph.nodes}
+        # Funkcja celu: minimalizacja sumy a + b
+        model.setObjective(gp.quicksum(a[i] + b[i] for i in V), GRB.MINIMIZE)
 
-        # Funkcja celu: minimalizacja wartości rzymskich z wyważonymi karami
-        problem += lpSum(2 * is_two[node] + is_one[node] for node in graph.nodes), "Minimize_Roman_Dominating_Number"
+        # Constraint (2): Każdy wierzchołek musi być broniony
+        for i in V:
+            model.addConstr(a[i] + gp.quicksum(b[k] for k in graph.neighbors(i)) >= 1)
 
-        # Ograniczenie pomocnicze: zdefiniowanie wartości 1 i 2
-        for node in graph.nodes:
-            problem += node_vars[node] == 2 * is_two[node] + is_one[node], f"DefineX_{node}"
+        # Constraint (3): Krawędź w drzewie może istnieć tylko, jeśli jest w G'
+        for (i, j) in E:
+            model.addConstr(y[i, j] <= x[i, j])
 
-        # Ograniczenie ochrony: każdy wierzchołek 0 musi mieć sąsiada z wartością 2
-        for node in graph.nodes:
-            neighbors = list(graph.neighbors(node))
-            if neighbors:
-                problem += lpSum(is_two[neighbor] for neighbor in neighbors) >= 1 - node_vars[node], f"Protection_{node}"
+        # Constraint (4): Drzewo rozpinające tylko dla połączonych wierzchołków
+        for (i, j) in E:
+            model.addConstr(x[i, j] <= a[i] + a[j])
 
-        # Ograniczenie osiągalności: wierzchołki z wartościami 1 i 2 muszą być wzajemnie osiągalne
-        for node in graph.nodes:
-            if graph.degree[node] > 0:  # Sprawdzamy tylko wierzchołki o stopniu > 0
-                neighbors = list(graph.neighbors(node))
-                # Wymuszenie, że jeśli node jest dominujące, musi być połączone z innym dominującym
-                problem += reachable[node] <= lpSum(is_one[neighbor] + is_two[neighbor] for neighbor in neighbors), f"Reachability_{node}"
+        # Constraint (5): Liczba krawędzi drzewa rozpinającego = liczba wierzchołków - 1
+        model.addConstr(gp.quicksum(y[i, j] for (i, j) in E) == len(V) - 1)
 
-        # Wymuszenie spójności całego zbioru dominującego
-        problem += lpSum(reachable[node] for node in graph.nodes) == lpSum(is_one[node] + is_two[node] for node in graph.nodes), "Connectivity"
+        # **Constraint (6): Eliminacja cykli w drzewie**
+        subsets = [list(subset) for subset in nx.find_cliques(graph) if len(subset) >= 3]
+        for S in subsets:
+            model.addConstr(gp.quicksum(y[i, j] for i in S for j in S if (i, j) in E) <= len(S) - 1)
 
-        # Rozwiązywanie problemu
-        problem.solve()
+        # Constraint (7): Wierzchołki V2 muszą należeć do V1 ∪ V2
+        for i in V:
+            model.addConstr(b[i] <= a[i])
 
-        # Pobranie wyników przypisania wartości wierzchołkom
-        result_values = {node: int(value(node_vars[node])) for node in graph.nodes}
+        model.optimize()
 
-        # Obliczenie minimalnej wartości dominacji rzymskiej
-        min_roman_number = sum(result_values.values())
-
-        return min_roman_number, result_values
+        solution = {i: round(a[i].X) + 2 * round(b[i].X) for i in V}
+        return int(model.objVal), solution
