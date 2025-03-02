@@ -8,6 +8,7 @@ from algorithms.BruteForce import BruteForce
 from algorithms.ILP import ILP
 from algorithms.TreeLinear import TreeLinear
 from algorithms.ILP2 import ILP2
+from algorithms.Approx import Approx
 
 
 def create_custom_graph():
@@ -38,7 +39,7 @@ def create_custom_graph():
 
 
 def create_random_tree():
-    tree = nx.random_unlabeled_rooted_tree(10)
+    tree = nx.random_unlabeled_rooted_tree(12)
     root = 0
     rooted_tree = nx.dfs_tree(tree, source=root)
 
@@ -64,11 +65,12 @@ def main():
         return
 
     algorithms = [
-        # BruteForce(),
+        BruteForce(),
         TreeLinear(),
-        # AntColony(),
+        AntColony(),
         ILP(),
-        ILP2()
+        ILP2(),
+        Approx()
     ]
 
     results = []

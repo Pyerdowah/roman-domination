@@ -1,7 +1,34 @@
 \chapter{Wstęp i cel pracy}
+Tematem pracy jest analiza algorytmów znajdujących funkcję dominującą rzymską słabospójną w grafach. Aby dobrze zdefiniować problem, należy wprowadzić następujące pojęcia:
+
+\newtheorem{definition}{Definicja}
+
+\begin{definition}
+    Funkcja dominująca rzymska zdefiniowana jest dla grafu $G = (V, E)$, gdzie $f: V -> \{0,1,2\}$ spełania warunek, że dla każdego wierzchołka $u$, dla którego $f(u) = 0$ jest sąsiadem przynajmniej jednego wierzchołka $v$, dla którego $f(v) = 2$.
+\end{definition}
+
+\begin{definition}
+    Dominujący zbiór $D \subseteq V$ jest zbiorem dominującym słabospójnym grafu $G$ jeśli graf $(V,E \cap (D \times V))$ jest spójny.
+\end{definition}
+
+\begin{definition}
+    Funkcja dominująca rzymska słabospójna na grafie $G$ będzie funcją dominującą rzymską, taką, że zbiór $\{u \in V: f(u) \in \{1,2\}\}$ jest jednocześnie zbiorem dominującym słabospójnym.
+\end{definition}
+
+\begin{definition}
+    Wagę funkcji dominującej rzymskiej słabospójnej definujemy jako $f(V) = \sum_{u \in V}{f(u)}$. Minimalną wartość tej funkcji nazywamy liczbą dominowania rzymskiego słabospójnego. 
+\end{definition}
+
+Problem znajdywania liczby dominowania rzymskiego słabospójnego jest problemem NP-trudnym. Wersja decyzyjna tego problemu jest NP-zupełna. Nie istnieją zatem dokładne algorytmy rozwiązujące problem w czasie wielomianowym. Dlatego niniejsza praca dokonuje analizy dostępnych i proponowanych algorytmów rozwiązujących ten problem w sposób zarówno dokładny, jak i przybliżony, w celu znalezienia skutecznych rozwiązań oraz zastosowań.
 
 \section{Cel pracy}
-Określenie celów badawczych oraz praktycznych.
+Celem pracy jest analiza algorytmów dla dominowania rzymskiego słabo spójnego, w tym opisanie już istniejących rozwiązań oraz opracowanie własnych, porównanie ich skuteczności oraz możliwych praktycznych zastosowań.
 
 \section{Zakres pracy}
-Szczegółowy zakres pracy dyplomowej, w tym przegląd literatury, implementację metod i analizę wyników.
+W ramach pracy dokonano systematycznego przeglądu literatury. W literaturze proponowano wiele algorytmów dokładnych o czasie wykładniczym, między innymi algorytmy wykorzystujace programowanie liniowe. Dodatkowo, w wielu publikacjach skupiono się na algorytmach dla konkretnych klas grafów. W literaturze zostały również zdefiniowane algorytmy niedokładne, aproksymacyjne, o różnej jakości rozwiązania.
+Na podstawie znalezionej literatury zaimplementowane zostały dwa algorytmy programowania liniowego oraz aproksymacyjny o współczynniku aproksymacji $2(1 + ln(\Delta + 1))$. W ramach własnej pracy, zaimplementowano algorytm dokładny brute force, liniowy dokładny dla drzew oraz mrówkowy.
+Niniejsza praca opisuje wymienione algorytmy, porównuje je pod kątem wydajności, poprawności oraz czasu działania.
+
+
+% • W rozdziale 1. Wstęp i cel pracy, autor (autorzy) nakreśla problematykę opisaną lub rozwiązywaną w pracy dyplomowej wraz z uzasadnieniem jej realizacji. Podaje cel i ewentualnie tezę (hipotezę). Syntetycznie opisuje dotychczasowe dokonania w danej tematyce, założenia techniczne oraz może zwięźle przedstawić zawartość poszczególnych rozdziałów. W pracy realizowanej wspólnie przez kilku autorów celowe jest podanie autorów poszczególnych rozdziałów ewentualnie podrozdziałów. Punkty stanowiące element składowy podrozdziału muszą być opracowane przez jednego autora.
+% • Nie przytacza się szczegółowych danych liczbowych badanego zagadnienia oraz nie umieszcza się tabel, rysunków czy wykresów. Można odwołać się do ważniejszych pozycji literatury.
