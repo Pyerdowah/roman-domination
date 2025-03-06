@@ -14,7 +14,6 @@ class TreeLinear(AlgorithmBase):
             T.nodes[node]['R'] = 0
             T.nodes[node]['sw'] = 0
             T.nodes[node]['child'] = 0
-            T.nodes[node]['color'] = "white"
 
     def get_father_map(self, T, root):
         father_map = {root: None}

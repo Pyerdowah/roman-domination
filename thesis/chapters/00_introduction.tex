@@ -1,24 +1,5 @@
 \chapter{Wstęp i cel pracy}
-Tematem pracy jest analiza algorytmów znajdujących funkcję dominującą rzymską słabospójną w grafach. Aby dobrze zdefiniować problem, należy wprowadzić następujące pojęcia:
-
-\newtheorem{definition}{Definicja}
-
-\begin{definition}
-    Funkcja dominująca rzymska zdefiniowana jest dla grafu $G = (V, E)$, gdzie $f: V -> \{0,1,2\}$ spełania warunek, że dla każdego wierzchołka $u$, dla którego $f(u) = 0$ jest sąsiadem przynajmniej jednego wierzchołka $v$, dla którego $f(v) = 2$.
-\end{definition}
-
-\begin{definition}
-    Dominujący zbiór $D \subseteq V$ jest zbiorem dominującym słabospójnym grafu $G$ jeśli graf $(V,E \cap (D \times V))$ jest spójny.
-\end{definition}
-
-\begin{definition}
-    Funkcja dominująca rzymska słabospójna na grafie $G$ będzie funcją dominującą rzymską, taką, że zbiór $\{u \in V: f(u) \in \{1,2\}\}$ jest jednocześnie zbiorem dominującym słabospójnym.
-\end{definition}
-
-\begin{definition}
-    Wagę funkcji dominującej rzymskiej słabospójnej definujemy jako $f(V) = \sum_{u \in V}{f(u)}$. Minimalną wartość tej funkcji nazywamy liczbą dominowania rzymskiego słabospójnego. 
-\end{definition}
-
+Tematem pracy jest analiza algorytmów znajdujących funkcję dominującą rzymską słabospójną w grafach.
 Problem znajdywania liczby dominowania rzymskiego słabospójnego jest problemem NP-trudnym. Wersja decyzyjna tego problemu jest NP-zupełna. Nie istnieją zatem dokładne algorytmy rozwiązujące problem w czasie wielomianowym. Dlatego niniejsza praca dokonuje analizy dostępnych i proponowanych algorytmów rozwiązujących ten problem w sposób zarówno dokładny, jak i przybliżony, w celu znalezienia skutecznych rozwiązań oraz zastosowań.
 
 \section{Cel pracy}
