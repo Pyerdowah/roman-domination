@@ -34,9 +34,7 @@ class Approx(AlgorithmBase):
         # Oblicz wagę Roman Dominating Function
         roman_number = sum(node_values.values())
 
-        # Aktualizuj najlepsze rozwiązanie
-        if roman_number < min_roman_number:
-            min_roman_number = roman_number
-            best_node_values = node_values.copy()
+        min_roman_number = roman_number
+        best_node_values = node_values.copy()
 
         return min_roman_number, best_node_values
