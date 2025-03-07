@@ -1,0 +1,400 @@
+\chapter{Badane algorytmy}
+
+\section{Wprowadzenie}
+Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabospójnego. Analizowane one będą pod kątem złożoności, wydajności, poprawności oraz potencjalnego zastosowania. Wszystkie algorytmy wyznaczają dodatkowo zbiór dominowania rzymskiego słabospójnego. Lista analizowanych algorytmów jest następująca:
+
+\begin{itemize}
+    \item algorytm brute force
+    \item algorytm liniowy dla drzew
+    \item algorytm programowania liniowego I
+    \item algorytm programowania liniowego II
+    \item algorytm mrówkowy
+    \item algorytm aproksymacyjny
+\end{itemize}
+
+\section{Algorytm Brute Force}
+
+\subsection{Działanie}
+Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabospójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabospójności w następujący sposób:
+\begin{itemize}
+    \item wyznaczamy zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
+    \item dla każdego wierzchołka ze zbioru indukowanego dodajemy krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego
+    \item następnie sprawdzamy, czy powstały graf jest spójny. Jeśli jest, to zbiór spełnia założenia definicji.
+\end{itemize}
+
+\subsection{Złożoność i wydajność}
+
+Algorytm ma złożoność eksponencjonalną, zatem nie będzie wykonywalny w rozsądnym czasie dla wiekszych grafów.
+\begin{itemize}
+    \item generowanie wszystkich kombinacji możliwych przypisań: $3^n$, gdzie $n$ to liczba wierzchołków grafu,
+    \item sprawdzanie własności zbioru słabospójnego dla każdego przypisania: $n^2$
+\end{itemize}
+
+Zatem złożoność czasowa algorytmu wynosi $O(3^n \cdot n^2)$\\
+Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wynosi $O(n + m)$
+
+\subsection{Pseudokod}
+
+\begin{algorithm}
+    \caption*{Algorytm Brute Force}
+    \begin{algorithmic}[1]
+        \Function{FindRomanDominatingSet}{graph}
+            \State Initialize $min\_roman\_number \gets \infty$
+            \State Initialize $best\_node\_values \gets None$
+            \State $nodes \gets$ list of nodes in $graph$
+    
+            \For{each assignment of values $(0,1,2)$ to all nodes}
+                \State $node\_values \gets$ mapping of nodes to values
+                \State $induced\_set \gets$ nodes with values $\{1,2\}$
+    
+                \For{each node in $induced\_set$}
+                    \State Add all its neighbors to $induced\_set$
+                \EndFor
+    
+                \State Create empty $induced\_graph$
+                \For{each node in $induced\_set$}
+                    \If{$node\_values[node]$ is $1$ or $2$}
+                        \For{each neighbor in $graph$}
+                            \If{neighbor in $induced\_set$}
+                                \State Add edge to $induced\_graph$
+                            \EndIf
+                        \EndFor
+                    \EndIf
+                \EndFor
+    
+                \If{$induced\_graph$ is connected}
+                    \State Compute $roman\_number \gets$ sum of $node\_values$
+                    \If{$roman\_number < min\_roman\_number$}
+                        \State Update $min\_roman\_number$ and $best\_node\_values$
+                    \EndIf
+                \EndIf
+            \EndFor
+    
+            \State \Return $(min\_roman\_number, best\_node\_values)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Algorytm liniowy dla drzew}
+\subsection{Pseudokod}
+\begin{algorithm}
+    \caption*{Algorytm liniowy dla drzew - Faza 1}
+    \begin{algorithmic}[1]
+        \Function{Phase1}{T, root}
+            \State $father\_map \gets$ Compute parent-child relationships using BFS
+            \State $nodes\_ids \gets$ List of all nodes in $T$
+    
+            \For{each node $v$ in reversed($nodes\_ids$)}
+                \State $father \gets father\_map[v]$
+    
+                \If{$v$ is a leaf and $v \neq root$}
+                    \If{$father$ exists}
+                        \State Increase $T[father]['n00']$
+                        \State Set $T[father]['child'] \gets v$
+                    \EndIf
+                \Else
+                    \If{$T[v]['n00'] == 1$ and $T[v]['n01'] == 0$ and $father$ exists}
+                        \State Increase $T[father]['sw']$
+                    \EndIf
+    
+                    \If{$T[v]['sw'] + T[v]['n00'] + T[v]['n01'] > 1$}
+                        \State Set $T[v]['R'] = 2$
+                        \If{$father$ exists}
+                            \State Increase $T[father]['n2']$
+                            \If{$T[v]['n00'] == 1$ and $T[v]['n01'] == 0$}
+                                \State Decrease $T[father]['sw']$
+                            \EndIf
+                        \EndIf
+                        \State $T[v]['ch'] = 1$
+                    \EndIf
+    
+                    \If{$T[v]['sw'] == 0$}
+                        \If{$T[v]['n00'] > 1$ or ($T[v]['n00'] == 1$ and $T[v]['n2'] == 0$)}
+                            \State Set $T[v]['R'] = 2$
+                            \If{$father$ exists}
+                                \State Increase $T[father]['n2']$
+                            \EndIf
+                        \ElsIf{$T[v]['n00'] == 1$}
+                            \State Set $T[v]['R'] = 0$
+                            \State Set $T[T[v]['child']]['R'] = 1$
+                            \If{$father$ exists}
+                                \State Decrease $T[father]['sw']$
+                            \EndIf
+                        \EndIf
+                    \EndIf
+                \EndIf
+            \EndFor
+    
+            \If{$T[root]['n2'] == 0$ and $T[root]['R'] == 0$}
+                \State Set $T[root]['R'] = 2$
+            \EndIf
+            \If{$T[root]['n1'] ==$ (number of root's neighbors - 1)}
+                \State Set $T[root]['R'] = 1$
+            \EndIf
+    
+            \State \Return $T$
+        \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+    
+    \begin{algorithm}
+    \caption*{Algorytm liniowy dla drzew - Faza 2}
+    \begin{algorithmic}[1]
+        \Function{Phase2}{T, root}
+            \State $father\_map \gets$ Compute parent-child relationships using BFS
+            \State $nodes\_ids \gets$ List of all nodes in $T$
+    
+            \For{each node $v$ in reversed($nodes\_ids$)}
+                \State $father \gets father\_map[v]$
+                \If{$father$ exists}
+                    \State $T[father]['child'] \gets v$
+                    \If{$T[v]['n00'] == 1$ and $T[father]['ch'] == 1$ and $T[v]['n01'] == 0$}
+                        \State Set $T[v]['R'] = 0$
+                        \State Set $T[T[v]['child']]['R'] = 1$
+                        \State Increase $T[father]['n00']$
+                    \EndIf
+                \EndIf
+            \EndFor
+    
+            \State \Return $T$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Algorytm programowania liniowego I}
+\subsection{Pseudokod}
+
+\begin{algorithm}
+    \caption*{Algorytm programowania liniowego I}
+    \begin{algorithmic}[1]
+        \Function{ILP\_I}{graph}
+            \State $V \gets$ list of nodes in $graph$
+            \State $E \gets$ list of edges in $graph$
+    
+            \State Initialize ILP model $model$
+            \State Set objective: Minimize $\sum (a[i] + b[i])$ for all nodes $i \in V$
+    
+            \State Define binary variables:
+
+            \State $x[i, j]$ for $(i, j) \in E$ \Comment{1 if edge is in $G'$}
+            \State $y[i, j]$ for $(i, j) \in E$ \Comment{1 if edge is in spanning tree $T'$}
+            \State $a[i]$ for $i \in V$ \Comment{1 if node belongs to $V1 \cup V2$}
+            \State $b[i]$ for $i \in V$ \Comment{1 if node belongs to $V2$}
+    
+            \State \textbf{Constraints:}
+    
+            \For{each node $i$ in $V$} \Comment{Each node must be defended}
+                \State Add constraint: $a[i] + \sum b[k] \geq 1$, where $k$ are neighbors of $i$
+            \EndFor
+    
+            \For{each edge $(i, j)$ in $E$}
+                \State Add constraint: $y[i, j] \leq x[i, j]$ \Comment{Tree edge must exist in $G'$}
+                \State Add constraint: $x[i, j] \leq a[i] + a[j]$ \Comment{Tree edges must connect defended nodes}
+            \EndFor
+    
+            \State Add constraint: $\sum y[i, j] = |V| - 1$ \Comment{Tree must have $|V| - 1$ edges}
+    
+            \State Find cliques of size $\geq 3$ in $graph$ and store as $subsets$
+            \For{each subset $S$ in $subsets$} \Comment{Cycle elimination}
+                \State Add constraint: $\sum y[i, j] \leq |S| - 1$ for edges $(i, j) \in S$
+            \EndFor
+    
+            \For{each node $i$ in $V$} \Comment{V2 nodes must be in V1 $\cup$ V2}
+                \State Add constraint: $b[i] \leq a[i]$
+            \EndFor
+    
+            \State Solve ILP model
+    
+            \State Extract solution:
+            \For{each node $i$ in $V$}
+                \State $solution[i] \gets round(a[i].X) + 2 * round(b[i].X)$
+            \EndFor
+    
+            \State \Return $(model.objVal, solution)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Algorytm programowania liniowego II}
+
+\subsection{Pseudokod}
+\begin{algorithm}
+    \caption*{Algorytm programowania liniowego II}
+    \begin{algorithmic}[1]
+        \Function{ILP\_II}{graph}
+            \State Initialize ILP model $model$ with minimization objective
+    
+            \State $V \gets$ list of nodes in $graph$
+            \State $E \gets$ list of edges in $graph$
+            \State $n \gets |V|$ \Comment{Number of nodes}
+    
+            \State Define binary variables:
+
+            \State $x[i]$ for $i \in V$ \Comment{1 if node $i$ is in set $X$}
+            \State $y[i]$ for $i \in V$ \Comment{1 if node $i$ is in set $Y$}
+            \State $a[e]$ for $e \in E$ \Comment{1 if edge $e$ is in the spanning tree}
+            \State $t[i]$ for $i \in V$ \Comment{1 if node $i$ is the root}
+
+    
+            \State Define integer and continuous variables:
+
+            \State $u[i]$ for $i \in V$ \Comment{Integer variable for tree structure}
+            \State $v[e]$ for $e \in E$ \Comment{Flow variable with bounds $[-n, n]$}
+
+
+            \State \textbf{Objective:}
+            \State Minimize $\sum (x[i] + y[i])$ for all $i \in V$
+    
+            \State \textbf{Constraints:}
+    
+            \For{each node $i$ in $V$} \Comment{Ensure all nodes are covered}
+                \State Add constraint: $x[i] + \sum y[j] \geq 1$, where $(i,j) \in E$
+                \State Add constraint: $y[i] \leq x[i]$
+                \State Add constraint: $\sum a[e] \geq 1$, where $e$ contains $i$
+            \EndFor
+    
+            \For{each edge $e = (i_e, j_e)$ in $E$}
+                \State Add constraint: $a[e] \leq x[i_e] + x[j_e]$
+                \State Add constraint: $v[e] \leq n \cdot a[e]$
+                \State Add constraint: $v[e] \geq -n \cdot a[e]$
+            \EndFor
+    
+            \State Add constraint: $\sum t[i] = 1$ \Comment{Only one root exists}
+    
+            \For{each node $i$ in $V$} \Comment{Tree structure constraints}
+                \State Add constraint: $u[i] \leq n \cdot t[i]$
+                \State Add constraint: $u[i] + \sum v[e] - \sum v[e] = 1$, for edges $e$ entering/exiting $i$
+            \EndFor
+    
+            \State Solve ILP model
+    
+            \State Extract solution:
+            \For{each node $i$ in $V$}
+                \State $solution[i] \gets round(x[i].varValue) + 2 \times round(y[i].varValue)$
+            \EndFor
+    
+            \State \Return $(model.objVal, solution)$
+        \EndFunction
+    \end{algorithmic}
+    \end{algorithm}
+
+\section{Algorytm mrówkowy}
+
+\subsection{Pseudokod}
+\begin{algorithm}
+    \caption*{Algorytm mrówkowy - inicjalizacja}
+    \begin{algorithmic}[1]
+    
+        \Function{InitializePheromones}{graph}
+            \State $pheromones \gets$ Assign initial pheromone value to all edges
+            \State \Return $pheromones$
+        \EndFunction
+    
+        \Function{ChooseNodeValue}{node, pheromones, neighbors}
+            \State $values \gets \{0, 1, 2\}$
+            \State Initialize $probabilities$ as empty list
+    
+            \For{each $value$ in $\{0, 1, 2\}$}
+                \State Compute $pheromone\_level$ as sum of pheromones of neighboring edges
+                \State Compute $heuristic$ based on number of neighbors
+                \State Compute probability as $(pheromone\_level^\alpha) \times (heuristic^\beta)$
+                \State Append probability to $probabilities$
+            \EndFor
+    
+            \State Normalize probabilities
+            \State \Return Random weighted choice from $\{0, 1, 2\}$
+        \EndFunction
+    
+        \Function{BuildSolution}{graph, pheromones}
+            \State Initialize $node\_values$ as empty dictionary
+            \For{each node in graph}
+                \State $neighbors \gets$ list of node's neighbors
+                \State Assign $node\_values[node] \gets$ \Call{ChooseNodeValue}{node, pheromones, neighbors}
+            \EndFor
+            \State \Return $node\_values$
+        \EndFunction
+    
+        \Function{EvaluateSolution}{graph, node\_values}
+            \If{\textbf{not} \Call{IsValidRomanDominatingSet}{graph, node\_values}}
+                \State \Return $\infty$
+            \EndIf
+            \State \Return Sum of all node values
+        \EndFunction
+    
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \caption*{Algorytm mrówkowy - główna petla}
+    \begin{algorithmic}[1]
+    
+        \Function{UpdatePheromones}{graph, pheromones, solutions}
+            \For{each edge in pheromones}
+                \State Reduce pheromone level using evaporation rate
+            \EndFor
+    
+            \State $best\_solution \gets$ Solution with minimum Roman number
+            \For{each node in $best\_solution$}
+                \For{each neighbor of node}
+                    \State Increase pheromone level on edge $(node, neighbor)$
+                \EndFor
+            \EndFor
+        \EndFunction
+    
+        \Function{Execute}{graph}
+            \State $pheromones \gets$ \Call{InitializePheromones}{graph}
+            \State $best\_solution \gets None$
+            \State $best\_roman\_number \gets \infty$
+    
+            \For{each iteration in num\_iterations}
+                \State Initialize $solutions$ as empty list
+    
+                \For{each ant in num\_ants}
+                    \State $solution \gets$ \Call{BuildSolution}{graph, pheromones}
+                    \State $roman\_number \gets$ \Call{EvaluateSolution}{graph, solution}
+                    \State Append $(solution, roman\_number)$ to $solutions$
+    
+                    \If{$roman\_number < best\_roman\_number$}
+                        \State Update $best\_roman\_number$ and $best\_solution$
+                    \EndIf
+                \EndFor
+    
+                \State \Call{UpdatePheromones}{graph, pheromones, solutions}
+            \EndFor
+    
+            \State \Return $(best\_roman\_number, best\_solution)$
+        \EndFunction
+    
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Algorytm aproksymacyjny}
+
+\subsection{Pseudokod}
+\begin{algorithm}
+    \caption{Algorytm aproksymacyjny}
+    \begin{algorithmic}[1]
+    
+        \Function{ComputeDominatingSet}{graph}
+            \State $dominating\_set \gets \emptyset$
+            \State $uncovered\_nodes \gets$ all nodes in $graph$
+            
+            \While{$uncovered\_nodes$ is not empty}
+                \State $max\_degree\_node \gets$ node with highest degree in $uncovered\_nodes$
+                \State Add $max\_degree\_node$ to $dominating\_set$
+                \State Remove $max\_degree\_node$ and its neighbors from $uncovered\_nodes$
+            \EndWhile
+            
+            \State \Return $dominating\_set$
+        \EndFunction
+    
+        \Function{Execute}{graph}
+            \State $dominating\_set \gets$ \Call{ComputeDominatingSet}{graph}
+            \State $node\_values \gets \{node: 2$ if $node \in dominating\_set$, else $0\}$
+            \State $roman\_number \gets$ sum of values in $node\_values$
+            \State \Return $(roman\_number, node\_values)$
+        \EndFunction
+    
+    \end{algorithmic}
+    \end{algorithm}
+
