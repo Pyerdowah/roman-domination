@@ -87,7 +87,7 @@ phase2 <- function(T){
   for (v in vcount(T):1){
     father <- neighbors(T, v, "in")
     if(length(father)){
-      V(T)[father]$child <- v
+      # V(T)[father]$child <- v
       if (V(T)[v]$n00 == 1 && V(T)[father]$ch && V(T)[v]$n01 == 0){
         V(T)[v]$R <- 0
         V(T)[V(T)[v]$child]$R <- 1
@@ -137,7 +137,7 @@ gtestree <- function(){
   # T <- add_edges(T, c(1,2, 1,8, 2,3, 2,4, 2,5, 5,6, 5,7, 8,9, 9,10, 10,11, 11,12, 11,13))
       T <- add_vertices(T, 10, color = "white", n1 = 0, n00 = 0, n01 = 0,
                     child = 0, n2 = 0, R = 0, sw = 0, ch = 0)
-  T <- add_edges(T, c(1, 2,2, 3,2, 4,4, 5,4, 7,4, 8,4, 9,5, 6,9, 10))
+  T <- add_edges(T, c(1,2, 1,3, 3,4, 1,5, 5,10, 5,6, 6,7, 7,8, 8,9))
   return(T)
 }
 

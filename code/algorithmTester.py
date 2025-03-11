@@ -52,7 +52,7 @@ def create_random_tree():
 def main():
     # G = nx.grid_2d_graph(4,10)
     # G = nx.convert_node_labels_to_integers(G)
-    G = create_random_tree()
+    G = create_custom_graph()
     # G = nx.erdos_renyi_graph(12,0.4)
 
     print("\nKrawędzie w grafie:")

@@ -28,9 +28,8 @@ class TreeLinear(AlgorithmBase):
             father = father_map[v]
 
             if len(list(nx.ego_graph(T, v, radius=1).nodes)) - 1 - T.nodes[v]['n1'] == 1 and v != root:  # Liść
-                if father is not None:
-                    T.nodes[father]['n00'] += 1
-                    T.nodes[father]['child'] = v
+                T.nodes[father]['n00'] += 1
+                T.nodes[father]['child'] = v
             else:
                 if T.nodes[v]['n00'] == 1 and father is not None and T.nodes[v]['n01'] == 0:
                     T.nodes[father]['sw'] += 1
@@ -79,7 +78,7 @@ class TreeLinear(AlgorithmBase):
         for v in reversed(nodes_ids):
             father = father_map[v]
             if father is not None:
-                T.nodes[father]['child'] = v
+                # T.nodes[father]['child'] = v
                 if T.nodes[v]['n00'] == 1 and T.nodes[father]['ch'] and T.nodes[v]['n01'] == 0:
                     T.nodes[v]['R'] = 0
                     T.nodes[T.nodes[v]['child']]['R'] = 1

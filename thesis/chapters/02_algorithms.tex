@@ -76,6 +76,73 @@ Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wy
 \end{algorithm}
 
 \section{Algorytm liniowy dla drzew}
+
+\subsection{Działanie}
+
+Dla każdego wierzchołka definiujemy następujące parametry:
+\begin{itemize}
+    \item $v['R']$ - wartość funkcji dominowania rzymskiego słabospójnego w wierzchołku $v$, z założeniem, że $v['R']\in\{0,1,2\}$
+    \item $v['n00']$ - oznacza liczbę dzieci z $R=0$ oraz bez sąsiada z $R=2$ (dziecko niezdominowane)
+    \item $v['n01']$ - oznacza liczbę dzieci z $R=0$ i z sąsiadem z $R=2$ (dziecko zdominowane)
+    \item $v['n1']$ - oznacza liczbę dzieci wierzchołka $v$ z $R = 1$
+    \item $v['n2']$ - oznacza liczbę dzieci wierzchołka $v$ z $R = 2$
+    \item $v['sw']$ - oznacza liczbę dzieci wierzchołka $v$ z $n00=1$ i $n01=0$. (wierzchołek wspierający)
+    \item $v['ch'] =1$ jeśli $v['sw']>1$ lub jeśli $v['sw']=1$ i mający przynajmniej jedno dziecko z $R=0$; w przeciwnym razie $v['ch'] =0$. Jeśli $v['ch'] =1$, wtedy $v['R']=2$ i w Fazie~2 każde dziecko $v$ z $n00=1$ i z $n01=0$ dostaje $R=0$ i jego jedyne dziecko z $R=0$ zmienia wartość na $R=1$.
+    \item $v['child']$ - jeśli $v$ jest wierzchołkiem wspierającym, wtedy wartość ta jest numerem liścia sąsiadującego z $v$.
+\end{itemize}
+
+Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie poczatkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, własności drzewa, oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabospójnego, a suma tych wartości to funkcja dominowania rzymskiego słabospójnego.
+\\
+Z racji sporego stopnia skomplikowania algorytmu, jego działanie zostanie przedstawione na przykładzie.
+Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne i niezłożone czasowo, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/image.png}
+    \caption{Graf $G$ - przykładowe drzewo}
+    \label{fig:drzewo}
+\end{figure}
+
+\begin{enumerate}
+    \item Jeśli wierzchołek jest liściem i nie jest korzeniem to zwiększamy wartość 'n00' ojca o 1,
+    \item Jeśli wierzchołek nie jest liściem:
+    \begin{enumerate}
+        \item Sprawdzamy czy wierzchołek posiada tylko jedno niezdominowane dziecko i posiada ojca. W tym przypadku ojciec będzie wierzchołkiem wspierającym. 
+        \item Sprawdzamy sumę wartości dzieci zdominowanych, niezdominowanych oraz liczbę dzieci dla których wierzchołek jest wspierający. Jeśli ta suma jest większa od 1, to wartość tego wierzchołka ustawiamy na 2, a parametr 'ch' na 1.
+        \begin{enumerate}
+            \item Jeśli wierzchołek ma ojca to parametr 'n2' ojca zwiększamy o 1, a jeśli wierzchołek posiada tylko jedno niezdominowane dziecko zmniejszamy parametr wspierający u ojca.
+        \end{enumerate}
+        \item Jeśli wierzchołek nie jest wspierający:
+            \begin{enumerate}
+                \item Jeśli wierzchołek posiada niezdominowane dzieci lub jedno dziecko i żadnych dzieci z wartością 2, to wtedy wierzchołek będzie miał wartość 2. Dla istniejącego ojca wierzchołka zwiększamy 'n2'.
+                \item Jeśli wierzchołek posiada niezdominowane dziecko, to danemu wierzchołkowi przypisujemy wartość 0, a tem dziecku wartość 1, a dla ojca zmniejszamy wartość wspierania.
+            \end{enumerate}
+    \end{enumerate}
+    \item Korzeń należy rozpatrzeć dodatkowo. Jeśli nie posiada on dzieci z wartościami 2 i sam ma wartość 0, to przypisujemy mu $R=2$,
+    \item Jeśli liczba dzieci korzenia z $R=1$ jest równa liczbie dzieci pomniejszonej o 1, to korzeń również ma wartość 1.
+\end{enumerate}
+
+Zdjęcie przedstawia zachowanie algorytmu po fazie 1. Czerwone wierzchołki to wartość $R=2$, niebieskie to $R=1$, a żółte to $R=0$. Widać że przypisanie nie jest jeszcze optymalne.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/phase1.png}
+    \caption{Graf $G$ - po fazie 1}
+    \label{fig:drzewoFaza1}
+\end{figure}
+
+W fazie 2, dla każdego wierzchołka posiadającego ojca, tylko jedno dziecko niezdominowane i parametr ojca 'ch' wynoszący 1, wtedy musimy ,zmienić' układ, poprzez ustawienie 0 na obecnym wierzchołku, ustawienie dziecka na 1 oraz zwiększenie liczby dzieci niedominowanych ojca wierzchołka. Poniższy rysunek przedstawia prawidłowe przypisanie wartości $R$ po fazie 2.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{assets/phase2.png}
+    \caption{Graf $G$ - po fazie 2 - finalna wersja}
+    \label{fig:drzewoFaza2}
+\end{figure}
+
+\subsection{Złożoność i wydajność}
+Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drzewa. Algorytm zatem jest skalowalny i szybki dla wiekszych grafów, natomiast ograniczony do jednej ich klasy - drzew.
+
 \subsection{Pseudokod}
 \begin{algorithm}
     \caption*{Algorytm liniowy dla drzew - Faza 1}
@@ -88,10 +155,8 @@ Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wy
                 \State $father \gets father\_map[v]$
     
                 \If{$v$ is a leaf and $v \neq root$}
-                    \If{$father$ exists}
-                        \State Increase $T[father]['n00']$
-                        \State Set $T[father]['child'] \gets v$
-                    \EndIf
+                    \State Increase $T[father]['n00']$
+                    \State Set $T[father]['child'] \gets v$
                 \Else
                     \If{$T[v]['n00'] == 1$ and $T[v]['n01'] == 0$ and $father$ exists}
                         \State Increase $T[father]['sw']$
@@ -141,13 +206,9 @@ Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wy
     \caption*{Algorytm liniowy dla drzew - Faza 2}
     \begin{algorithmic}[1]
         \Function{Phase2}{T, root}
-            \State $father\_map \gets$ Compute parent-child relationships using BFS
-            \State $nodes\_ids \gets$ List of all nodes in $T$
-    
             \For{each node $v$ in reversed($nodes\_ids$)}
                 \State $father \gets father\_map[v]$
                 \If{$father$ exists}
-                    \State $T[father]['child'] \gets v$
                     \If{$T[v]['n00'] == 1$ and $T[father]['ch'] == 1$ and $T[v]['n01'] == 0$}
                         \State Set $T[v]['R'] = 0$
                         \State Set $T[T[v]['child']]['R'] = 1$
