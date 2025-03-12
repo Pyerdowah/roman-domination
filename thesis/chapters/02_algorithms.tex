@@ -18,6 +18,7 @@ Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabos
 Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabospójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabospójności w następujący sposób:
 \begin{itemize}
     \item wyznaczamy zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
+    \item sprawdzamy czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2,
     \item dla każdego wierzchołka ze zbioru indukowanego dodajemy krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego
     \item następnie sprawdzamy, czy powstały graf jest spójny. Jeśli jest, to zbiór spełnia założenia definicji.
 \end{itemize}
@@ -45,6 +46,15 @@ Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wy
     
             \For{each assignment of values $(0,1,2)$ to all nodes}
                 \State $node\_values \gets$ mapping of nodes to values
+                
+                \For{each node in graph} \Comment{Sprawdzanie warunku dominacji}
+                    \If{$node\_values[node] = 0$}
+                        \If{\textbf{not} any neighbor of $node$ has value $2$}
+                            \State \textbf{Continue} to next assignment
+                        \EndIf
+                    \EndIf
+                \EndFor
+                
                 \State $induced\_set \gets$ nodes with values $\{1,2\}$
     
                 \For{each node in $induced\_set$}
@@ -91,7 +101,7 @@ Dla każdego wierzchołka definiujemy następujące parametry:
     \item $v['child']$ - jeśli $v$ jest wierzchołkiem wspierającym, wtedy wartość ta jest numerem liścia sąsiadującego z $v$.
 \end{itemize}
 
-Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie poczatkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, własności drzewa, oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabospójnego, a suma tych wartości to funkcja dominowania rzymskiego słabospójnego.
+Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie poczatkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabospójnego, a suma tych wartości to funkcja dominowania rzymskiego słabospójnego.
 \\
 Z racji sporego stopnia skomplikowania algorytmu, jego działanie zostanie przedstawione na przykładzie.
 Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne i niezłożone czasowo, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
@@ -104,19 +114,43 @@ Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowa
 \end{figure}
 
 \begin{enumerate}
-    \item Jeśli wierzchołek jest liściem i nie jest korzeniem to zwiększamy wartość 'n00' ojca o 1,
+    \item Jeśli wierzchołek jest liściem i nie jest korzeniem to zwiększamy wartość 'n00' ojca o 1.\\
+    Zatem dla liści 1,3,8,9, wartości ich ojców wyglądają następująco:\\
+        T[7]['n00'] = 1  \\
+        T[7]['child'] = 8  (od wierzchołka 8)\\
+        T[4]['n00'] = 1 \\
+        T[4]['child'] = 9  (od wierzchołka 9)\\
+        T[2]['n00'] = 1  \\
+        T[2]['child'] = 3  (od wierzchołka 3)\\
+        T[0]['n00'] = 1 \\
+        T[0]['child'] = 1  (od wierzchołka 1)\\
     \item Jeśli wierzchołek nie jest liściem:
     \begin{enumerate}
-        \item Sprawdzamy czy wierzchołek posiada tylko jedno niezdominowane dziecko i posiada ojca. W tym przypadku ojciec będzie wierzchołkiem wspierającym. 
-        \item Sprawdzamy sumę wartości dzieci zdominowanych, niezdominowanych oraz liczbę dzieci dla których wierzchołek jest wspierający. Jeśli ta suma jest większa od 1, to wartość tego wierzchołka ustawiamy na 2, a parametr 'ch' na 1.
+        \item Sprawdzamy czy wierzchołek posiada tylko jedno niezdominowane dziecko i posiada ojca. W tym przypadku ojciec będzie wierzchołkiem wspierającym. \\
+        T[6]['sw'] = 1 (od wierzchołka 7)\\
+        T[0]['sw'] = 2 (od wierzchołka 4 i 2)\\
+        \item Sprawdzamy sumę wartości dzieci zdominowanych, niezdominowanych oraz liczbę dzieci dla których wierzchołek jest wspierający. Jeśli ta suma jest większa od 1, to wartość tego wierzchołka ustawiamy na 2, a parametr 'ch' na 1.\\
+        T[0]['R'] = 2  (od wierzchołka 0)\\
+        T[0]['ch'] = 1  (od wierzchołka 0)\\
         \begin{enumerate}
             \item Jeśli wierzchołek ma ojca to parametr 'n2' ojca zwiększamy o 1, a jeśli wierzchołek posiada tylko jedno niezdominowane dziecko zmniejszamy parametr wspierający u ojca.
         \end{enumerate}
         \item Jeśli wierzchołek nie jest wspierający:
             \begin{enumerate}
-                \item Jeśli wierzchołek posiada niezdominowane dzieci lub jedno dziecko i żadnych dzieci z wartością 2, to wtedy wierzchołek będzie miał wartość 2. Dla istniejącego ojca wierzchołka zwiększamy 'n2'.
-                \item Jeśli wierzchołek posiada niezdominowane dziecko, to danemu wierzchołkowi przypisujemy wartość 0, a tem dziecku wartość 1, a dla ojca zmniejszamy wartość wspierania.
+                \item Jeśli wierzchołek posiada niezdominowane dzieci lub jedno dziecko i żadnych dzieci z wartością 2 lub dzieci zdominowane, to wtedy wierzchołek będzie miał wartość 2. Dla istniejącego ojca wierzchołka zwiększamy 'n2'.\\
+                T[7]['R'] = 2  (od wierzchołka 7)\\
+                T[6]['n2'] = 1  (od wierzchołka 7)\\
+                T[4]['R'] = 2  (od wierzchołka 4)\\
+                T[0]['n2'] = 2  (od wierzchołka 4 i 2)\\
+                T[2]['R'] = 2  (od wierzchołka 2)\\
+                \item Jeśli wierzchołek posiada niezdominowane dziecko, to danemu wierzchołkowi przypisujemy wartość 0, a temu dziecku wartość 1, a dla ojca zmniejszamy wartość wspierania.
+                \item Jeśli wierzchołek posiada tylko dzieci zdominowane, to danemu wierzchołkowi przypisujemy wartość 1, a ojcu zwiększamy wartość 'n1'.\\
+                T[5]['R'] = 1  (od wierzchołka 5)\\
+                T[4]['n1'] = 1  (od wierzchołka 5)\\
             \end{enumerate}
+        \item Jeśli wartość wierzchołka wynosi 0, posiada on dzieci z wartością 2 oraz ojca, to zwiększamy wartość ojca 'n01' o 1,\\
+        T[5]['n01'] = 1  (od wierzchołka 6)\\
+        \item Jeśli wartość wierzchołka wynosi 0, nie posiada on dzieci z wartością 2 oraz ojca, to zwiększamy wartość ojca 'n00' o 1,\\
     \end{enumerate}
     \item Korzeń należy rozpatrzeć dodatkowo. Jeśli nie posiada on dzieci z wartościami 2 i sam ma wartość 0, to przypisujemy mu $R=2$,
     \item Jeśli liczba dzieci korzenia z $R=1$ jest równa liczbie dzieci pomniejszonej o 1, to korzeń również ma wartość 1.
@@ -131,7 +165,13 @@ Zdjęcie przedstawia zachowanie algorytmu po fazie 1. Czerwone wierzchołki to w
     \label{fig:drzewoFaza1}
 \end{figure}
 
-W fazie 2, dla każdego wierzchołka posiadającego ojca, tylko jedno dziecko niezdominowane i parametr ojca 'ch' wynoszący 1, wtedy musimy ,zmienić' układ, poprzez ustawienie 0 na obecnym wierzchołku, ustawienie dziecka na 1 oraz zwiększenie liczby dzieci niedominowanych ojca wierzchołka. Poniższy rysunek przedstawia prawidłowe przypisanie wartości $R$ po fazie 2.
+W fazie 2, dla każdego wierzchołka posiadającego ojca, tylko jedno dziecko niezdominowane i parametr ojca 'ch' wynoszący 1, wtedy musimy ,zmienić' układ, poprzez ustawienie 0 na obecnym wierzchołku, ustawienie dziecka na 1 oraz zwiększenie liczby dzieci niedominowanych ojca wierzchołka. Poniższy rysunek przedstawia prawidłowe przypisanie wartości $R$ po fazie 2.\\
+Ten warunek spełniony jest dla wierzchołków 4 i 2. Zatem:\\
+T[4]['R'] = 0  (od wierzchołka 4)\\
+T[9]['R'] = 1  (dziecko wierzchołka 4)\\
+T[2]['R'] = 0  (od wierzchołka 2)\\
+T[3]['R'] = 1  (dziecko wierzchołka 2)\\
+T[0]['n00'] = 3  (ojciec wierzchołków 4 i 2)\\
 
 \begin{figure}[H]
     \centering
@@ -174,7 +214,7 @@ Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drze
                     \EndIf
     
                     \If{$T[v]['sw'] == 0$}
-                        \If{$T[v]['n00'] > 1$ or ($T[v]['n00'] == 1$ and $T[v]['n2'] == 0$)}
+                        \If{$T[v]['n00'] > 1$ or ($T[v]['n00'] == 1$ and ($T[v]['n2'] == 0$ or $T[v]['n01'] > 0$))}
                             \State Set $T[v]['R'] = 2$
                             \If{$father$ exists}
                                 \State Increase $T[father]['n2']$
@@ -186,7 +226,21 @@ Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drze
                                 \State Decrease $T[father]['sw']$
                             \EndIf
                         \EndIf
+                        \If{$T[v]['n00'] == 0$ and $T[v]['n01'] > 0$}
+                        \State Set $T[v]['R'] = 1$
+                        \If{$father$ exists}
+                            \State Increase $T[father]['n1']$
+                        \EndIf
                     \EndIf
+                    \EndIf
+                    \If{$T[v]['R'] = 0$ \textbf{and} $T[v]['n2'] > 0$ \textbf{and} $father$ exists}
+                        \State $T[father]['n01'] \gets T[father]['n01] + 1$
+                    \EndIf
+
+                    \If{$T[v]['R'] = 0$ \textbf{and} $T[v]['n2'] = 0$ \textbf{and} $father$ exists}
+                        \State $T[father]['n00'] \gets T[father]['n00] + 1$
+                    \EndIf
+
                 \EndIf
             \EndFor
     
