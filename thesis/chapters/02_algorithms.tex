@@ -280,7 +280,7 @@ Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drze
 
 \FloatBarrier
 \section{Algorytm programowania liniowego I}
-Jest to algorytm programowania liniowego całkowitoliczbowego zaimplementowany na podstawie artykułu ,, Algorithmic complexity of weakly connected Roman domination in graphs" \cite{ILP}.
+Jest to algorytm programowania liniowego zaimplementowany na podstawie artykułu ,,Algorithmic complexity of weakly connected Roman domination in graphs" \cite{ILP}.
 
 \subsection{Działanie}
 
@@ -325,27 +325,27 @@ Definiujemy funkcję celu, czyli minimalizację wagi zbioru dominującego rzymsk
 oraz ograniczenia:\\
 Wierzchołek o wartości 0, bedzie miał przynajmniej jednego sasiada z wartością 2:
 \[
-    \text{(1) } a_v + \sum_{k \in N_G(v)} b_k \geq 1, \quad v \in V 
+    a_v + \sum_{k \in N_G(v)} b_k \geq 1, \quad v \in V, \tag{1}
 \]
 Krawędź istnieje w drzewie rozpinającym \( T' \), jesli ta krawędź należy do \( G' \). Ograniczenie to zapewnia spójność w \( G' \):
 \[
-    \text{(2) } y_e \leq x_e, \quad e \in E
+    y_e \leq x_e, \quad e \in E, \tag{2}
 \]
 Wybór krawędzi, które mają  wartość należącą do zbioru dominującego na przynajmniej jednym swoim końcu:
 \[
-    \text{(3) } x_e \leq a_{i_e} + a_{j_e}, \quad e \in E_{G'} 
+    x_e \leq a_{i_e} + a_{j_e}, \quad e \in E_{G'}, \tag{3}
 \]
 Drzewo rozpinające \( T' \) ma liczbę krawędzi równą liczbie wierzchołków grafu pomniejszoną o 1:
 \[
-    \text{(4) } \sum_{e \in E} y_e = n - 1 
+    \sum_{e \in E} y_e = n - 1, \tag{4}
 \]
 Drzewo rozpinające \( T' \) nie posiada cykli:
 \[
-    \text{(5) } \sum_{i_e, j_e \in S} y_e \leq |S| - 1, \quad S \subseteq V, \quad |S| \geq 3, 
+    \sum_{i_e, j_e \in S} y_e \leq |S| - 1, \quad S \subseteq V, \quad |S| \geq 3, \tag{5}
 \]
 Podzbior wierzchołków z $b_v = 1$, czyli $(V_2)$, jest podzbiorem wierzchołków z $a_v = 1$, czyli $(V_1 \cup V_2)$
 \[
-    \text{(6) } b_v \leq a_v, \quad v \in V. 
+    b_v \leq a_v, \quad v \in V. \tag{6}
 \]
 
 Warunki 1, 2, 5 gwarantują, że \( T' \) jest drzewem rozpinającym grafu \( G' \).
@@ -410,6 +410,95 @@ Z powodu wykładniczej natury nierówności liczba ograniczeń wynosi $O(2^n)$.
 
 \FloatBarrier
 \section{Algorytm programowania liniowego II}
+Jest to algorytm programowania liniowego zaimplementowany na podstawie artykułu ,,Algorithmic complexity of weakly connected Roman domination in graphs" \cite{ILP}, podobnie jak poprzedni.
+\subsection{Działanie}
+Model ten opiera się na przepływach. W tym modelu rozpatrujemy graf jako wierzchołek który zużywa jednostkę przepływu, przepływając przez krawędzie grafu. Na wejściu definiujemy zewnętrzny przepływ, którego liczba jednostek jest równa liczbie wierzchołków grafu. Zachowujemy zasadę przepływu sieci, dlatego próbujemy wprowadzić przepływ zewnętrzny w jak najwiekszej ilości przez pojedynczy wierzchołek.\\
+Definiujemy następujące zmienne:
+\[
+x_i =
+\begin{cases}
+1, & i \in V_1 \cup V_2 \\
+0, & i \in V_0
+\end{cases}
+\quad
+y_i =
+\begin{cases}
+1, & i \in V_2 \\
+0, & i \in V_0 \cup V_1
+\end{cases}
+\]
+
+\[
+a_e =
+\begin{cases}
+1, & e \in E' \\
+0, & e \notin E'
+\end{cases}
+\quad
+t_i =
+\begin{cases}
+1, & \text{wierzchołek korzenia} = i \\
+0, & \text{pozostałe wierzchołki}
+\end{cases}
+\]
+
+\[
+u_i \in N \cup \{0\}, \quad v_e \in [-n, n].
+\]
+gdzie:\\
+$t_i$ zdefiniowany dla każdego wierzchołka grafu. Identyfikuje, gdzie zewnetrzny wierzchołek jest traktowany jako wejście. \\
+$u_i$ reprezentuje liczbę jednostek przepływu zewnętrznego dla danego wierzchołka grafu.\\
+$v_e$ oznacza jednostki przepływające przez dane krawędzie.\\
+$x_i, y_i$ oznaczają przynależność do zbioru dominującego rzymskiego słabo spójnego.
+
+Minimalizującą liczbę dominowania rzymskiego słabospójnego jako funkcję celu definiujemy następująco:
+
+\[
+\text{Z: } \min \left( \sum_{i \in V} x_i + \sum_{i \in V} y_i \right),
+\]
+
+mając dane ograniczenia:\\
+Wierzchołek z wartością 0 sąsiaduje z przynajmniej jednym wierzchołkiem z wartością 2:
+\[
+x_i + \sum_{j \in N_G(i)} y_j \geq 1, \quad i \in V, \tag{1}
+\]
+Prawidłowe zdefiniowanie zmiennych $x$ i $y$:
+\[
+y_i \leq x_i, \quad i \in V, \tag{2}
+\]
+Krawędź $e \in E'$ ma przynajmniej jeden koniec z wierzchołkiem o wartości przynajmniej 1:
+\[
+a_e \leq x_{i_e} + x_{j_e}, \quad e \in E, \tag{3}
+\]
+Jest tylko jeden wierzchołek w grafie $G'$ gdzie jest dostarczony przepływ zewnętrzny:
+\[
+\sum_{i \in V} t_i = 1, \tag{4}
+\]
+Wielkość przepływu wielkości co najwyżej $n$:
+\[
+u_i \leq n \cdot t_i, \quad i \in V, \tag{5}
+\]
+Przepływ ma miejsce tylko w krawędziach należących do $E'$:
+\[
+v_e \leq n \cdot a_e, \quad e \in E, \tag{6}
+\]
+
+\[
+v_e \geq -n \cdot a_e, \quad e \in E, \tag{7}
+\]
+Reprezentacja zasady zachowania sieci:
+\[
+u_i + \sum_{e: j_e = i} v_e - \sum_{e: i_e = i} v_e = 1, \quad i \in V, \tag{8}
+\]
+Każdy wierzchołek $v \in V$ musi mieć przynajmniej jeden ustalony wierzchołek w $E'$
+\[
+a_e \geq 1, \quad e \in E, \tag{9}
+\]
+
+\subsection{Złożoność i wydajność}
+
+Suma zmiennych w sformułowanym modelu wynosi $3n + m$, będących wartościami logicznymi, $n$ integralnych i $m$ ciągłych.\\
+Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ograniczenia to są nierówności.
 
 \subsection{Pseudokod}
 \begin{algorithm}
@@ -472,6 +561,7 @@ Z powodu wykładniczej natury nierówności liczba ograniczeń wynosi $O(2^n)$.
     \end{algorithmic}
     \end{algorithm}
 
+\FloatBarrier
 \section{Algorytm mrówkowy}
 
 \subsection{Pseudokod}
