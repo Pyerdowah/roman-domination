@@ -15,7 +15,7 @@ Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabos
 \section{Algorytm Brute Force}
 
 \subsection{Działanie}
-Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabospójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabospójności w następujący sposób:
+Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabospójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabo spójności w następujący sposób:
 \begin{itemize}
     \item wyznaczamy zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
     \item sprawdzamy czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2,
@@ -25,7 +25,7 @@ Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego
 
 \subsection{Złożoność i wydajność}
 
-Algorytm ma złożoność eksponencjonalną, zatem nie będzie wykonywalny w rozsądnym czasie dla większych grafów.
+Algorytm ma złożoność wykładniczą, zatem nie będzie wykonywalny w rozsądnym czasie dla większych grafów.
 \begin{itemize}
     \item generowanie wszystkich kombinacji możliwych przypisań: $3^n$, gdzie $n$ to liczba wierzchołków grafu,
     \item sprawdzanie własności zbioru słabospójnego dla każdego przypisania: $n^2$
@@ -564,46 +564,115 @@ Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ogranic
 \FloatBarrier
 \section{Algorytm mrówkowy}
 
+\subsection{Działanie}
+Definiujemy następujące zmienne i heurystyki:
+\begin{itemize}
+    \item \textbf{num\_ants} – liczba mrówek w każdej iteracji.
+    \item \textbf{num\_iterations} – liczba iteracji algorytmu.
+    \item \textbf{\rho} – współczynnik parowania feromonów, określający, jak szybko feromony zanikają.
+    \item $\tau_{init}$ – początkowa wartość feromonów na wszystkich krawędziach.
+    \item \textbf{\alpha} – wpływ poziomu feromonów na decyzję wyboru ścieżki.
+    \item \textbf{\beta} – wpływ heurystyki lokalnej (np. liczby sąsiadów) na decyzję wyboru ścieżki.
+\end{itemize}
+Na początku należy zainicjować feromony na każdej krawędzi wejściowego grafu.\\
+Dla zdefiniowanej liczby iteracji algorytmu, a następnie dla każdej mrówki:
+\begin{enumerate}
+    \item na podstawie heurystyk, parametrów, sąsiadów wierzchołków i feromonów budowane jest rozwiązanie dla pojedynczej mrówki w postaci prawdopodobieńsw wartości na wierzchołkach grafu.\\
+    Każdy wierzchołek \( i \) przyjmuje wartość \( v \in \{0,1,2\} \) z prawdopodobieństwem:
+
+\[
+P_i(v) = \frac{ \left( \sum\limits_{j \in N(i)} \tau_{ij} \right)^\alpha \cdot (\eta_i)^\beta }
+{\sum\limits_{v' \in \{0,1,2\}} \left( \sum\limits_{j \in N(i)} \tau_{ij} \right)^\alpha \cdot (\eta_i)^\beta}
+\]
+
+gdzie:\\
+- \( \tau_{ij} \) to poziom feromonów na krawędzi \( (i,j) \),\\
+- \( \eta_i = |N(i)| \) to liczba sąsiadów wierzchołka \( i \) będąca heurystyką
+
+    \item rozwiązanie sprawdzane jest pod katem poprawności względem definicji. Sprawdzane jest, czy wierzchołki z wartościami 0, posiadają sasiada z wartościami 2 oraz warunek słabo spójności. Jeśli warunek nie jest spełniony, rozwiązanie otrzymuje nieskończoną wartość wagi, co sprawia, że nie jest brane pod uwagę w rozwiązaniu. W przeciwnym razie sumujemy wartości na wierzchołkach grafu.
+\end{enumerate}
+Po przejściu wszystkich mrówek, uaktualniamy wartości feromonów na grafie, zmniejszając ich wartość o współczynnik ewaporacji oraz aktualizację wartości feromonów na podstawie najlepszego dotychczasowego rozwiązania.
+
+\[
+\tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij} + \Delta \tau_{ij}
+\]
+
+gdzie:\\
+- \( \rho \) to współczynnik parowania feromonów,\\
+- \( \Delta \tau_{ij} \) to ilość feromonów dodana w oparciu o najlepsze rozwiązanie:
+
+\[
+\Delta \tau_{ij} = \frac{1}{f(best\_solution^*)}
+\]
+
+gdzie \( best\_solution^* \) to najlepsze znalezione rozwiązanie, a \( f(best\_solution^*) \) to suma wartości wierzchołków grafu najlepszego rozwiązania.
+
+\subsection{Złożoność i wydajność}
+
+Złożoność wynosi $O(num\_iterations \cdot num\_ants \cdot V^2)$, co sprawia, że algorytm dla większych grafów może być kosztowny obliczeniowo.\\
+Złożoność pamięciowa wynosi $O(V^2+num\_ants \cdot V)$.
+
 \subsection{Pseudokod}
 \begin{algorithm}
     \caption*{Algorytm mrówkowy - inicjalizacja}
     \begin{algorithmic}[1]
     
-        \Function{InitializePheromones}{graph}
-            \State $pheromones \gets$ Assign initial pheromone value to all edges
-            \State \Return $pheromones$
-        \EndFunction
-    
-        \Function{ChooseNodeValue}{node, pheromones, neighbors}
-            \State $values \gets \{0, 1, 2\}$
-            \State Initialize $probabilities$ as empty list
-    
-            \For{each $value$ in $\{0, 1, 2\}$}
-                \State Compute $pheromone\_level$ as sum of pheromones of neighboring edges
-                \State Compute $heuristic$ based on number of neighbors
-                \State Compute probability as $(pheromone\_level^\alpha) \times (heuristic^\beta)$
-                \State Append probability to $probabilities$
-            \EndFor
-    
-            \State Normalize probabilities
-            \State \Return Random weighted choice from $\{0, 1, 2\}$
-        \EndFunction
-    
-        \Function{BuildSolution}{graph, pheromones}
-            \State Initialize $node\_values$ as empty dictionary
-            \For{each node in graph}
-                \State $neighbors \gets$ list of node's neighbors
-                \State Assign $node\_values[node] \gets$ \Call{ChooseNodeValue}{node, pheromones, neighbors}
-            \EndFor
-            \State \Return $node\_values$
-        \EndFunction
-    
-        \Function{EvaluateSolution}{graph, node\_values}
-            \If{\textbf{not} \Call{IsValidRomanDominatingSet}{graph, node\_values}}
-                \State \Return $\infty$
+    \Function{InitializePheromones}{graph}
+        \State $pheromones \gets$ Assign initial pheromone value to all edges
+        \State \Return $pheromones$
+    \EndFunction
+
+    \Function{ChooseNodeValue}{node, pheromones, neighbors}
+        \State $values \gets \{0, 1, 2\}$
+        \State Initialize $probabilities$ as empty list
+
+        \For{each $value$ in $\{0, 1, 2\}$}
+            \State Compute $pheromone\_level$ as sum of pheromones of neighboring edges
+            \State Compute probability as $(pheromone\_level^\alpha) \times (heuristic^\beta)$
+            \State Append probability to $probabilities$
+        \EndFor
+
+        \State Normalize probabilities
+        \State \Return Random weighted choice from $\{0, 1, 2\}$
+    \EndFunction
+
+    \Function{BuildSolution}{graph, pheromones}
+        \State Initialize $node\_values$ as empty dictionary
+        \For{each node in graph}
+            \State $neighbors \gets$ list of node's neighbors
+            \State Assign $node\_values[node] \gets$ \Call{ChooseNodeValue}{node, pheromones, neighbors}
+        \EndFor
+        \State \Return $node\_values$
+    \EndFunction
+
+    \Function{IsValidRomanDominatingSet}{graph, node\_values}
+        \For{each node in graph}
+            \If{$node\_values[node] = 0$ and no neighbor has value $2$}
+                \State \Return False
             \EndIf
-            \State \Return Sum of all node values
-        \EndFunction
+        \EndFor
+
+        \State $induced\_set \gets$ nodes with values $\{1, 2\}$
+        \For{each node in $induced\_set$}
+            \State Add all neighbors to $induced\_set$
+        \EndFor
+
+        \State Create empty graph $induced\_graph$
+        \For{each node in $induced\_set$}
+            \If{$node\_values[node] \in \{1, 2\}$}
+                \For{each neighbor in graph}
+                    \If{neighbor in $induced\_set$}
+                        \State Add edge between node and neighbor in $induced\_graph$
+                    \EndIf
+                \EndFor
+            \EndIf
+        \EndFor
+
+        \If{$induced\_graph$ is not connected}
+            \State \Return False
+        \EndIf
+        \State \Return True
+    \EndFunction
     
     \end{algorithmic}
 \end{algorithm}
@@ -613,45 +682,46 @@ Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ogranic
     \begin{algorithmic}[1]
     
         \Function{UpdatePheromones}{graph, pheromones, solutions}
-            \For{each edge in pheromones}
-                \State Reduce pheromone level using evaporation rate
+        \For{each edge in pheromones}
+            \State Reduce pheromone level using evaporation rate
+        \EndFor
+
+        \State $best\_solution \gets$ Solution with minimum Roman number
+        \For{each node in $best\_solution$}
+            \For{each neighbor of node}
+                \State Increase pheromone level on edge $(node, neighbor)$
             \EndFor
-    
-            \State $best\_solution \gets$ Solution with minimum Roman number
-            \For{each node in $best\_solution$}
-                \For{each neighbor of node}
-                    \State Increase pheromone level on edge $(node, neighbor)$
-                \EndFor
+        \EndFor
+    \EndFunction
+
+    \Function{Execute}{graph}
+        \State $pheromones \gets$ \Call{InitializePheromones}{graph}
+        \State $best\_solution \gets None$
+        \State $best\_roman\_number \gets \infty$
+
+        \For{each iteration in num\_iterations}
+            \State Initialize $solutions$ as empty list
+
+            \For{each ant in num\_ants}
+                \State $solution \gets$ \Call{BuildSolution}{graph, pheromones}
+                \State $roman\_number \gets$ \Call{EvaluateSolution}{graph, solution}
+                \State Append $(solution, roman\_number)$ to $solutions$
+
+                \If{$roman\_number < best\_roman\_number$}
+                    \State Update $best\_roman\_number$ and $best\_solution$
+                \EndIf
             \EndFor
-        \EndFunction
-    
-        \Function{Execute}{graph}
-            \State $pheromones \gets$ \Call{InitializePheromones}{graph}
-            \State $best\_solution \gets None$
-            \State $best\_roman\_number \gets \infty$
-    
-            \For{each iteration in num\_iterations}
-                \State Initialize $solutions$ as empty list
-    
-                \For{each ant in num\_ants}
-                    \State $solution \gets$ \Call{BuildSolution}{graph, pheromones}
-                    \State $roman\_number \gets$ \Call{EvaluateSolution}{graph, solution}
-                    \State Append $(solution, roman\_number)$ to $solutions$
-    
-                    \If{$roman\_number < best\_roman\_number$}
-                        \State Update $best\_roman\_number$ and $best\_solution$
-                    \EndIf
-                \EndFor
-    
-                \State \Call{UpdatePheromones}{graph, pheromones, solutions}
-            \EndFor
-    
-            \State \Return $(best\_roman\_number, best\_solution)$
-        \EndFunction
+
+            \State \Call{UpdatePheromones}{graph, pheromones, solutions}
+        \EndFor
+
+        \State \Return $(best\_roman\_number, best\_solution)$
+    \EndFunction
     
     \end{algorithmic}
 \end{algorithm}
 
+\FloatBarrier
 \section{Algorytm aproksymacyjny}
 
 \subsection{Pseudokod}
