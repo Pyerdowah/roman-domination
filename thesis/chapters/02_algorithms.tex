@@ -10,6 +10,7 @@ Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabos
     \item algorytm programowania liniowego II
     \item algorytm mrówkowy
     \item algorytm aproksymacyjny
+    \item algorytm zachłanny
 \end{itemize}
 
 \section{Algorytm Brute Force}
@@ -369,30 +370,30 @@ Z powodu wykładniczej natury nierówności liczba ograniczeń wynosi $O(2^n)$.
     
             \State Define binary variables:
 
-            \State $x[i, j]$ for $(i, j) \in E$ \Comment{1 if edge is in $G'$}
-            \State $y[i, j]$ for $(i, j) \in E$ \Comment{1 if edge is in spanning tree $T'$}
-            \State $a[i]$ for $i \in V$ \Comment{1 if node belongs to $V1 \cup V2$}
-            \State $b[i]$ for $i \in V$ \Comment{1 if node belongs to $V2$}
+            \State $x[i, j]$ for $(i, j) \in E$ \Comment{1 jeśli krawędź jest w $G'$}
+            \State $y[i, j]$ for $(i, j) \in E$ \Comment{1 jeśli krawędź jest w drzewie rozpinającym $T'$}
+            \State $a[i]$ for $i \in V$ \Comment{1 jeśli wierzchołek należy do $V1 \cup V2$}
+            \State $b[i]$ for $i \in V$ \Comment{1 jeśli wierzchołek należy do $V2$}
     
             \State \textbf{Constraints:}
     
-            \For{each node $i$ in $V$} \Comment{Each node must be defended}
+            \For{each node $i$ in $V$} \Comment{Każdy wierzchołek musi być broniony}
                 \State Add constraint: $a[i] + \sum b[k] \geq 1$, where $k$ are neighbors of $i$
             \EndFor
     
             \For{each edge $(i, j)$ in $E$}
-                \State Add constraint: $y[i, j] \leq x[i, j]$ \Comment{Tree edge must exist in $G'$}
-                \State Add constraint: $x[i, j] \leq a[i] + a[j]$ \Comment{Tree edges must connect defended nodes}
+                \State Add constraint: $y[i, j] \leq x[i, j]$ \Comment{Krawędź drzewa musi istnieć w $G'$}
+                \State Add constraint: $x[i, j] \leq a[i] + a[j]$ \Comment{Krawędzie drzewa muszą łączyć bronione wierzchołki}
             \EndFor
     
-            \State Add constraint: $\sum y[i, j] = |V| - 1$ \Comment{Tree must have $|V| - 1$ edges}
+            \State Add constraint: $\sum y[i, j] = |V| - 1$ \Comment{Drzewo musi mieć $|V| - 1$ krawędzi}
     
             \State Find cliques of size $\geq 3$ in $graph$ and store as $subsets$
-            \For{each subset $S$ in $subsets$} \Comment{Cycle elimination}
+            \For{each subset $S$ in $subsets$} \Comment{Eliminacja cykli}
                 \State Add constraint: $\sum y[i, j] \leq |S| - 1$ for edges $(i, j) \in S$
             \EndFor
     
-            \For{each node $i$ in $V$} \Comment{V2 nodes must be in V1 $\cup$ V2}
+            \For{each node $i$ in $V$} \Comment{Wierzchołki z $V2$ muszą należeć do $V1 \cup V2$}
                 \State Add constraint: $b[i] \leq a[i]$
             \EndFor
     
@@ -509,20 +510,20 @@ Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ogranic
     
             \State $V \gets$ list of nodes in $graph$
             \State $E \gets$ list of edges in $graph$
-            \State $n \gets |V|$ \Comment{Number of nodes}
+            \State $n \gets |V|$ \Comment{Liczba wierzchołków}
     
             \State Define binary variables:
 
-            \State $x[i]$ for $i \in V$ \Comment{1 if node $i$ is in set $X$}
-            \State $y[i]$ for $i \in V$ \Comment{1 if node $i$ is in set $Y$}
-            \State $a[e]$ for $e \in E$ \Comment{1 if edge $e$ is in the spanning tree}
-            \State $t[i]$ for $i \in V$ \Comment{1 if node $i$ is the root}
+            \State $x[i]$ for $i \in V$ \Comment{1 jeśli wierzchołek $i$ należy do zbioru $X$}
+            \State $y[i]$ for $i \in V$ \Comment{1 jeśli wierzchołek $i$ należy do zbioru $Y$}
+            \State $a[e]$ for $e \in E$ \Comment{1 jeśli krawędź $e$ należy do drzewa rozpinającego}
+            \State $t[i]$ for $i \in V$ \Comment{1 jeśli wierzchołek $i$ jest korzeniem}
 
     
             \State Define integer and continuous variables:
 
-            \State $u[i]$ for $i \in V$ \Comment{Integer variable for tree structure}
-            \State $v[e]$ for $e \in E$ \Comment{Flow variable with bounds $[-n, n]$}
+            \State $u[i]$ for $i \in V$ \Comment{Zmienna całkowita do struktury drzewa}
+            \State $v[e]$ for $e \in E$ \Comment{Zmienna przepływu z ograniczeniami $[-n, n]$}
 
 
             \State \textbf{Objective:}
@@ -530,7 +531,7 @@ Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ogranic
     
             \State \textbf{Constraints:}
     
-            \For{each node $i$ in $V$} \Comment{Ensure all nodes are covered}
+            \For{each node $i$ in $V$} \Comment{Zapewnij pokrycie wszystkich wierzchołków}
                 \State Add constraint: $x[i] + \sum y[j] \geq 1$, where $(i,j) \in E$
                 \State Add constraint: $y[i] \leq x[i]$
                 \State Add constraint: $\sum a[e] \geq 1$, where $e$ contains $i$
@@ -542,9 +543,9 @@ Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ogranic
                 \State Add constraint: $v[e] \geq -n \cdot a[e]$
             \EndFor
     
-            \State Add constraint: $\sum t[i] = 1$ \Comment{Only one root exists}
+            \State Add constraint: $\sum t[i] = 1$ \Comment{Tylko jeden korzeń istnieje}
     
-            \For{each node $i$ in $V$} \Comment{Tree structure constraints}
+            \For{each node $i$ in $V$} \Comment{Ograniczenia struktury drzewa}
                 \State Add constraint: $u[i] \leq n \cdot t[i]$
                 \State Add constraint: $u[i] + \sum v[e] - \sum v[e] = 1$, for edges $e$ entering/exiting $i$
             \EndFor
@@ -723,32 +724,193 @@ Złożoność pamięciowa wynosi $O(V^2+num\_ants \cdot V)$.
 
 \FloatBarrier
 \section{Algorytm aproksymacyjny}
+\subsection{Działanie}
+
+Algorytm ten został również zaimplementowany na podstawie artykułu \cite{ILP}. Zdefiniowano tam następujące kroki algorytmu:
+\begin{enumerate}
+    \item Wyznaczenie zbioru dominującego spełniającego warunki zbioru dominującego spójnego, dalej \textit{Connented dominating set} - CDS.
+    \item Dla wierzchołków ze zbioru dominującego przypisywana jest wartość 2, dla pozostałych wierzchołków przypisujemy wartość 0.
+\end{enumerate}
+
+Udowodniono, że takie rozwiązanie jest aproksymacyjne, o współczynniku aproksymacji równym
+$2(1+\epsilon)(1 + \ln(\Delta - 1))$. Aby móc przetestować w pełni działanie algorytmu, zaimplementowano go w całości, na podstawie sugestii obecnych w artykule:
+
+\begin{enumerate}
+    \item Wyznaczenie minimalnego zbioru dominującego spełniającego spójnego. Problem ten również jest NP-trudny, dlatego zbiór ten wyznaczono przy użyciu programowania liniowego, w celu zachowania poprawności rozwiązania oraz - dla wielu przypadków - w rozsądnym czasie.\\ 
+    Niech \( G = (V, E) \) będzie grafem nieskierowanym, gdzie:\\
+        - \( V \) — zbiór wierzchołków,\\
+        - \( E \subseteq V \times V \) — zbiór krawędzi.\\
+
+        Definiujemy funkcję celu jako minimalizację liczby wierzchołków w zbiorze dominującym:
+        \[
+        Z: \min \sum_{v \in V} x_v
+        \]
+
+        Definiujemy następujące zmienne decyzyjne:
+       
+        \begin{itemize}
+            \item \( x_v \in \{0, 1\} \) — czy wierzchołek \( v \in V \) należy do zbioru dominującego (CDS),
+            \item \( f_{uv} \in {Z}_{\geq 0} \) — ilość jednostek przepływu z \( u \) do \( v \), dla każdej krawędzi \( (u, v) \in E \).
+        \end{itemize}
+
+        Oraz ograniczenia:
+
+        Dominacja — każdy wierzchołek musi być zdominowany (sam lub przez sąsiada):
+        \[
+        \forall v \in V:\quad x_v + \sum_{u \in N(v)} x_u \geq 1
+        \]
+
+        Bilans przepływu dla każdego wierzchołka \( v \neq r \):
+        \[
+        \forall v \in V \setminus \{r\}:\quad \sum_{u \in N(v)} f_{uv} - \sum_{u \in N(v)} f_{vu} = x_v
+        \]
+
+        Źródło przepływu (root) — wysyła dokładnie \( \sum x_v - 1 \) jednostek przepływu:
+        \[
+        \sum_{u \in N(r)} f_{ru} = \sum_{v \in V} x_v - 1
+        \]
+
+        Ograniczenie przepływu — przepływ możliwy tylko między wierzchołkami należącymi do CDS:
+        \[
+        \forall (u, v) \in E:\quad f_{uv} \leq (|V| - 1) \cdot x_u \quad \text{oraz} \quad f_{uv} \leq (|V| - 1) \cdot x_v
+        \]
+    \item Dla wierzchołków CDS przypisywana jest wartość 2, dla pozostałych wierzchołków przypisujemy wartość 0.
+\end{enumerate}
+
+\subsection{Złożoność i wydajność}
+
+W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O(2^n)$. Model zawiera $|V|$ zmiennych $x_v$ oraz $2|E|$ zmiennych przepływu $f_{uv}$. Dodatkowo zawiera $|V| + 2|E|$ ograniczeń. Zatem liczba zmiennych oraz ograniczeń dają złożoności $O(∣V∣+∣E∣)$.
 
 \subsection{Pseudokod}
 \begin{algorithm}
-    \caption{Algorytm aproksymacyjny}
+    \caption*{Algorytm aproksymacyjny}
     \begin{algorithmic}[1]
+        \Function{ComputeDominatingSet}{$G$}
+        \State $N \gets$ list of nodes in $G$
+        \State $E \gets$ list of edges in $G$
+        \State $x_v \in \{0,1\}$ for all $v \in N$
+        \State Choose arbitrary root $r \in N$
+        \State $f_{uv} \in {Z}_{\geq 0}$ for all $(u,v) \in E$ and reversed
     
-        \Function{ComputeDominatingSet}{graph}
-            \State $dominating\_set \gets \emptyset$
-            \State $uncovered\_nodes \gets$ all nodes in $graph$
-            
-            \While{$uncovered\_nodes$ is not empty}
-                \State $max\_degree\_node \gets$ node with highest degree in $uncovered\_nodes$
-                \State Add $max\_degree\_node$ to $dominating\_set$
-                \State Remove $max\_degree\_node$ and its neighbors from $uncovered\_nodes$
-            \EndWhile
-            
-            \State \Return $dominating\_set$
-        \EndFunction
+        \State Minimize $\sum_{v \in N} x_v$
+        \ForAll{$v \in N$}
+            \State Ensure: $x_v + \sum_{u \in \text{Neighbors}(v)} x_u \geq 1$ \Comment{Dominacja}
+        \EndFor
     
-        \Function{Execute}{graph}
-            \State $dominating\_set \gets$ \Call{ComputeDominatingSet}{graph}
-            \State $node\_values \gets \{node: 2$ if $node \in dominating\_set$, else $0\}$
-            \State $roman\_number \gets$ sum of values in $node\_values$
-            \State \Return $(roman\_number, node\_values)$
-        \EndFunction
+        \ForAll{$v \in N, v \neq r$}
+            \State Inflow $\gets \sum_{u \in \text{Neighbors}(v)} f_{uv}$
+            \State Outflow $\gets \sum_{u \in \text{Neighbors}(v)} f_{vu}$
+            \State Ensure: Inflow $-$ Outflow $= x_v$ \Comment{Bilans przepływu}
+        \EndFor
     
+        \State Ensure: $\sum_{u \in \text{Neighbors}(r)} f_{ru} = \sum_{v \in N} x_v - 1$ \Comment{Źródło przepływu}
+    
+        \ForAll{$(u, v) \in E$ and $(v, u)$}
+            \State Ensure: $f_{uv} \leq (|N|-1) \cdot x_u$
+            \State Ensure: $f_{uv} \leq (|N|-1) \cdot x_v$ \Comment{Warunki spójności}
+        \EndFor
+    
+        \State Solve ILP
+        \State \Return $\{v \in N : x_v = 1\}$
+    \EndFunction
+        \Function{Execute}{$G$}
+        \State $N \gets$ list of nodes in $G$
+        \State $D \gets$ \Call{ComputeDominatingSet}{$G$}
+        \ForAll{$v \in N$}
+            \If{$v \in D$}
+                \State $value[v] \gets 2$
+            \Else
+                \State $value[v] \gets 0$
+            \EndIf
+        \EndFor
+        \State $R \gets \sum_{v \in N} value[v]$
+        \State \Return $(R, value)$
+    \EndFunction
     \end{algorithmic}
     \end{algorithm}
 
+    \section{Algorytm zachłanny}
+    \subsection{Działanie}
+    
+    \begin{enumerate}
+        \item Poczatkowo definiujemy zbiory wierzchołków chronionych (początkowo pusty) i niechronionych (początkowo wszystkie wierzchołki grafu).
+        \item Wybieramy wierzchołek o największym stopniu, jako wierzchołek startowy. Ustawiamy mu wartość 2, a następnie dodajemy go do zbioru wierzchołków chronionych, usuwając go z niechronionych. Analogicznie postepujemy z sąsiadami tego wierzchołka, tj. usuwamy ich ze zbioru wierzchołków niechronionych, dodając do chronionych. 
+        \item Nastepnie, dopóki istnieją wierzchołki w zbiorze wierzchołków niechronionych:
+        \begin{itemize}
+            \item Iterujemy po zbiorze wierzchołków chronionych, wyznaczając ich sąsiadów. Jeśli znajdzie się wierzchołek niechroniony, dodajemy go do zbioru wierzchołków ,,kandydujących".
+            \item Jeśli zbiór ,,kandydatów" jest pusty, to wybieramy pierwszy wierzchołek ze zbioru wierzchołków niechronionych, ustawiamy mu wartość 2 i dodajemy go do zbioru wierzchołków chronionych, usuwając go z niechronionych.
+            \item W przypadku znalezienia ,,kandydatów", wybieramy wierzchołek, który zabezpieczy jak najwięcej wierzchołków jeszcze niechronionych.
+            \item Następnie sprawdzamy, czy będą istnieć nowo-ochronieni sąsiedzi. Jeśli nie, to nie ma potrzeby ustawiać temu wierzchołkowi wartości 2, ustawiamy mu wartość 1. Jeśli istnieją tacy sasiedzi, to ustawiamy wierzchołkowi wartość 2. 
+        \end{itemize}
+    \end{enumerate}
+    
+    \subsection{Złożoność i wydajność}
+
+    Załóżmy, że $n = |V|$ to liczba wierzchołków grafu $G$ oraz $m = |E|$ to liczba krawędzi grafu $G$. 
+    Inicjacja wszystkich zmiennych wykonuje się w czasie liniowym. Iteracyjna ochrona wszystkich wierzchołków w najgorszym przypadku może wynieść $O(n)$, bo każda iteracja zabezpiecza przynajmniej jeden wierzchołek. Dodatkowo iterujemy przez niezabezpieczone jeszcze wierzchołki w maksymalnie $O(n)$ oraz ich sąsiadów, czyli w najgorszym wypadku po wszystkich krawędziach grafu - $O(m)$. Dodatkowe aktualizacje w głównej pętli wykonują się w czasie maksymalnie liniowym. Dlatego ostatecznie złożoność obliczeniowa wynosi $O(n(m+n))$. Zakładając, że dla grafów rzadkich $m=O(n)$, a dla grafów gęstych $m=O(n^2)$ to złożoność czasowa wynosi odpowiednio $O(n^2)$ oraz $O(n^3)$.\\
+    Złożoność pamięciowa obejmuje struktury danych przechowujące wierzchołki grafu wejściowego, dlatego wynosi ona $O(n)$.\\
+    Algorytm nie jest dokładny, natomiast w stosunku do innych proponowanych algorytmów, charakteryzuje się wielomianową złożonością obliczeniową.
+    
+    \subsection{Pseudokod}
+
+    \begin{algorithm}
+    \caption*{Algorytm zachłanny}
+    \begin{algorithmic}[1]
+        \Function{Execute}{$G$}
+        \State $f[v] \gets 0$ for all $v \in$ nodes of $G$
+        \State $secured\_nodes \gets \emptyset$
+        \State $uncovered\_nodes \gets$ set of all nodes in $G$
+
+        \State $start\_node \gets$ node with maximum degree
+        \State $f[start\_node] \gets 2$
+        \State Add $start\_node$ to $secured\_nodes$
+        \State Remove $start\_node$ from $uncovered\_nodes$
+        
+        \ForAll{neighbors $neighbor$ of $start\_node$}
+            \State Add $neighbor$ to $secured\_nodes$
+            \State Remove $neighbor$ from $uncovered\_nodes$
+        \EndFor
+
+        \While{$uncovered\_nodes$ is not empty}
+            \State $candidate\_nodes \gets \emptyset$
+            \ForAll{$v \in secured\_nodes$}
+                \ForAll{neighbors $neighbor$ of $v$}
+                    \If{$neighbor \in uncovered\_nodes$}
+                        \State Add $neighbor$ to $candidate\_nodes$
+                    \EndIf
+                \EndFor
+            \EndFor
+
+            \If{$candidate\_nodes$ is empty}
+                \State Pick any $node$ from $uncovered\_nodes$
+                \State $f[node] \gets 2$
+                \State Add $node$ to $secured\_nodes$
+                \ForAll{neighbors $neighbor$ of $node$}
+                    \State Add $neighbor$ to $secured\_nodes$
+                    \State Remove $neighbor$ from $uncovered\_nodes$
+                \EndFor
+                \State \textbf{continue}
+            \EndIf
+
+            \State $node \gets$ node in $candidate\_nodes$ covering the most uncovered neighbors
+            \State $new\_covered\_neighbors \gets$ number of uncovered neighbors of $node$
+
+            \If{$new\_covered\_neighbors > 0$}
+                \State $f[node] \gets 2$
+            \Else
+                \State $f[node] \gets 1$
+            \EndIf
+
+            \State Add $node$ to $secured\_nodes$
+            \State Remove $node$ from $uncovered\_nodes$
+            \ForAll{neighbors $neighbor$ of $node$}
+                \State Add $neighbor$ to $secured\_nodes$
+                \State Remove $neighbor$ from $uncovered\_nodes$
+            \EndFor
+        \EndWhile
+
+        \State $min\_roman\_domiantion\_number \gets \sum_{v} f[v]$
+        \State \Return $(min\_roman\_domiantion\_number, f)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}

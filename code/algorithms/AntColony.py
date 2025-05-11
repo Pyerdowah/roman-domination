@@ -3,7 +3,7 @@ import networkx as nx
 from .Algorithm import AlgorithmBase
 
 class AntColony(AlgorithmBase):
-    def __init__(self, num_ants=100, num_iterations=500, evaporation_rate=0.5, pheromone_init=1.0, alpha=2, beta=10):
+    def __init__(self, num_ants=150, num_iterations=100, evaporation_rate=0.5, pheromone_init=1.0, alpha=3, beta=20):
         self.num_ants = num_ants  # Liczba mrówek
         self.num_iterations = num_iterations  # Liczba iteracji
         self.evaporation_rate = evaporation_rate  # Współczynnik parowania feromonów

@@ -6,17 +6,17 @@ class BruteForce(AlgorithmBase):
     def is_valid_roman_dominating_set(self, graph, node_values):
         for node in graph.nodes:
             if node_values[node] == 0:
-                if not any(node_values[neighbor] == 2 for neighbor in graph.neighbors(node)):
+                if not any(node_values[neighbor] >= 2 for neighbor in graph.neighbors(node)):
                     return False
 
-        induced_set = set(node for node in graph.nodes if node_values[node] in {1, 2})
+        induced_set = set(node for node in graph.nodes if node_values[node] in {1, 2, 3})
 
         for node in list(induced_set):
             induced_set.update(graph.neighbors(node))
 
         induced_graph = nx.Graph()
         for node in induced_set:
-            if node_values[node] in {1, 2}:
+            if node_values[node] in {1, 2, 3}:
                 for neighbor in graph.neighbors(node):
                     if neighbor in induced_set:
                         induced_graph.add_edge(node, neighbor)
