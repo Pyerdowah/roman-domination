@@ -1,7 +1,7 @@
 \chapter{Badane algorytmy}
 
 \section{Wprowadzenie}
-Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabospójnego. Analizowane one będą pod kątem złożoności, wydajności, poprawności oraz potencjalnego zastosowania. Wszystkie algorytmy wyznaczają dodatkowo zbiór dominowania rzymskiego słabospójnego. Lista analizowanych algorytmów jest następująca:
+Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabo spójnego. Analizowane one będą pod kątem złożoności, wydajności, poprawności oraz potencjalnego zastosowania. Wszystkie algorytmy wyznaczają dodatkowo zbiór dominowania rzymskiego słabo spójnego. Lista analizowanych algorytmów jest następująca:
 
 \begin{itemize}
     \item algorytm brute force
@@ -16,7 +16,7 @@ Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabos
 \section{Algorytm Brute Force}
 
 \subsection{Działanie}
-Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabospójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabo spójności w następujący sposób:
+Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego funkcję oraz zbiór dominujący rzymski słabo spójny poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabo spójności w następujący sposób:
 \begin{itemize}
     \item wyznaczamy zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
     \item sprawdzamy czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2,
@@ -29,7 +29,7 @@ Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego
 Algorytm ma złożoność wykładniczą, zatem nie będzie wykonywalny w rozsądnym czasie dla większych grafów.
 \begin{itemize}
     \item generowanie wszystkich kombinacji możliwych przypisań: $3^n$, gdzie $n$ to liczba wierzchołków grafu,
-    \item sprawdzanie własności zbioru słabospójnego dla każdego przypisania: $n^2$
+    \item sprawdzanie własności zbioru słabo spójnego dla każdego przypisania: $n^2$
 \end{itemize}
 
 Zatem złożoność czasowa algorytmu wynosi $O(3^n \cdot n^2)$\\
@@ -92,7 +92,7 @@ Złożoność pamięciowa ogranicza się do przechowywania grafu w pamięci i wy
 
 Dla każdego wierzchołka definiujemy następujące parametry:
 \begin{itemize}
-    \item $v['R']$ - wartość funkcji dominowania rzymskiego słabospójnego w wierzchołku $v$, z założeniem, że $v['R']\in\{0,1,2\}$
+    \item $v['R']$ - wartość funkcji dominowania rzymskiego słabo spójnego w wierzchołku $v$, z założeniem, że $v['R']\in\{0,1,2\}$
     \item $v['n00']$ - oznacza liczbę dzieci z $R=0$ oraz bez sąsiada z $R=2$ (dziecko niezdominowane)
     \item $v['n01']$ - oznacza liczbę dzieci z $R=0$ i z sąsiadem z $R=2$ (dziecko zdominowane)
     \item $v['n1']$ - oznacza liczbę dzieci wierzchołka $v$ z $R = 1$
@@ -102,7 +102,7 @@ Dla każdego wierzchołka definiujemy następujące parametry:
     \item $v['child']$ - jeśli $v$ jest wierzchołkiem wspierającym, wtedy wartość ta jest numerem liścia sąsiadującego z $v$.
 \end{itemize}
 
-Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie poczatkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabospójnego, a suma tych wartości to funkcja dominowania rzymskiego słabospójnego.
+Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie poczatkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabo spójnego, a suma tych wartości to funkcja dominowania rzymskiego słabo spójnego.
 \\
 Z racji sporego stopnia skomplikowania algorytmu, jego działanie zostanie przedstawione na przykładzie.
 Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne i niezłożone czasowo, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
@@ -452,7 +452,7 @@ $u_i$ reprezentuje liczbę jednostek przepływu zewnętrznego dla danego wierzch
 $v_e$ oznacza jednostki przepływające przez dane krawędzie.\\
 $x_i, y_i$ oznaczają przynależność do zbioru dominującego rzymskiego słabo spójnego.
 
-Minimalizującą liczbę dominowania rzymskiego słabospójnego jako funkcję celu definiujemy następująco:
+Minimalizującą liczbę dominowania rzymskiego słabo spójnego jako funkcję celu definiujemy następująco:
 
 \[
 \text{Z: } \min \left( \sum_{i \in V} x_i + \sum_{i \in V} y_i \right),
