@@ -80,13 +80,21 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
 
 \section{Wyniki działania algorytmów}
 
+Wybrane wyniki działania algorytmów zostały przedstawione w tabelach. Wyniki podzielono na sekcje względem liczby wierzchołków oraz posortowano według rosnącego czasu działania w obrębie każdej z sekcji.  Algorytmy ILP, ILP2, BruteForce oraz TreeLinear dla drzew są w tych przypadkach algorytmami optymalnie wyznaczającymi wartość $\gamma^{\text{wc}}_R(G)$ i to one stanowią wartość odniesienia się do dokładności pozostałych algorytmów.\\
+
+Dodatkowo zostaną zaprezentowane wykresy przedstawiające średni czas działania każdego z algorytmów w stosunku do liczby wierzchołków w skali logarytmicznej. Mierzone punkty zostały połączone liniami w celu lepszej wizualizacji i odzwierciedlenia tendencji wzrostu.\\
+
+Następnie przedstawiono grafiki ukazujące rozkłady WCRDF dokonane przez algorytmy dla przykładowego, 20-wierzchołkowego grafu analizowanej klasy, gdzie wartości 0 to żółte wierzchołki, 1 - niebieskie, a 2 to czerwone.
+
 \subsection{Grafy rzadkie}
+
+Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż maksymalna możliwa, czyli $|E| \ll \frac{n(n - 1)}{2}$ oraz wierzchołki o niskim stopniu. Z racji mniejszej liczby krawędzi algorytmy programowania liniowego mogą sobie dobrze radzić, ze względu na mniejszą liczbę ograniczeń i zmiennych. Ze względu na nieregularną strukturę i komponenty o różnym stopniu połączenia, algorytmy deterministyczne mogą znaczaco odbiegać od optymalnego wyniku.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Algorytm & Liczba wierzchołków & Liczba krawędzi & WCRDF & Średni czas (s) \\
+    Algorytm & Liczba wierzchołków & Liczba krawędzi & $\gamma^{\text{wc}}_R(G)$ & Średni czas (s) \\
     \hline
     Greedy	   & 10 &	15 &	5	 &   0,0000253	\\		
     ILP	       & 10 &	15 &	5	  &   0,03225824 \\
@@ -123,6 +131,20 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
     \caption{Wyniki dla grafów rzadkich}
     \end{table}
 
+    Analizując powyższe wyniki można zauważyć, że algorytm zachłanny Greedy działa bardzo dobrze dla rzadkich grafów. Charakteryzuje się bardzo szybkim czasem działania, a jakość rozwiązania jest bliska optymalnej.\\
+    Algorytm mrówkowy wraz ze wzrostem liczby wierzchołków zaczyna dawać coraz gorsze wyniki, mimo wyboru dobrego dla tej klasy zestawu parametrów. Warto zaznaczyć również, że jest jednym z wolniej działających algorytmów.\\
+    Wynik dla algorytmu BruteForce można zaobserwować wyłącznie dla 10 wierzchołków. Dzieje się tak, ponieważ zgodnie z pierwotnymi założeniami, już dla kilkunastu wierzchołków w dowolnym grafie, algorytm ten przestał zwracać wyniki w rozsądnym czasie.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{assets/sparse.png}
+        \caption{Porównanie średniego czasu działania algorytmów na grafach rzadkich w stosunku do liczby wierzchołków w grafie.}
+        \label{fig:sparsePlot}
+    \end{figure}
+
+    W tym przypadku znacznie odznacza się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytmy ILP i ILP2 dają optymalny wynik, w rozsądnym czasie działania.\\
+    Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm bedzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów. Pozostałe algorytmy notują znaczny skok w czasie działania, zwłaszcza dla większej liczby wierzchołków.
+
     \begin{figure}[htbp]
         \centering
         \begin{subcaptionbox}*{}[0.48\linewidth]
@@ -149,20 +171,15 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
         \label{fig:sparse}
     \end{figure}
 
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=\textwidth]{assets/sparse.png}
-        \caption{Porównanie średniego czasu działania algorytmów na grafach rzadkich w stosunku do liczby wierzchołków w grafie.}
-        \label{fig:sparsePlot}
-    \end{figure}
-
 \subsection{Grafy gęste}
+
+Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| \ll \frac{n(n - 1)}{2}$. Wierzchołki mają duze stopnie i dominacja jednego wierzchołka pokrywa znaczną część grafu. Dlatego algorytmy przybliżone powinny łatwo i szybko znajdować dobre rozwiązania. Z racji dużej liczby zmiennych i ograniczeń algorytmy ILP/ILP2 powinny charakteryzowac się dłuższym czasem działania.
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Algorytm & Liczba wierzchołków & Liczba krawędzi & WCRDF & Średni czas (s) \\
+    Algorytm & Liczba wierzchołków & Liczba krawędzi & $\gamma^{\text{wc}}_R(G)$ & Średni czas (s) \\
     \hline
     Greedy & 10 & 31 & 2 & 0,00001534 \\
     ILP & 10 & 31 & 2 & 0,04773922 \\
@@ -200,12 +217,21 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
     \caption{Wyniki dla grafów gęstych}
     \end{table}
 
+    Algorytmy BruteForce, ILP, ILP2, Approx oraz Greedy wyznaczają optymalne, bądź bliskie optimum wartości $\gamma^{\text{wc}}_R(G)$. Algorytm mrówkowy wraz ze wzrostem liczby wierzchołków w grafie, jakość rozwiązania wypada coraz gorzej. Dla 50 wierzchołków jest to nawet 8-krotnie gorszy wynik od optymalnego. Algorytm Approx w większości przypadków wyznaczał dla grafów gęstych optymalne wyniki. Może mieć to związek z korzystną dla tego algorytmu struktura grafu, gdzie wierzchołki zbioru dominującego są zwykle swoimi sąsiadami, a wybór jednego wierzchołka daje korzystną ochronę wielu sąsiadów.
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=\textwidth]{assets/dense.png}
         \caption{Porównanie średniego czasu działania algorytmów na grafach gęstych w stosunku do liczby wierzchołków w grafie.}
         \label{fig:densePlot}
     \end{figure}
+
+    W tym przypadku znacznie odznacza się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytm Approx jest również efektywny czasowo, mimo, że do jego konstrukcji użyto programowania liniowego. Najprawdopodobniej powodem takiego wyniku jest korzystna struktura grafu dla tego algorytmu.\\
+    Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm bedzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów.\\
+    Algorytmy ILP i ILP2 notują mocny skok czasowy dla $n \geq 40 $. Jest on wyraźniejszy i większy niż dla grafów rzadkich, co jest spodziewanym zachowaniem, z racji większej liczby krawędzi do przeanalizowania.
+    Algorytm mrówkowy w stosunku do pozostałych jest dosyć stabilny czasowo, jednakże jego jakość jest mierna.\\
+    
+    Gęste grafy posiadają dużo krawędzi, więc posiadają one wiele możliwości pokrycia dominującego. Algorytmy Approx i Greedy wykorzystują ochronę wielu wierzchołków z jednego wybranego, dlatego w tym przypadku wypadają one bardzo korzystnie czasowo i jakościowo. Ze względu na wzrost krawędzi, cierpia na tym algorytmy dokładne, ILP i ILP2. Heurystyka algorytmu mrówkowego jest nieefektywna dla tej klasy grafu.
 
     \begin{figure}[htbp]
         \centering
@@ -235,11 +261,13 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
 
 \subsection{Drzewa}
 
+Drzewa to grafy acykliczne, posiadające n-1 krawędzi dla n wierzchołków. Są to graf bardzo rzadkie, przez co posiadają rozproszoną strukturę dominacji. Dlatego algorytmy deterministyczne i przyblizone, które nie są specjalnie dostosowane pod drzewa, mogą osiągać niezadowalające wyniki. Dla takiej uporządkowanej struktury za to można znaleźć efektywny algorytm specjalny tylko dla tej klasy grafu.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Algorytm & Liczba wierzchołków & Liczba krawędzi & WCRDF & Średni czas (s) \\
+    Algorytm & Liczba wierzchołków & Liczba krawędzi & $\gamma^{\text{wc}}_R(G)$ & Średni czas (s) \\
     \hline
     Greedy & 10 & 9 & 8 & 0,00005232 \\
     TreeLinear & 10 & 9 & 7 & 0,00051616 \\
@@ -281,12 +309,16 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
     \caption{Wyniki dla drzew}
     \end{table}
 
+    W tym przypadku algorytmy dokładnie wyznaczające $\gamma^{\text{wc}}_R(G)$ poradziły sobie również w rozsądnym czasie. Wynika to z bardzo rzadkiej struktury grafu. W pozostałych przypadkach, wraz ze wzrostem liczby wierzchołków wyniki osiągane przez algorytmy przybliżone były coraz gorsze jakościowo, co wynika ze specyficznej struktury grafu, gdzie wybór wierzchołków zbioru dominującego słabospójnego jest nietypowy w stosunku do innych klas grafów. Godny odnotowania jest tutaj fakt, że akurat w tym przypadku algorytm mrówkowy poradził sobie lepiej niż Approx, ze względu na to, że Approx tworzy zbiór dominujący spójny z samymi wartościami 2, co dla drzew będzie wysoce nieoptymalne.
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=\textwidth]{assets/trees.png}
         \caption{Porównanie średniego czasu działania algorytmów na drzewach w stosunku do liczby wierzchołków w grafie.}
         \label{fig:treePlot}
     \end{figure}
+
+    Algorytm liniowy dla drzew daje w tym zestawieniu najlepszy stosunek czasu działania do jakości. Nie dość, że daje optymalny wynik, to dodatkowo w szybkim czasie. Algorytm jest skalowalny. Algorytmy ILP/ILP2 z powodu rzadkiej struktury grafu również wykonują się w rozsądnym czasie. Zachłanny wykonuje się bardzo szybko, ale daje niekorzystne wyniki. TreeLinear jest tylko trochę wolniejszy, ale za to daje optymalny wynik. Algorytmy Approx oraz AntColony działają na tyle wolno i nieoptymalnie, że można stwierdzić, że nie nadają się dla drzew. Najlepszym wyborem dla tej klasy grafów jest algorytm liniowy dla drzew.
 
     \begin{figure}[htbp]
         \centering
@@ -321,11 +353,13 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
 
 \subsection{Grafy bezskalowe}
 
+Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykład w biologii, sieciach WWW i społecznościowych i są analizowane ze względu na potencjalne zastosowania praktyczne problemu WRCDF. Grafy te charakteryzują się wieloma wierzchołkami o małym stopniu i kilkoma wierzchołkami o dużym stopniu. Są to huby. Rozkład stopni wierzchołków w grafach tego typu jest potęgowy. Graf ten nie jest typowo gęsty - przeważają wierzchołki o niskim stopniu. Dlatego korzystne wyniki powinny osiągać algorytmy oparte na programowaniu liniowym.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
     \hline
-    Algorytm & Liczba wierzchołków & Liczba krawędzi & WCRDF & Średni czas (s) \\
+    Algorytm & Liczba wierzchołków & Liczba krawędzi & $\gamma^{\text{wc}}_R(G)$ & Średni czas (s) \\
     \hline
     Greedy & 10 & 25 & 2 & 0,00001166 \\
     ILP & 10 & 25 & 2 & 0,04384846 \\
@@ -363,12 +397,16 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
     \caption{Wyniki dla grafów bezskalowych}
     \end{table}
 
+    Algorytmy ILP/ILP2/approx zadowalająco pokrywają huby i w rozsądnym czasie, co w strukturze tego grafu jest bardzo ważne. Algorytm zachłanny i mrówkowy wraz ze wzrostem wierzchołków osiągają coraz gorsze wyniki, ale jak na prostotę i szybkość algorytmu zachłannego, różnica w rozwiązaniu jest akceptowalna. Algorytm mrówkowy nie dość, że za każdym razem działa najwolniej ze wszystkich propozycji, to daje najgorsze wyniki. Po raz kolejny wskazuje to na brak doboru odpowiedniej heurystyki do tego problemu. Oczywiście algorytm BruteForce daje poprawny wynik, aczkolwiek jest on zupełnie nieskalowalny na większą liczbę wierzchołków.
+
     \begin{figure}[H]
         \centering
         \includegraphics[width=\textwidth]{assets/scaleFree.png}
         \caption{Porównanie średniego czasu działania algorytmów na grafach bezskalowych w stosunku do liczby wierzchołków w grafie.}
         \label{fig:scaleFreePlot}
     \end{figure}
+
+    Algorytmy Approx i Greedy są czasowo najefektywniejsze, niestety dając przy tym nienajgorsze przybliżenia. Należy pamiętać, że Approx został zaimplementowany na podstawie programowania liniowego, więc wraz ze wzrostem liczby wierzchołków może zacząć działać bardzo długo. Algorytmy dokładne ILP/ILP2 działają w podobnej ramie czasowej co Approx. Algorytm mrówkowy jest przynajmniej 10 razy wolniejszy od innych algorytmów, co czyni go bardzo nieefektywnym.
 
     \begin{figure}[htbp]
         \centering
