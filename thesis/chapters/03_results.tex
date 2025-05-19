@@ -445,6 +445,11 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \label{fig:antsPlot}
 \end{figure}
 
+Wraz ze wzrostem liczby wierzchołków można zaobserwować coraz większą rozbieżność od wyniku optymalnego. Dla mniejszych grafów prościej trafić na rozwiązanie optymalne, niż eksplorowanie całej przestrzeni rozwiązań w większych grafach.\\
+Największą rozbieżność można zaobserwować dla grafów gęstych, gdzie błąd względy osiąga nawet 600\%. Wynika to z tego, że w grafach gęstych jest dużo wierzchołków o wysokich stopniach, więc heurystyka oparta na stopniach wierzchołków nie jest w stanie wyróżnić wierzchołków najbardziej nadających się do zbioru dominującego.\\
+W odróżnieniu do grafów gęstych, algorytm osiągał zadowalające wyniki dla drzew. Wynika to z tego, że drzewa są grafami rzadkimi i nie ma tam wielu połączeń wierzchołkowych do analizy. W odróżnieniu do innych klas grafów, struktura drzew sprzyja lokalnym decyzjom dotyczącym dominacji, dlatego też algorytm mrówkowy radzi sobie nienajgorzej, chociaż wciąż mocno odbiega od optymalnego wyniku.\\
+Pośrednie wyniki osiągają grafy rzadkie i bezskalowe.
+
 \subsection{Algorytm zachłanny}
 
 \begin{figure}[H]
@@ -453,6 +458,11 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \caption{Zależność błędu względnego algorytmu zachłannego od liczby wierzchołków.}
     \label{fig:greedyPlot}
 \end{figure}
+
+Algorytm zachłanny charakteryzuje się ogólnie niskim względnym na tle innych prezentowanych algorytmów. Godny odnotowania jest fakt, że wraz ze wzrostem liczby wierzchołków w grafach, algorytm nie traci znacznie na jakości, zatem jest pod tym względem skalowalny.\\
+Największy błąd względny algorytm osiąga dla grafów rzadkich i bezskalowych. Prawdopodobnym powodem tego są nieregularne struktury tych grafów i konieczność nieoczywistych decyzji odnośnie wyboru wierzchołka należącego do zbioru dominującego słabo spójnego.\\
+Algorytm zachłanny wyjątkowo dobrze radzi sobie z grafami gęstymi. Wynika to z tego, że promowane są wierzchołki, które pokrywają jak najwięcej sąsiadów. Dla grafów gęstych strategia ta jest bardzo korzystna i sprawia, że algorytm jest w stanie osiągnąć wynik optymalny, bądź bardzo bliski optymalnemu.\\
+Z racji tego, że algorytm zachłanny tworzy dominację bardziej lokalnie, od wierzchołka o największym stopniu, bez zwrócenia uwagi na całą strukturę grafu, to w zależności od konretnego przypadku testowego drzewa, wyniki mogą być bardzo dobre, bądź wysoce nieoptymalne. 
 
 \subsection{Algorytm aproksymacyjny}
 
@@ -463,12 +473,20 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \label{fig:approxPlot}
 \end{figure}
 
+Dla grafów gęstych algorytm Approx osiąga bardzo dobre wyniki, w wielu przypadkach optymalne, ze względu na dużą możliwość dominacji. Algorytm w sposób dokładny wyznacza spójny zbiór dominujący, dla grafów gęstych takie sposób wyznaczania WCRDF okazuje się być w wielu przypadkach wystarczający.\\
+Z kolei dla drzew jest to bardzo zła strategia. Algorytm przez to, że wyznacza CDS i przypisuje wszystkim wierzchołkom CDS wartości 2, sprawia, że istnieje bardzo dużo nadmiernych przypisań, przez co dla drzew algorytm potrafi osiągnąć nawet ponad 100\% błędu względnego.\\
+Algorytm aproksymacyjny radzi sobie dobrze z grafami rzadkimi i bezskalowymi, z błędem względnym na poziomie 20-40\%. Wyznacza on prawidłowo CDS i dla tych klas grafów najwyraźniej wystarcza to dla osiągnięcia niskiego poziomu błędu względnego.\\
+
+Wykres przedstawia porównanie rzeczywistego współczynnika aproksymacji algorytmu Approx z jego teoretyczną granicą ustaloną w artykule \cite{ILP} wynoszącą $2(1+\epsilon)(1 + \ln(\Delta - 1))$ w zależności od maksymalnego stopnia w grafie.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{assets/plots_approx/image.png}
     \caption{Porównanie algorytmu aproksymacyjnego z granicą teoretyczną $2(1+\epsilon)(1 + \ln(\Delta - 1))$.}
     \label{fig:approxPlot}
 \end{figure}
+
+Można zauważyć, że wszystkie wygenerowane przypadki testowe mieszczą się w granicy teoretycznej. Granica teoretyczna znajduje się daleko od wygenerowanych przykładowych grafów. Zatem w praktyce algorytm radzi sobie znacznie lepiej niż granica teoretyczna zakłada. Prawdopodobnie istnieją przypadki znajdujące się blisko tej granicy, ale taki przypadek nie został odnaleziony w procesie testowania. Dlatego można potwierdzić fakt, że algorytm jest zgodny z współczynnikiem aproksymacji i nie przekracza przewidzianego maksimum, a przynajmniej nie znaleziono przypadku, żeby tak nie było. Można też zauważyć, że wraz ze wzrostem maksymalnego stopnia wierzchołka w testowym grafie, współczynnik aproksymacyjny algorytmu jest coraz niższy. Można z tego wywnioskować fakt, że algorytm jest w stanie dobrze wykorzystać obecność wierzchołków o wysokim stopniu, gdyż bardzo często są one częścią zbioru dominującego.
 
 \subsection{Porównanie algorytmów przybliżonych}
 
@@ -478,4 +496,8 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \caption{Algorytmy przybliżone: czas działania w stosunku do błędu względnego.}
     \label{fig:approxPlot}
 \end{figure}
+
+W ujęciu porównawczym wszystkich algorytmów nieoptymalnie wyznaczających $\gamma^{\text{wc}}_R(G)$, algorytm zachłanny prezentuje najlepszy stosunek czasu działania do jakości rozwiązania. Jego rozwiązanie, dla wygenerowanych przepadków testowych można otrzymać w przedziale $10^{-5} do 10^{-3}$, a błąd względny utrzymuje się na poziomie 0\%-50\%.\\
+Algorytm approx prezentuje czas działania względem kilku sekund, potrafi znaleźć więcej lepszych rozwiązań niż Greedy, o czym świadczy większe zagęszczenie niebieskich punktów na poziomie ,,0" niż w przypadku Greedy. Jednak czasem, zwłaszcza dla drzew, algorytm ten daje nieoptymalne wyniki.\\
+Algorytm mrówkowy, w porównaniu z resztą radzi sobie najgorzej. Czas działania jest najdłuższy, bo rzędu od kilku do kilkudziesięciu sekund, dając przy tym znacznie gorsze wyniki, z największymi błędami względnymi. Świadczy to o tym, że w obecnej konfiguracji i dobranej heurystyce, algorytm mrówkowy nie radzi sobie z tym problemem.
 
