@@ -960,7 +960,7 @@ Udowodniono, że takie rozwiązanie jest aproksymacyjne, o współczynniku aprok
 $2(1+\epsilon)(1 + \ln(\Delta - 1))$. Aby móc przetestować w pełni działanie algorytmu, zaimplementowano go w całości, na podstawie sugestii obecnych w artykule:
 
 \begin{enumerate}
-    \item Wyznaczenie minimalnego zbioru dominującego spełniającego spójnego. Problem ten również jest NP-trudny, dlatego zbiór ten wyznaczono przy użyciu programowania liniowego, w celu zachowania poprawności rozwiązania oraz - dla wielu przypadków - w rozsądnym czasie.\\ 
+    \item Wyznaczenie minimalnego zbioru dominującego spójnego. Problem ten również jest NP-trudny, dlatego zbiór ten wyznaczono przy użyciu programowania liniowego, w celu zachowania poprawności rozwiązania oraz - dla wielu przypadków - w rozsądnym czasie. Ten fragment algorytmu zaimplementowano również na podstawie literatury\cite{CDS}.\\ 
     Niech \( G = (V, E) \) będzie grafem nieskierowanym, gdzie:\\
         - \( V \) — zbiór wierzchołków,\\
         - \( E \subseteq V \times V \) — zbiór krawędzi.\\

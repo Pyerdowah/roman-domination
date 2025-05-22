@@ -12,9 +12,9 @@ Celem badawczym pracy było opisanie istniejących i opracowanie własnych algor
     \item dokonać anlizy pod kątem praktycznego zastosowania rozwiązania tego problemu.
 \end{itemize}
 
-\textbf{W pracy przetestowano sześć algorytmów:}
+\textbf{W pracy przetestowano siedem algorytmów:}
 \begin{itemize}
-    \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: BruteForce, ILP i ILP2,
+    \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: BruteForce, ILP i ILP2 oraz liniowy dla drzew,
     \item algorytmy przybliżone: Greedy, Approx i AntColony.
 \end{itemize}
 
@@ -23,6 +23,7 @@ Eksperymenty przeprowadzono na grafach gęstych, rzadkich, drzewach oraz bezskal
 \begin{itemize}
     \item Algorytm BruteForce, chociaż prezentuje dokładne, minimalne rozwiązanie problemu, jest najgorzej skalowalny. Już dla kilkunastu wierzchołków grafu, czas działania robi się nierozsądnie długi.
     \item Algorytmy ILP i ILP2 zapewniają najlepsze jakościowo rozwiązania, lecz ich czas działania rośnie znacząco wraz z rozmiarem badanego grafu, co wynika ze złożoności obliczeniowej.
+    \item ALgorytm liniowy dla drzew znajduje optymalne rozwiązanie w szybkim czasie i jest skalowalny dla większych instancji. Niestety jego prawidłowe działanie ograniczone jest do jednej klasy grafów.
     \item Algorytm Greedy wyróżnia się ekstremalnie niskim czasem działania oraz zaskakująco dobrą jakością rozwiązań w wielu klasach grafów. Jako jedyny spośród prezentowanych algorytmów jest skalowalny do większych grafów.
     \item Approx zapewnia stabilne i poprawne rozwiązania, z niskim błędem względnym, jednak znacząco pogarsza się dla drzew i struktur bardzo rzadkich. Ponadto udało się zweryfikować, że dla testowanych przykładów grafów udało się pokazać, że wyniki są zgodne z prezentowanym w literaturze współczynnikiem aproksymacji.
     \item AntColony prezentuje najgorszy spośród wszystkich algorytmów czas działania oraz jakość rozwiązania.
@@ -45,5 +46,6 @@ Ponadto wykazano, że wyniki algorytmów różnią się w zależności od klasy 
 \begin{itemize}
     \item Rozszerzenie testów na inne klasy, jak i na inne wielkości grafów.
     \item Podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej oraz badania w celu znalezienia jak najlepszej heurystyki.
+    \item Próba opracowania algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów.
     \item Weryfikacja i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
 \end{itemize}
