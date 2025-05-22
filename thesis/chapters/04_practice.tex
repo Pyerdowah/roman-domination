@@ -10,31 +10,38 @@ W rozdziale przeprowadzono analizę potencjalnych zastosowań:
     \item rozmieszczenie agentów wykrywających oszustwa w internetowej sieci
     społecznościowej.
 \end{itemize}
-Warto zaznaczyć, że oba zastosowania są potencjalne i teoretyczne, nie została przeprowadzona analiza dotycząca faktyczngo działania wykorzystywanych systemów.\\
-Do analizy zostały wykorzystane prawdziwe lub uproszczone grafy występujące w rzeczywistości. Następnie grafy te poddano działaniom wybranych algorytmów, tam gdzie było to możliwe. Dodatkowo dokonano analizy jakościowej i czasowej tych algorytmów, w kontekście analizowanego zastosowania.
+Warto zaznaczyć, że oba zastosowania są potencjalne i teoretyczne, nie została przeprowadzona analiza dotycząca faktycznego działania wykorzystywanych systemów.\\
+Do analizy zostały wykorzystane prawdziwe lub uproszczone grafy występujące w rzeczywistości. Następnie grafy te poddano działaniom wybranych algorytmów, tam gdzie było to możliwe. Dodatkowo dokonano analizy jakościowej i czasowej tych algorytmów, w kontekście prezentowanego zastosowania.
 
 \section{Rozmieszczenie zabezpieczeń sieci energetycznych}
 
 Inspiracją tego zastosowania był blackout na półwyspie Iberyjskim pod koniec kwietnia 2025 roku\cite{BLACKOUT}, w którym w wyniku awarii początkowo jednej podstacji, doszło do wyłączenia prądu w kilku krajach. \\
-Dlatego propozycją zapobiegania takim problemom może być próba rozmieszczenia systemów alternatywnych lub zabezpieczających takich, które mogą ochronić albo przejąć obciążenie wadliwej stacji energetycznej, aby zapobiec większej awarii. Dominowanie rzymskie słabo spójne będzie miało tutaj zastosowanie ze względu na chęć utrzymania komunikacji między stacjami energetycznymi. Naturalnie, takie systemy wiążą się z niemałymi kosztami, a więc warto, aby było ich jak najmniej. Zatem zastosowanie algorytmów rozwiązujących problem minimalnej WCRDF wydaje się odpowiednie, przynajmniej w ujęciu teoretycznym.\\
-W tym przypadku jako graf można przyjąć stacje energetyczne i transformatory, natomiast jako krawędzie można przyjąć sieci energetyczne, czyli połączenia między stacjami i transforamtorami.\\
-W celu próby realizacji tego pomysłu zbudowano graf połączeń sieci i stacji energetycznych najwyższych napięć w Polsce\cite{POLAND}. W praktyce sieć jest bardziej rozbudowana, jednakże tutaj skupiono się na najwyższym napięciu 400kV. Jej graf przedstawiono na tle mapy Polski. Z powierzchownej analizy tego grafu można zauważyć, że jest to graf bardzo rzadki, posiada wiele wierzchołków o niskim stopniu. Cechuje się brakiem hubów, nie ma wierzchołków o dużym stopniu.
-//TU DODAĆ ZDJECIE GRAFU POLSKI I PODAĆ LICZBE WIERZCHOŁKÓW I KRAWĘDZI.
+Dlatego propozycją zapobiegania takim problemom może być próba rozmieszczenia systemów alternatywnych lub zabezpieczających takich, które mogą ochronić albo przejąć obciążenie wadliwej stacji energetycznej, aby zapobiec większej awarii. Dominowanie rzymskie słabo spójne będzie miało tutaj zastosowanie ze względu na chęć utrzymania komunikacji między stacjami energetycznymi oraz braku chęci pozostawienia stacji bez ochrony. Naturalnie, takie systemy wiążą się z niemałymi kosztami, a więc warto, aby było ich jak najmniej. Zatem zastosowanie algorytmów rozwiązujących problem minimalnej WCRDF wydaje się odpowiednie, przynajmniej w ujęciu teoretycznym.\\
+W tym przypadku jako graf można przyjąć stacje energetyczne i transformatory, natomiast jako krawędzie można przyjąć sieci energetyczne, czyli połączenia między stacjami i transformatorami.\\
+W celu próby realizacji tego pomysłu odtworzono graf połączeń sieci i stacji energetycznych najwyższych napięć w Polsce, na podstawie istniejącego już schematu\cite{POLAND}. W praktyce sieć jest bardziej rozbudowana, jednakże tutaj skupiono się na najwyższym napięciu 400kV. Jej graf przedstawiono na tle mapy Polski. Z powierzchownej analizy tego grafu można zauważyć, że jest to graf bardzo rzadki, posiada wiele wierzchołków o niskim stopniu. Cechuje się brakiem hubów, nie ma wierzchołków o dużym stopniu. Posiada on 55 wierzchołków i 77 krawędzi. Wykres tego grafu jest przedstawiony na grafice poniżej.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{assets/Poland/image.png}
+    \caption{Sieć przesyłowa największych napięć na tle mapy Polski}
+    \label{fig:poland}
+\end{figure}
+
 Dla grafów bardzo rzadkich, na podstawie analizy z poprzedniego rozdziału można wysnuć hipotezę, że algorytmy programowania liniowego z racji niewielkiej liczby krawędzi będą dawały optymalne wyniki w rozsądnym czasie dla tej skali problemu. Algorytm zachłanny powinien prezentować dobry stosunek jakości do czasu działania. Jeśli chodzi o algorytm Approx, z racji rzadkiego grafu, może on prezentować gorszą jakość rozwiązania.\\
 
 Poniższe grafiki przedstawiają wyniki działania algorytmów ILP2, Greedy oraz Approx. Standardowo, żółte wierzchołki to 0, niebieskie to 1, a czerwone to 2.
 
 \begin{figure}[htbp]
     \centering
-    \begin{subcaptionbox}{ILP2\label{fig:img}}[0.48\linewidth]
+    \begin{subcaptionbox}{ILP2\label{fig:img}}[0.49\linewidth]
         {\includegraphics[width=\linewidth]{assets/Poland/img.png}}
     \end{subcaptionbox}
     \hfill
-    \begin{subcaptionbox}{Greedy\label{fig:img2}}[0.48\linewidth]
+    \begin{subcaptionbox}{Greedy\label{fig:img2}}[0.49\linewidth]
         {\includegraphics[width=\linewidth]{assets/Poland/img_2.png}}
     \end{subcaptionbox}
     \hfill
-    \begin{subcaptionbox}{Approx\label{fig:img1}}[0.48\linewidth]
+    \begin{subcaptionbox}{Approx\label{fig:img1}}[0.49\linewidth]
         {\includegraphics[width=\linewidth]{assets/Poland/img_1.png}}
     \end{subcaptionbox}
     \caption{Efekt działania algorytmów ILP, Greedy i Approx dla problemu rozmieszczenia zabezpieczeń sieci energetycznych.}
@@ -57,9 +64,14 @@ Algorytmowi ILP2 udało odnaleźć optymalne rozwiązanie w ciągu dwóch sekund
 
 To rozważanie pokazuje, że nawet dla nieco większych grafów rzadkich, obserwowanych w rzeczywistym życiu, można dokładnie rozwiązać problem $\gamma^{\text{wc}}_R(G)$, dzięki algorytmom programowania liniowego i nie ma konieczności stosowania algorytmów przybliżonych. Jednakże, warto podkreślić tutaj potencjał algorytmu zachłannego, który osiągnął nieznacznie gorszy wynik, a jest bez wątpienia najbardziej skalowalnym algorytmem ze wszystkich prezentowanych.
 
-\section{Rozmieszczenie agentów wykrywających oszustwa w internetowej sieci społecznościowej}
+\section{Rozmieszczenie agentów monitorujących oszustwa w internetowej sieci społecznościowej}
 
-\begin{figure}[htbp]
+Kolejnym z potencjalnych zastosowań może być próba optymalnego rozmieszczenia agentów monitorujących oszustwa w internetowej sieci społecznościowej. Grafem wejściowym będzie w tym przypadku sieć znajomych w wybranej sieci społecznościowej, gdzie wierzchołki to użytkownicy, a krawędzie to interakcje lub znajomości między nimi. W dobie wielu oszustw internetowych, wyłudzeń, kradzieży kont, dobrym pomysłem może być rozmieszczenie agentów monitorujących oraz reagujących na zajście jakiegoś przestępstwa internetowego. Wierzchołki z 2 mogą w tym przypadku monitorować siebie oraz sąsiedztwo, a wierzchołki z 1 wyłącznie siebie. Zachowanie komunikacji i reagowanie między sąsiadami jest tutaj bardzo ważne, dlatego widać tutaj zastosowanie słabo spójności. Dodatkowo, w razie ,,wypożyczenia'' agenta do innego wierzchołka, wierzchołek ,,wypożyczający'' wciąż pozostaje chroniony, a ochrona sąsiadów jest w tym przypadku kluczowa, bo znajomi znajdują się w obszarze podwyższonego ryzyka do szerszego oszustwa. Naturalnie, przechowywanie i zarządzanie jak najmniejszą liczbą instancji agentów jest w tym przypadku pożądane. Dlatego też sensownym wydaje się zastosowanie w przypadku takich sieci algorytmów znajdujących $\gamma^{\text{wc}}_R(G)$. Poniższe rozważania analizują dwa przypadki rzeczywistych sieci społecznościowych.\\
+
+ Pierwszą z nich jest popularny w literaturze do analizy sieci społecznościowych graf klubu karate Zacharego\cite{KARATE}. Graf ten jest odzwierciedleniem interakcji społecznych członków pewnego klubu karate, badanego przez Wayne W. Zachary'ego\cite{ZACHARY}. Posiada on 34 wierzchołki i 78 krawędzi. Z racji swojego rozmiaru, algorytmy dla tego grafu wykonały się w rozsądnym czasie. Graf ma cechy bezskalowego, gdyż posiada kilka wierzchołków o wyższym stopniu niż pozostałe oraz wiele o niewielkim. Dlatego wyniki powinny być analogiczne, jak prezentowane wcześniej dla grafów bezskalowych, dlatego algorytmy programowania liniowego powinny prezentować dobry stosunek czasu działania do jakości rozwiązania, algorytmy zachłanny i mrówkowy niekoniecznie. \\
+ Poniższe wizualizacje przestawiają efekty:
+
+\begin{figure}[H]
     \centering
     \begin{subcaptionbox}{ILP, $\gamma^{\text{wc}}_R(G)$: 7\label{fig:ilp}}[0.48\linewidth]
         {\includegraphics[width=\linewidth]{assets/Facebook/ilp.png}}
@@ -81,7 +93,7 @@ To rozważanie pokazuje, że nawet dla nieco większych grafów rzadkich, obserw
         {\includegraphics[width=\linewidth]{assets/Facebook/ant.png}}
     \end{subcaptionbox}
 
-    \caption{Efekt działania algorytmów ILP, Greedy i Approx dla problemu rozmieszczenia agentów w małej, rzeczywistej sieci społecznościowej.}
+    \caption{Efekt działania algorytmów dla problemu rozmieszczenia agentów w małej, rzeczywistej sieci społecznościowej.}
     \label{fig:karate}
 \end{figure}
 
@@ -99,9 +111,15 @@ To rozważanie pokazuje, że nawet dla nieco większych grafów rzadkich, obserw
 \caption{Wynik działania wybranych algorytmów dla problemu rozmieszczenia agentów w małej sieci społecznościowej.}
 \end{table}
 
+Zgodnie z przewidywaniami, algorytmy programowania liniowego prezentują zadowalające wyniki. Warto zwrócić uwagę, że algorytm zachłanny wyznaczył optymalną wartość liczby dominowania rzymskiego słabo spójnego. Należy jednak pamiętać, że dla grafów bezskalowych wyniki działania tego algorytmu w zależności od grafu moga się różnić dokładnością. Algorytm mrówkowy po raz kolejny prezentuje niezadowalające wyniki jakościowe i czasowe.\\
+
+Kolejną analizowaną siecią społecznościową jest sieć znajomych z serwisu Facebook\cite{FACEBOOK}:
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{assets/Facebook/facebookgreedy.png}
     \caption{Efekt działania algorytmu zachłannego dla problemu rozmieszczenia agentów w dużej, rzeczywistej sieci społecznościowej. $\gamma^{\text{wc}}_R(G)$: 411, czas działania 2,9348995 s.}
     \label{fig:fbgreedy}
 \end{figure}
+
+ Składa się on z 4039 wierzchołków i 80234 krawędzi. Charakteryzacja i wizualizacja grafu wskazuje na to, że można go przypisać do klasy grafów bezskalowych. Z racji wielkości grafu udało się na nim tylko wykonać algorytm zachłanny, pozostałe algorytmy nie wykonały się w rozsądnym czasie. Algorytm wyznaczył $\gamma^{\text{wc}}_R(G)$ jako 411 w czasie 2,9348995 s, co jest stosunkowo krótkim czasem wykonania jak na wielkość grafu. Po raz kolejny wyróżnia to skalowalność algorytmu zachłannego. Nie ma niestety możliwości weryfikacji czy jest to wynik optymalny, ale patrząc na wcześniejsze rozważania, nie powinien być to wynik drastycznie daleki od optymalnego. Pokazuje to, że nawet dla bardzo dużych danych wejściowych, algorytm zachłanny potrafi dać wynik praktycznie w czasie rzeczywistym, w odróżnieniu do innych, prezentowanych algorytmów.

@@ -1,16 +1,49 @@
 \chapter{Podsumowanie i wnioski}
 
 \section{Podsumowanie wyników}
-Przedstawienie kluczowych wyników pracy oraz ich znaczenia w kontekście postawionego celu badawczego.
+
+Celem badawczym pracy było opisanie istniejących i opracowanie własnych algorytmów znajdujących funkcje dominujące rzymskie słabo spójne, ich analiza oraz porównanie skuteczności i wyciągnięcie wniosków na temat możliwości ich praktycznego zastosowania, w szczególności w wersji minimalizacyjnej tego problemu.\\
+\textbf{Udało się zrealizować wszystkie postawione zadania, mianowicie:}
+\begin{itemize}
+    \item przedstawienie problemu WCRDF oraz jego złożoności obliczeniowej,
+    \item przedstawienie algorytmów znajdujących WCRDF oraz algorytmy znajdujące dokładną  $\gamma^{\text{wc}}_R(G)$ oraz przybliżoną, korzystając z różnych technik programowania,
+    \item zaimplementować i przetestować wybrane algorytmy,
+    \item wyciągnąć wnioski na podstawie wyników testów,
+    \item dokonać anlizy pod kątem praktycznego zastosowania rozwiązania tego problemu.
+\end{itemize}
+
+\textbf{W pracy przetestowano sześć algorytmów:}
+\begin{itemize}
+    \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: BruteForce, ILP i ILP2,
+    \item algorytmy przybliżone: Greedy, Approx i AntColony.
+\end{itemize}
+
+Eksperymenty przeprowadzono na grafach gęstych, rzadkich, drzewach oraz bezskalowych. Dodatkowo sprawdzono działanie niektórych algorytmów na grafach rzeczywistych. \\
+\textbf{Wyniki wskazują, że:}
+\begin{itemize}
+    \item Algorytm BruteForce, chociaż prezentuje dokładne, minimalne rozwiązanie problemu, jest najgorzej skalowalny. Już dla kilkunastu wierzchołków grafu, czas działania robi się nierozsądnie długi.
+    \item Algorytmy ILP i ILP2 zapewniają najlepsze jakościowo rozwiązania, lecz ich czas działania rośnie znacząco wraz z rozmiarem badanego grafu, co wynika ze złożoności obliczeniowej.
+    \item Algorytm Greedy wyróżnia się ekstremalnie niskim czasem działania oraz zaskakująco dobrą jakością rozwiązań w wielu klasach grafów. Jako jedyny spośród prezentowanych algorytmów jest skalowalny do większych grafów.
+    \item Approx zapewnia stabilne i poprawne rozwiązania, z niskim błędem względnym, jednak znacząco pogarsza się dla drzew i struktur bardzo rzadkich. Ponadto udało się zweryfikować, że dla testowanych przykładów grafów udało się pokazać, że wyniki są zgodne z prezentowanym w literaturze współczynnikiem aproksymacji.
+    \item AntColony prezentuje najgorszy spośród wszystkich algorytmów czas działania oraz jakość rozwiązania.
+\end{itemize}
+
+Ponadto wykazano, że wyniki algorytmów różnią się w zależności od klasy grafu, co sugeruje konieczność doboru metody w zależności od specyfiki problemu.
 
 \section{Wnioski i dalsze kierunki badań}
-Na podstawie wyników pracy sformułowano następujące wnioski:
+
+\textbf{Na podstawie przeprowadzonych badań i analiz sformułowano następujące wnioski:}
 \begin{itemize}
-    \item Wniosek 1: [Opis pierwszego wniosku].
-    \item Wniosek 2: [Opis drugiego wniosku].
+    \item WCRDF może stanowić potencjalnie użyteczny model do minimalizacyjnego rozmieszczania zabezpieczeń w sieciach społecznościowych, czy innych naturalnie utworzonych grafach.
+    \item Algorytmy dokładne (ILP, ILP2) są dobrym punktem, ale niestety są mało skalowalne.
+    \item Algorytm Greedy może być z powodzeniem stosowany w praktyce, szczególnie w dużych instancjach wymagających szybkich przybliżeń.
+    \item AntColony w obecnej implementacji nie nadaje się do skutecznego rozwiązywania tego problemu. Dla każdej klasy grafu i prezentował najbardziej niekorzystne wyniki wśród wszystkich testowanych algorytmów.
+    \item Zastosowanie WCRDF do problemów praktycznych, czyli np. rozmieszczenia zabezpieczeń w sieci energetycznej czy agentów wykrywających oszustwa w sieci społecznościowej zostało uzasadnione i warte dalszych badań.
 \end{itemize}
-Dalsze badania mogłyby obejmować:
+
+\textbf{Dalsze kierunki badań mogą obejmować:}
 \begin{itemize}
-    \item Rozszerzenie algorytmu na inne typy danych.
-    \item Testy w środowisku rzeczywistym.
+    \item Rozszerzenie testów na inne klasy, jak i na inne wielkości grafów.
+    \item Podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej oraz badania w celu znalezienia jak najlepszej heurystyki.
+    \item Weryfikacja i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
 \end{itemize}

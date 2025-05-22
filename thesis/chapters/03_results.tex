@@ -397,7 +397,7 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \caption{Wyniki dla grafów bezskalowych}
     \end{table}
 
-    Algorytmy ILP/ILP2/approx zadowalająco pokrywają huby i w rozsądnym czasie, co w strukturze tego grafu jest bardzo ważne. Algorytm zachłanny i mrówkowy wraz ze wzrostem wierzchołków osiągają coraz gorsze wyniki, ale jak na prostotę i szybkość algorytmu zachłannego, różnica w rozwiązaniu jest akceptowalna. Algorytm mrówkowy nie dość, że za każdym razem działa najwolniej ze wszystkich propozycji, to daje najgorsze wyniki. Po raz kolejny wskazuje to na brak doboru odpowiedniej heurystyki do tego problemu. Oczywiście algorytm BruteForce daje poprawny wynik, aczkolwiek jest on zupełnie nieskalowalny na większą liczbę wierzchołków.
+    Algorytmy ILP/ILP2/Approx zadowalająco pokrywają huby i w rozsądnym czasie, co w strukturze tego grafu jest bardzo ważne. Algorytm zachłanny i mrówkowy wraz ze wzrostem wierzchołków osiągają coraz gorsze wyniki, ale jak na prostotę i szybkość algorytmu zachłannego, różnica w rozwiązaniu jest akceptowalna. Algorytm mrówkowy nie dość, że za każdym razem działa najwolniej ze wszystkich propozycji, to daje najgorsze wyniki. Po raz kolejny wskazuje to na brak doboru odpowiedniej heurystyki do tego problemu. Oczywiście algorytm BruteForce daje poprawny wynik, aczkolwiek jest on zupełnie nieskalowalny na większą liczbę wierzchołków.
 
     \begin{figure}[H]
         \centering
@@ -406,7 +406,7 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
         \label{fig:scaleFreePlot}
     \end{figure}
 
-    Algorytmy Approx i Greedy są czasowo najefektywniejsze, niestety dając przy tym nienajgorsze przybliżenia. Należy pamiętać, że Approx został zaimplementowany na podstawie programowania liniowego, więc wraz ze wzrostem liczby wierzchołków może zacząć działać bardzo długo. Algorytmy dokładne ILP/ILP2 działają w podobnej ramie czasowej co Approx. Algorytm mrówkowy jest przynajmniej 10 razy wolniejszy od innych algorytmów, co czyni go bardzo nieefektywnym.
+    Algorytmy Approx i Greedy są czasowo najefektywniejsze, niestety dając przy tym nienajlepsze przybliżenia. Należy pamiętać, że Approx został zaimplementowany na podstawie programowania liniowego, więc wraz ze wzrostem liczby wierzchołków może zacząć działać bardzo długo. Algorytmy dokładne ILP/ILP2 działają w podobnej ramie czasowej co Approx. Algorytm mrówkowy jest przynajmniej 10 razy wolniejszy od innych algorytmów, co czyni go bardzo nieefektywnym.
 
     \begin{figure}[htbp]
         \centering
