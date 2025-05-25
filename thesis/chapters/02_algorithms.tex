@@ -4,13 +4,13 @@
 Niniejszy rozdział opisuje algorytmy dla funkcji dominowania rzymskiego słabo spójnego. Zostaną one przedstawione pod względem schematu działania, złożoności i wydajności, poprawności oraz ich pseudokod. Lista analizowanych algorytmów jest następująca:
 
 \begin{itemize}
-    \item algorytm brute force
-    \item algorytm liniowy dla drzew
-    \item algorytm programowania liniowego I
-    \item algorytm programowania liniowego II
-    \item algorytm mrówkowy
-    \item algorytm aproksymacyjny
-    \item algorytm zachłanny
+    \item algorytm brute force - Brute Force,
+    \item algorytm liniowy dla drzew - TreeLinear,
+    \item algorytm programowania liniowego I - ILP,
+    \item algorytm programowania liniowego II - ILP2,
+    \item algorytm mrówkowy - AntColony,
+    \item algorytm aproksymacyjny - Approx,
+    \item algorytm zachłanny - Greedy.
 \end{itemize}
 
 \section{Algorytm Brute Force}
@@ -21,7 +21,8 @@ Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego
     \item wyznaczany jest zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
     \item sprawdzenie, czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2,
     \item dla każdego wierzchołka ze zbioru indukowanego dodawane są krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego
-    \item następnie sprawdzenie, czy powstały graf jest spójny. Jeśli jest, to zbiór spełnia założenia definicji.
+    \item następnie sprawdzenie, czy powstały graf jest spójny. Jeśli jest, to zbiór spełnia założenia definicji,
+    \item ze wszystkich prawidłowych kombinacji wybierana jest ta o najmniejszej sumie WCRDF.
 \end{itemize}
 
 \subsection{Poprawność}
@@ -29,33 +30,26 @@ Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego
 
 Aby wykazać poprawność algorytmu Brute Force, należy udowodnić, że algorytm sprawdza wszystkie możliwe funkcje kandydujące, gwarantując kompletność przeszukania oraz poprawność weryfikacji kombinacji względem definicji WCRDF.\\
 
-\textbf{1. Kompletność przeszukania}\\
+\textbf{Kompletność przeszukania}\\
 Algorytm generuje wszystkie możliwe przypisania wartości $f: V \to \{0,1,2\}$, co daje $3^n$ kombinacji, gdzie $n = |V|$, więc żadne potencjalne rozwiązanie nie będzie pominięte.
 
-\textbf{2. Poprawność weryfikacji}\\
+\textbf{Poprawność weryfikacji}\\
 Dla każdej funkcji $f$, algorytm sprawdza:
 
 \begin{itemize}
     \item[a)] warunek dominacji rzymskiej — sprawdzenie, czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2.
     
-    \item[b)] warunek słabej spójności — wyznaczany jest podgraf indukowany, który składa się ze zbioru dominującego (wierzchołki wartościami {1, 2}) oraz sąsiadów wierzchołków zbioru dominującego. Dla każdego wierzchołka ze zbioru indukowanego dodawane są krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego. Sprawdzenie spójności tego podgrafu.
+    \item[b)] warunek słabej spójności — wyznaczany jest podgraf indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami {1, 2}) oraz sąsiadów wierzchołków zbioru dominującego. Dla każdego wierzchołka ze zbioru indukowanego dodawane są krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego. Sprawdzenie spójności tego podgrafu.
 \end{itemize}
 
-\textbf{3. Minimalność}\\
-Spośród poprawnych kombinacji wartości WCRDF wybierana jest funkcja o najmniejszej sumie wag przypisanych do wierzchołków.
+\textbf{Minimalność}\\
+Spośród poprawnych kombinacji wartości WCRDF wybierana jest funkcja o najmniejszej sumie wag przypisanych do wierzchołków.\\
 
-\textbf{Podsumowanie}\\
-Algorytm:
-\begin{enumerate}
-    \item przeszukuje każdą możliwą wartość WCRDF,
-    \item sprawdza warunki WCRDF,
-    \item wybiera rozwiązanie minimalne,
-\end{enumerate}
-więc poprawnie wyznacza on WCRDF oraz wartość $\gamma^{\text{wc}}_R(G)$.
+Zatem algorytm poprawnie wyznacza on WCRDF oraz wartość $\gamma^{\text{wc}}_R(G)$.
 
 \subsection{Złożoność i wydajność}
 
-Algorytm ma złożoność wykładniczą, zatem nie będzie wykonywalny w rozsądnym czasie dla większych grafów.
+Algorytm ma złożoność wykładniczą, zatem nie będzie wykonywalny w rozsądnym czasie dla większych grafów, z uwagi na:
 \begin{itemize}
     \item generowanie wszystkich kombinacji możliwych przypisań: $3^n$, gdzie $n$ to liczba wierzchołków grafu,
     \item sprawdzanie własności zbioru słabo spójnego dla każdego przypisania: $n^2$
@@ -127,14 +121,14 @@ Dla każdego wierzchołka definiujemy następujące parametry:
     \item $v['n1']$ - oznacza liczbę dzieci wierzchołka $v$ z $R = 1$
     \item $v['n2']$ - oznacza liczbę dzieci wierzchołka $v$ z $R = 2$
     \item $v['sw']$ - oznacza liczbę dzieci wierzchołka $v$ z $n00=1$ i $n01=0$. (wierzchołek wspierający)
-    \item $v['ch'] =1$ jeśli $v['sw']>1$ lub jeśli $v['sw']=1$ i mający przynajmniej jedno dziecko z $R=0$; w przeciwnym razie $v['ch'] =0$. Jeśli $v['ch'] =1$, wtedy $v['R']=2$ i w Fazie~2 każde dziecko $v$ z $n00=1$ i z $n01=0$ dostaje $R=0$ i jego jedyne dziecko z $R=0$ zmienia wartość na $R=1$.
+    \item $v['ch'] =1$ jeśli $v['sw']>1$ lub jeśli $v['sw']=1$ i mający przynajmniej jedno dziecko z $R=0$; w przeciwnym razie $v['ch'] =0$. Jeśli $v['ch'] =1$, wtedy $v['R']=2$ i w fazie 2 każde dziecko $v$ z $n00=1$ i z $n01=0$ dostaje $R=0$ i jego jedyne dziecko z $R=0$ zmienia wartość na $R=1$.
     \item $v['child']$ - jeśli $v$ jest wierzchołkiem wspierającym, wtedy wartość ta jest numerem liścia sąsiadującego z $v$.
 \end{itemize}
 
-Algorytm ma 2 fazy. W obu fazach rozpatrujemy wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie początkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrujemy każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości dominowania rzymskiego słabo spójnego, a suma tych wartości to funkcja dominowania rzymskiego słabo spójnego.
+Algorytm ma 2 fazy. W obu fazach rozpatrywane są wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie początkowo zdefiniowane wartości mają wartości 0. W bardzo ogólnym rozumieniu, rozpatrywany jest każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości funkcji dominowania rzymskiego słabo spójnego.
 \\
 Z racji sporego stopnia skomplikowania algorytmu, jego działanie zostanie przedstawione na przykładzie.
-Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne i niezłożone czasowo, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
+Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
 
 \begin{figure}[H]
     \centering
@@ -195,7 +189,7 @@ Zdjęcie przedstawia zachowanie algorytmu po fazie 1. Czerwone wierzchołki to w
     \label{fig:drzewoFaza1}
 \end{figure}
 
-W fazie 2, dla każdego wierzchołka posiadającego ojca, tylko jedno dziecko niezdominowane i parametr ojca 'ch' wynoszący 1, wtedy musimy ,zmienić' układ, poprzez ustawienie 0 na obecnym wierzchołku, ustawienie dziecka na 1 oraz zwiększenie liczby dzieci niedominowanych ojca wierzchołka. 
+W fazie 2, dla każdego wierzchołka posiadającego ojca, tylko jedno dziecko niezdominowane i parametr ojca 'ch' wynoszący 1, wtedy musimy ,,zmienić'' układ, poprzez ustawienie 0 na obecnym wierzchołku, ustawienie dziecka na 1 oraz zwiększenie liczby dzieci niedominowanych ojca wierzchołka. 
 Ten warunek spełniony jest dla wierzchołków 4 i 2. Zatem:\\
 T[4]['R'] = 0  (od wierzchołka 4)\\
 T[9]['R'] = 1  (dziecko wierzchołka 4)\\
@@ -203,7 +197,7 @@ T[2]['R'] = 0  (od wierzchołka 2)\\
 T[3]['R'] = 1  (dziecko wierzchołka 2)\\
 T[0]['n00'] = 3  (ojciec wierzchołków 4 i 2)
 
-Poniższy rysunek przedstawia prawidłowe przypisanie wartości $R$ po fazie 2.\\
+Poniższy rysunek przedstawia prawidłowe, optymalne przypisanie wartości $R$ po fazie 2.\\
 
 \begin{figure}[H]
     \centering
@@ -215,16 +209,16 @@ Poniższy rysunek przedstawia prawidłowe przypisanie wartości $R$ po fazie 2.\
 \subsection{Poprawność}
 
 
-Poprawność algorytmu dla drzew wyznaczymy poprzez szkic dowodu indukcyjnego. Dla każdego drzewa $T = (V, E)$, algorytm liniowy poprawnie wyznacza funkcję $f : V \to \{0,1,2\}$ będącą WCRDF o minimalnej wadze $\gamma_R^{\text{wc}}(T)$.\\
+Poprawność algorytmu dla drzew zostanie wyznaczona poprzez szkic dowodu indukcyjnego. Dla każdego drzewa $T = (V, E)$ zakłada się, że algorytm liniowy poprawnie wyznacza funkcję $f : V \to \{0,1,2\}$ będącą WCRDF o minimalnej wadze $\gamma_R^{\text{wc}}(T)$.\\
 
 \textbf{Krok początkowy:}
 \begin{itemize}
-    \item Dla $|V| = 1, f(v)= 2 $, aby dominować sam siebie. Algorytm wykrywa brak dzieci i przypisuje $R = 1$ zgodnie z warunkiem korzenia bez $n1$).
+    \item Dla $|V| = 1, f(v)= 1 $, dominuje sam siebie. Algorytm wykrywa brak dzieci i przypisuje $R = 1$ zgodnie z warunkiem korzenia bez $n1$).
     \item Dla $|V| = 2$: liść otrzymuje $R = 0$, a korzeń $R = 2$, ponieważ nie ma innych dzieci dominujących. Sytuacja zostaje poprawnie wykryta na podstawie $n00 = 1$, $n01 = 0$, co daje przypisanie $R=2$ ojcu. 
 \end{itemize}
 
 \textbf{Krok indukcyjny:}\\ 
-Załóżmy, że algorytm wyznacza poprawnie $\gamma_R^{\text{wc}}(T)$ dla wszystkich drzew o liczbie wierzchołków $< n$. Pokażemy, że działa również dla dowolnego drzewa $T$ o $|V| = n$.
+Załóżmy, że algorytm wyznacza poprawnie $\gamma_R^{\text{wc}}(T)$ dla wszystkich drzew o liczbie wierzchołków $< n$. Wykażemy, że działa również dla dowolnego drzewa $T$ o $|V| = n$.
 
 Niech $r$ będzie korzeniem drzewa $T$, a $T_1, \dots, T_k$ jego poddrzewami o korzeniach $v_1, \dots, v_k$. Z założenia indukcyjnego dla każdego $T_i$ funkcja $f_i$ wyznaczona przez algorytm spełnia warunki WCRDF i jest minimalna na $T_i$.
 
@@ -256,14 +250,14 @@ W każdej z tych sytuacji:
 Decyzje w algorytmie są podejmowane lokalnie optymalnie:
 \begin{itemize}
 \item przypisanie $f = 2$ tylko wtedy, gdy inne opcje (np. $f=1$ lub propagacja przez dzieci) nie wystarczają,
-\item preferowanie struktury $[1,1]$ nad $[2,0]$ gdzie jest to możliwe,
+\item preferowanie struktury $[1,1]$ nad $[2,0]$ tam, gdzie jest to możliwe,
 \item przypisania są zgodne z lokalną strukturą drzewa.
 \end{itemize}
 
-W związku z tym suma wag WCRDF jest najmniejsza możliwa przy spełnieniu warunków definicji, co kończy dowód.
+W związku z tym suma wag WCRDF jest najmniejsza możliwa przy spełnieniu warunków definicji, co kończy szkic dowodu.
 
 \subsection{Złożoność i wydajność}
-Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drzewa. Algorytm zatem jest skalowalny i szybki dla większych grafów, natomiast ograniczony do jednej ich klasy - drzew. Złożoność pamięciowa jest liniowa względem liczby wierzchołków, ze względu na przechowywanie drzewa w pamięci.
+Algorytm ma złożoność liniową $O(n)$, gdzie n to liczba wierzchołków drzewa. W obu fazach rozpatrywane są wszystkie wierzchołki, od liści do korzenia. Uprzednio wyznaczana zostaje mapa ojcostwa, również liniowo. Algorytm zatem jest skalowalny i szybki dla większych grafów, natomiast ograniczony do jednej ich klasy - drzew.\\ Złożoność pamięciowa jest liniowa względem liczby wierzchołków, ze względu na przechowywanie drzewa w pamięci.
 
 \subsection{Pseudokod}
 \begin{algorithm}
@@ -364,7 +358,7 @@ Jest to algorytm programowania liniowego zaimplementowany na podstawie artykułu
 
 \subsection{Działanie}
 
-Ten model programowania liniowego wymagania zdefiniowania następujących zmiennych:
+Dany jest graf $G$ o zbiorze wierzchołków $V$ i zbiorze krawędzi $E$. $G'$ to podgraf indukowany powstały z wierzchołków zbioru dominującego. Ten model programowania liniowego wymaga zdefiniowania następujących zmiennych:
 
 \[
 x_e =
@@ -403,11 +397,11 @@ Definiujemy funkcję celu, czyli minimalizację wagi zbioru dominującego rzymsk
 \]
 
 oraz ograniczenia:\\
-Wierzchołek o wartości 0, bedzie miał przynajmniej jednego sasiada z wartością 2:
+Wierzchołek o wartości 0, bedzie miał co najmniej jednego sasiada z wartością 2:
 \[
     a_v + \sum_{k \in N_G(v)} b_k \geq 1, \quad v \in V, \tag{1}
 \]
-Krawędź istnieje w drzewie rozpinającym \( T' \), jesli ta krawędź należy do \( G' \). Ograniczenie to zapewnia spójność w \( G' \):
+Krawędź istnieje w drzewie rozpinającym \( T' \), jeśli ta krawędź należy do \( G' \). Ograniczenie to zapewnia spójność w \( G' \):
 \[
     y_e \leq x_e, \quad e \in E, \tag{2}
 \]
@@ -423,7 +417,7 @@ Drzewo rozpinające \( T' \) nie posiada cykli:
 \[
     \sum_{i_e, j_e \in S} y_e \leq |S| - 1, \quad S \subseteq V, \quad |S| \geq 3, \tag{5}
 \]
-Podzbior wierzchołków z $b_v = 1$, czyli $(V_2)$, jest podzbiorem wierzchołków z $a_v = 1$, czyli $(V_1 \cup V_2)$
+Podzbiór wierzchołków z $b_v = 1$, czyli $(V_2)$, jest podzbiorem wierzchołków z $a_v = 1$, czyli $(V_1 \cup V_2)$
 \[
     b_v \leq a_v, \quad v \in V. \tag{6}
 \]
@@ -432,9 +426,9 @@ Warunki 1, 2, 5 gwarantują, że \( T' \) jest drzewem rozpinającym grafu \( G'
 
 \subsection{Poprawność}
 
-Model programowania liniowego I opisany powyżej poprawnie odwzorowuje problem wyznaczania słabo spójnej funkcji dominacji rzymskiej (WCRDF) i jego rozwiązanie minimalizuje wartość $\gamma_R^{\text{wc}}(G)$.
+Poniżej przedstawiona zostaje analiza, dlaczego model programowania liniowego I opisany powyżej poprawnie odwzorowuje problem wyznaczania WCRDF, a jego rozwiązanie minimalizuje wartość $\gamma_R^{\text{wc}}(G)$.
 
-\textbf{1. Każde dopuszczalne rozwiązanie modelu ILP jest poprawną funkcją WCRDF.}
+\textbf{Każde dopuszczone rozwiązanie modelu ILP jest poprawną funkcją WCRDF.}
 
 Rozważane jest dowolne przypisanie zmiennych $a_v, b_v, x_e, y_e$ spełniające ograniczenia (1)-(6).
 
@@ -444,7 +438,7 @@ Rozważane jest dowolne przypisanie zmiennych $a_v, b_v, x_e, y_e$ spełniające
     \item Ograniczenia (2)-(5): definiują graf $G'$ (na podstawie $x_e$), oraz jego drzewo rozpinające $T'$ (na podstawie $y_e$). W szczególności:
     \begin{itemize}
         \item (2): $T'$ zawiera się w $G'$,
-        \item (3): każda krawędź $x_e$ łączy dwa wierzchołki z $a = 1$,
+        \item (3): każda krawędź $x_e$ łączy dwa wierzchołki z przynajmniej jednym $a = 1$,
         \item (4)-(5): $T'$ ma $n-1$ krawędzi i nie zawiera cykli, czyli jest drzewem,
     \end{itemize}
     \item Zatem $T'$ rozciąga się na zbiorze $D = \{v : a_v = 1\}$ i łączy go w sposób spójny — spełnia to warunek słabej spójności.
@@ -452,7 +446,7 @@ Rozważane jest dowolne przypisanie zmiennych $a_v, b_v, x_e, y_e$ spełniające
     \item Ograniczenie (6): każdy wierzchołek z $b_v = 1$ (czyli $f(v) = 2$) musi mieć również $a_v = 1$ — co odwzorowuje relację $V_2 \subseteq V_1 \cup V_2$.
 \end{itemize}
 
-\textbf{2. Każda poprawna funkcja WCRDF może być zakodowana jako przypisanie zmiennych.}
+\textbf{Każda poprawna funkcja WCRDF może być zakodowana jako przypisanie zmiennych.}
 
 Dla dowolnej funkcji $f : V \to \{0,1,2\}$ spełniającej definicję WCRDF, możemy przypisać:
 \[
@@ -463,13 +457,13 @@ a_v = \begin{cases}
 \quad
 b_v = \begin{cases}
 1 & \text{jeśli } f(v) = 2 \\
-0 & \text{w przeciwnym razie}
+0 & \text{jeśli } f(v) \ne 2
 \end{cases}
 \]
 
-Podgraf $G'$ indukowany przez wierzchołki z $a_v = 1$ jest spójny (bo $f$ spełnia definicję WCRDF), więc istnieje drzewo rozpinające $T'$ — można przypisać $x_e$ i $y_e$ tak, by spełnić wszystkie ograniczenia (2)–(5).
+Podgraf $G'$ indukowany przez wierzchołki z $a_v = 1$ jest spójny (bo $f$ spełnia definicję WCRDF), więc istnieje drzewo rozpinające $T'$ — można przypisać $x_e$ i $y_e$ tak, by spełnić wszystkie ograniczenia (2)-(5).
 
-\textbf{3. Funkcja celu odwzorowuje wagę funkcji $f$}
+\textbf{Funkcja celu odwzorowuje wagę funkcji $f$}
 
 Wartość funkcji celu to:
 \[
@@ -492,7 +486,8 @@ Liczba zmiennych dla grafu o $n$ wierzchołkach i $m$ krawędziach wynosi $O(n+m
     \item Relacja \( b_v \leq a_v \): jedno na każdy wierzchołek, zatem n ograniczeń.
 \end{enumerate}
 
-Zatem w najgorszym przypadku liczba ograniczeń wynosi $	O(n+m+2^n)$, a złożoność obliczeniowa wynosi $O(2^n)$, ze względu na ograniczenia cykliczne.\\
+Zatem w najgorszym przypadku liczba ograniczeń wynosi $	O(n+m+2^n)$.
+Złożoność obliczeniowa wynosi $O(2^n)$. Ze względu na ograniczenia cykliczne trudność rozwiązywania jest niestabilna.\\
 Złożoność pamięciowa wynosi $O(n+m+2^n)$ ze względu na przechowywanie zmiennych i ograniczeń.
 
 \subsection{Pseudokod}
@@ -500,7 +495,7 @@ Złożoność pamięciowa wynosi $O(n+m+2^n)$ ze względu na przechowywanie zmie
 \begin{algorithm}
     \caption*{Algorytm programowania liniowego I}
     \begin{algorithmic}[1]
-        \Function{ILP\_I}{graph}
+        \Function{ILP}{graph}
             \State $V \gets$ list of nodes in $graph$
             \State $E \gets$ list of edges in $graph$
     
@@ -552,8 +547,8 @@ Złożoność pamięciowa wynosi $O(n+m+2^n)$ ze względu na przechowywanie zmie
 \section{Algorytm programowania liniowego II}
 Jest to algorytm programowania liniowego zaimplementowany na podstawie artykułu ,,Algorithmic complexity of weakly connected Roman domination in graphs" \cite{ILP}, podobnie jak poprzedni.
 \subsection{Działanie}
-Model ten opiera się na przepływach. W tym modelu rozpatrujemy graf jako wierzchołek który zużywa jednostkę przepływu, przepływając przez krawędzie grafu. Na wejściu definiujemy zewnętrzny przepływ, którego liczba jednostek jest równa liczbie wierzchołków grafu. Zachowujemy zasadę przepływu sieci, dlatego próbujemy wprowadzić przepływ zewnętrzny w jak najwiekszej ilości przez pojedynczy wierzchołek.\\
-Definiujemy następujące zmienne:
+Model ten opiera się na przepływach. W tym modelu rozpatrywany jest graf jako wierzchołek, który zużywa jednostkę przepływu, przepływając przez krawędzie grafu. Na wejściu definiowany jest zewnętrzny przepływ, którego liczba jednostek jest równa liczbie wierzchołków grafu. Zachowana jest zasada przepływu sieci, dlatego trzeba wprowadzić przepływ zewnętrzny w jak największej ilości przez pojedynczy wierzchołek.\\
+Należy zdefiniować następujące zmienne:
 \[
 x_i =
 \begin{cases}
@@ -586,12 +581,13 @@ t_i =
 u_i \in N \cup \{0\}, \quad v_e \in [-n, n].
 \]
 gdzie:\\
-$t_i$ zdefiniowany dla każdego wierzchołka grafu. Identyfikuje, gdzie zewnetrzny wierzchołek jest traktowany jako wejście. \\
+$t_i$ zdefiniowany dla każdego wierzchołka grafu. Identyfikuje, gdzie zewnętrzny wierzchołek jest traktowany jako wejście. \\
 $u_i$ reprezentuje liczbę jednostek przepływu zewnętrznego dla danego wierzchołka grafu.\\
 $v_e$ oznacza jednostki przepływające przez dane krawędzie.\\
+$a_e$ oznacza przynależność krawędzi do podgrafu indukowanego.\\
 $x_i, y_i$ oznaczają przynależność do zbioru dominującego rzymskiego słabo spójnego.
 
-Minimalizującą liczbę dominowania rzymskiego słabo spójnego jako funkcję celu definiujemy następująco:
+Minimalizującą liczbę dominowania rzymskiego słabo spójnego jako funkcję celu należy zdefiniować następująco:
 
 \[
 \text{Z: } \min \left( \sum_{i \in V} x_i + \sum_{i \in V} y_i \right),
@@ -602,19 +598,19 @@ Wierzchołek z wartością 0 sąsiaduje z przynajmniej jednym wierzchołkiem z w
 \[
 x_i + \sum_{j \in N_G(i)} y_j \geq 1, \quad i \in V, \tag{1}
 \]
-Prawidłowe zdefiniowanie zmiennych $x$ i $y$:
+Ograniczenie zmiennych $x$ i $y$, aby były zgodne ze zdefiniowaną przynależnością:
 \[
 y_i \leq x_i, \quad i \in V, \tag{2}
 \]
-Krawędź $e \in E'$ ma przynajmniej jeden koniec z wierzchołkiem o wartości przynajmniej 1:
+Krawędź $e \in E'$ ma przynajmniej jeden koniec z wierzchołkiem o wartości przynajmniej 1 (należącym do zbioru dominującego):
 \[
 a_e \leq x_{i_e} + x_{j_e}, \quad e \in E, \tag{3}
 \]
-Jest tylko jeden wierzchołek w grafie $G'$ gdzie jest dostarczony przepływ zewnętrzny:
+Jest tylko jeden wierzchołek w grafie $G'$, gdzie jest dostarczony przepływ zewnętrzny:
 \[
 \sum_{i \in V} t_i = 1, \tag{4}
 \]
-Wielkość przepływu wielkości co najwyżej $n$:
+Wielkość przepływu co najwyżej $n$:
 \[
 u_i \leq n \cdot t_i, \quad i \in V, \tag{5}
 \]
@@ -637,72 +633,74 @@ a_e \geq 1, \quad e \in E, \tag{9}
 
 \subsection{Poprawność}
 
-Model programowania liniowego II poprawnie odwzorowuje problem wyznaczania słabo spójnej funkcji dominacji rzymskiej (WCRDF) i jego rozwiązanie minimalizuje wartość $\gamma_R^{\text{wc}}(G)$.
+Poniżej przedstawiona zostaje analiza, dlaczego model programowania liniowego II opisany
+powyżej poprawnie odwzorowuje problem wyznaczania WCRDF, a jego rozwiązanie minimalizuje
+wartość $\gamma_R^{\text{wc}}(G)$.
 
-\textbf{1. Poprawność odwzorowania funkcji WCRDF.}
+\textbf{Poprawność odwzorowania funkcji WCRDF.}
 
 Zmiennym w modelu odpowiadają następujące interpretacje:
 \begin{itemize}
     \item $x_i = 1 \iff f(i) \in \{1,2\}$,
     \item $y_i = 1 \iff f(i) = 2$,
     \item $a_e = 1 \iff$ krawędź $e$ należy do grafu $G'$ indukowanego przez zbiór dominujący,
-    \item $t_i = 1 \iff$ wierzchołek $i$ to „źródło” przepływu (czyli korzeń),
-    \item $u_i$ – liczba jednostek przepływu wchodząca do wierzchołka $i$,
-    \item $v_e$ – przepływ przez krawędź $e$.
+    \item $t_i = 1 \iff$ wierzchołek $i$ to „źródło” przepływu,
+    \item $u_i$ - liczba jednostek przepływu wchodząca do wierzchołka $i$,
+    \item $v_e$ - przepływ przez krawędź $e$.
 \end{itemize}
 
-\textbf{Warunek dominacji rzymskiej} zapewnia ograniczenie (1):
+Warunek dominacji rzymskiej zapewnia ograniczenie (1), bo jeżeli \( x_i = 0 \) (\( f(i) = 0 \)), to musi istnieć sąsiad \( j \) z \( y_j = 1 \), czyli \( f(j) = 2 \).:
 
 \[
 x_i + \sum_{j \in N(i)} y_j \geq 1
 \]
 
-czyli: jeżeli \( x_i = 0 \) (czyli \( f(i) = 0 \)), to musi istnieć sąsiad \( j \) z \( y_j = 1 \), czyli \( f(j) = 2 \).
+Warunek \( y_i \leq x_i \) (ograniczenie (2)) zapewnia, że zgodnie z definicją, że wierzchołek z \( f(i) = 2 \) należy także do zbioru z \( f(i) \geq 1 \).
 
-\textbf{Warunek relacji \( y_i \leq x_i \)} (ograniczenie (2)) zapewnia, że wierzchołek z \( f(i) = 2 \) należy także do zbioru z \( f(i) \geq 1 \), co jest zgodne z definicją.
-
-\textbf{Warunek łączności:} zbiór \( D = \{i : x_i = 1\} \) musi tworzyć spójny podgraf \( G' \), którego spójność jest zapewniona przez:
+Warunek łączności: zbiór \( D = \{i : x_i = 1\} \) musi tworzyć spójny podgraf \( G' \), którego spójność jest zapewniona przez:
 
 \begin{itemize}
     \item Ograniczenia (3), (6), (7): krawędzie przepływu są ograniczone do tych z końcami w \( D \),
     \item Ograniczenia (4), (5), (8): modeluje się jednostkowy przepływ z jednego wierzchołka źródłowego ($t_i = 1$) przez cały zbiór \( D \),
     \item Ograniczenie (8): zasada zachowania przepływu — każdy wierzchołek „zużywa” jedną jednostkę, więc przepływ musi dotrzeć do każdego z nich,
-    \item Ograniczenie (9): każdy wierzchołek musi być incydentny do co najmniej jednej krawędzi $a_e$ (nie jest odizolowany).
+    \item Ograniczenie (9): każdy wierzchołek musi być incydentny do co najmniej jednej krawędzi $a_e$, czyli nie być odizolowany.
 \end{itemize}
 
 Zatem cała struktura odpowiada spójnemu podgrafowi \( G' \) oraz jego słabo spójnej strukturze dominacyjnej.
 
-\textbf{2. Odwzorowanie każdej funkcji WCRDF.}
+\textbf{Odwzorowanie każdej funkcji WCRDF.}
 
-Dla każdej poprawnej funkcji WCRDF \( f : V \to \{0,1,2\} \) można ustawić zmienne:\\
-$
+Dla każdej poprawnej funkcji WCRDF \( f : V \to \{0,1,2\} \) można ustawić zmienne:
+
+\[
 x_i =
 \begin{cases}
 1, & \text{jeśli } f(i) > 0 \\
-0, & \text{w przeciwnym razie}
+0, & \text{jeśli } f(i) \leq 0
 \end{cases}
 \quad
 y_i =
 \begin{cases}
 1, & \text{jeśli } f(i) = 2 \\
-0, & \text{w przeciwnym razie}
+0, & \text{jeśli } f(i) \ne 2 
 \end{cases}
-$\\
-Zbiór \( D = \{i : x_i = 1\} \) indukuje spójny graf \( G' \), więc można wybrać \( a_e \) dla jego krawędzi i zdefiniować przepływ \( v_e \), \( u_i \) zgodnie ze standardową metodą budowania drzew przepływu (np. BFS z przepływem jednostkowym). Wybierając dowolny wierzchołek z \( f = 2 \) jako korzeń ($t_i = 1$), spełniamy wszystkie ograniczenia.
+\]
 
-\textbf{3. Minimalizacja funkcji celu.}
+Zbiór \( D = \{i : x_i = 1\} \) indukuje spójny graf \( G' \), więc można wybrać \( a_e \) dla jego krawędzi i zdefiniować przepływ \( v_e \), \( u_i \) zgodnie ze standardową metodą budowania drzew przepływu. Wybierając dowolny wierzchołek z \( f = 2 \) jako korzeń ($t_i = 1$), spełniamy wszystkie ograniczenia.
+
+\textbf{Minimalizacja funkcji celu.}
 
 Funkcja celu:
 \[
 \min \left( \sum x_i + \sum y_i \right) = \sum_{i : f(i) = 1} 1 + \sum_{i : f(i) = 2} 2 = \sum f(i)
 \]
-czyli odpowiada dokładnie wadze funkcji \( f \). Minimalizacja celu odpowiada wyznaczeniu \( \gamma^{\text{wc}}_R(G) \).
+odpowiada dokładnie wadze funkcji \( f \). Minimalizacja celu odpowiada wyznaczeniu \( \gamma^{\text{wc}}_R(G) \).
 
 \subsection{Złożoność i wydajność}
 
 Suma zmiennych w sformułowanym modelu wynosi $3n + m$, będących wartościami logicznymi, $n$ integralnych i $m$ ciągłych.
 \begin{itemize}
-    \item Pokrycie i relacje \( x/y \) — ograniczenia zapewniające, że każdy wierzchołek jest zdominowany oraz że jeśli \( y_i = 1 \), to \( x_i = 1 \). Dają łącznie \( n + n = 2n \) ograniczeń.
+    \item Pokrycie i relacje \( x,y \) — ograniczenia zapewniające, że każdy wierzchołek jest zdominowany oraz że jeśli \( y_i = 1 \), to \( x_i = 1 \). Dają łącznie \( n + n = 2n \) ograniczeń.
     
     \item Krawędziowe ograniczenia — dotyczące relacji między zmiennymi \( a_e \) i \( x_i \), oraz ograniczające wartości przepływu \( v_e \) przez krawędzie. Są to ograniczenia (3), (6) i (7), po jednym na każdą krawędź, co daje łącznie 3m ograniczeń.
     
@@ -720,7 +718,7 @@ Suma zmiennych w sformułowanym modelu wynosi $3n + m$, będących wartościami 
 \noindent
 Liczba ograniczeń wynosi $7n+3m+2$. Wynika to z tego, że nie wszystkie ograniczenia to są nierówności.
 Złożoność pamięciowa wynosi $O(n+m)$.\\
-W odróżnieniu do ILP I, nie ma tutaj wykładniczej liczby ograniczeń cyklicznych, więc w najgorszym przypadku złożoność czasowa będzie eksponencjalna w $n$. Zatem w praktyce ten algorytm powinien działać szybciej niż ILP I.
+W najgorszym przypadku złożoność czasowa będzie eksponencjalna w $n$. Trudność rozwiązywania jest złożona przez przepływy, ale bardziej stabilna, niż w algorytmie ILP, który ze względu na dużą liczbe klik może znacznie wydłużyć swój czas działania.
 
 \subsection{Pseudokod}
 \begin{algorithm}
@@ -787,14 +785,14 @@ W odróżnieniu do ILP I, nie ma tutaj wykładniczej liczby ograniczeń cykliczn
 \section{Algorytm mrówkowy}
 
 \subsection{Działanie}
-Definiujemy następujące zmienne i heurystyki:
+Należy zdefiniować następujące zmienne i heurystyki:
 \begin{itemize}
-    \item \textbf{num\_ants} – liczba mrówek w każdej iteracji.
-    \item \textbf{num\_iterations} – liczba iteracji algorytmu.
-    \item \textbf{\rho} – współczynnik parowania feromonów, określający, jak szybko feromony zanikają.
-    \item $\tau_{init}$ – początkowa wartość feromonów na wszystkich krawędziach.
-    \item \textbf{\alpha} – wpływ poziomu feromonów na decyzję wyboru ścieżki.
-    \item \textbf{\beta} – wpływ heurystyki lokalnej (np. liczby sąsiadów) na decyzję wyboru ścieżki.
+    \item num\_ants - liczba mrówek w każdej iteracji.
+    \item num\_iterations - liczba iteracji algorytmu.
+    \item \textbf{\rho} - współczynnik parowania feromonów, określający, jak szybko feromony zanikają.
+    \item $\tau_{init}$ - początkowa wartość feromonów na wszystkich krawędziach.
+    \item \textbf{\alpha} - wpływ poziomu feromonów na decyzję wyboru ścieżki.
+    \item \textbf{\beta} - wpływ heurystyki lokalnej (tutaj liczby sąsiadów) na decyzję wyboru ścieżki.
 \end{itemize}
 Na początku należy zainicjować feromony na każdej krawędzi wejściowego grafu.\\
 Dla zdefiniowanej liczby iteracji algorytmu, a następnie dla każdej mrówki:
@@ -811,12 +809,12 @@ gdzie:\\
 - \( \tau_{ij} \) to poziom feromonów na krawędzi \( (i,j) \),\\
 - \( \eta_i = |N(i)| \) to liczba sąsiadów wierzchołka \( i \) będąca heurystyką
 
-    \item rozwiązanie sprawdzane jest pod katem poprawności względem definicji. Sprawdzane jest, czy wierzchołki z wartościami 0, posiadają sasiada z wartościami 2 oraz warunek słabo spójności. Jeśli warunek nie jest spełniony, rozwiązanie otrzymuje nieskończoną wartość wagi, co sprawia, że nie jest brane pod uwagę w rozwiązaniu. W przeciwnym razie sumujemy wartości na wierzchołkach grafu.
+    \item rozwiązanie sprawdzane jest pod katem poprawności względem definicji. Sprawdzane jest, czy wierzchołki z wartościami 0, posiadają sasiada z wartościami 2 oraz warunek słabo spójności. Jeśli warunek nie jest spełniony, rozwiązanie otrzymuje nieskończoną wartość wagi, co sprawia, że nie jest brane pod uwagę w rozwiązaniu. W przeciwnym razie wartości na wierzchołkach grafu są sumowane.
 \end{enumerate}
 Po przejściu wszystkich mrówek, uaktualniamy wartości feromonów na grafie, zmniejszając ich wartość o współczynnik ewaporacji oraz aktualizację wartości feromonów na podstawie najlepszego dotychczasowego rozwiązania.
 
 \[
-\tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij} + \Delta \tau_{ij}
+\tau_{ij} = (1 - \rho) \cdot \tau_{ij} + \Delta \tau_{ij}
 \]
 
 gdzie:\\
@@ -830,12 +828,14 @@ gdzie:\\
 gdzie \( best\_solution^* \) to najlepsze znalezione rozwiązanie, a \( f(best\_solution^*) \) to suma wartości wierzchołków grafu najlepszego rozwiązania.
 
 \subsection{Poprawność}
-Algorytm mrówkowy, choć dąży do najmniejszej wartości sumy wag WCRDF, to nie zakłada, że znalezione zostanie $\gamma^{\text{wc}}_R(G)$, dlatego sprawdzana jest wyłącznie poprawność słabo spójności. Dzieje się to w sposób analogiczny jak w algorytmie Brute Force, co zostało udowodnione w punkcie \ref{subsec:bf_poprawnosc}.
+Algorytm mrówkowy, choć dąży do najmniejszej wartości sumy wag WCRDF, to nie zakłada, że znalezione zostanie $\gamma^{\text{wc}}_R(G)$, dlatego sprawdzana jest wyłącznie poprawność słabo spójności. Dzieje się to w sposób analogiczny jak w algorytmie Brute Force, co zostało pokazane w punkcie \ref{subsec:bf_poprawnosc}.
 
 \subsection{Złożoność i wydajność}
 
-Złożoność wynosi $O(num\_iterations \cdot num\_ants \cdot V^2)$, co sprawia, że algorytm dla większych grafów może być kosztowny obliczeniowo.\\
-Złożoność pamięciowa wynosi $O(V^2+num\_ants \cdot V)$.
+Algorytm działa przez $num\_iterations$ iteracji i dla każdej mrówki $num\_ants$. Budowanie rozwiązania wykonuje się w czasie $O(n)$, gdzie $n$ to liczba wierzchołków grafu $G$, a $m$ to liczba jego krawędzi, sprawdzenie rozwiązania w czasie $O(n^2)$.
+Zatem złożoność wynosi $O(num\_iterations \cdot num\_ants \cdot n^2)$, co sprawia, że algorytm dla większych grafów może być kosztowny obliczeniowo.\\
+W pamięci przechowywane są feromony $O(m)$ oraz rozwiązania $O(num\_ants \cdot n)$, więc
+złożoność pamięciowa wynosi $O(m+num\_ants \cdot n)$.
 
 \subsection{Pseudokod}
 \begin{algorithm}
@@ -953,7 +953,7 @@ Złożoność pamięciowa wynosi $O(V^2+num\_ants \cdot V)$.
 Algorytm ten został również zaimplementowany na podstawie artykułu \cite{ILP}. Zdefiniowano tam następujące kroki algorytmu:
 \begin{enumerate}
     \item Wyznaczenie zbioru dominującego spełniającego warunki zbioru dominującego spójnego, dalej \textit{Connented dominating set} - CDS.
-    \item Dla wierzchołków ze zbioru dominującego przypisywana jest wartość 2, dla pozostałych wierzchołków przypisujemy wartość 0.
+    \item Dla wierzchołków ze zbioru dominującego przypisywana jest wartość 2, dla pozostałych wierzchołków przypisywana jest wartość 0.
 \end{enumerate}
 
 Udowodniono, że takie rozwiązanie jest aproksymacyjne, o współczynniku aproksymacji równym
@@ -962,43 +962,46 @@ $2(1+\epsilon)(1 + \ln(\Delta - 1))$. Aby móc przetestować w pełni działanie
 \begin{enumerate}
     \item Wyznaczenie minimalnego zbioru dominującego spójnego. Problem ten również jest NP-trudny, dlatego zbiór ten wyznaczono przy użyciu programowania liniowego, w celu zachowania poprawności rozwiązania oraz - dla wielu przypadków - w rozsądnym czasie. Ten fragment algorytmu zaimplementowano również na podstawie literatury\cite{CDS}.\\ 
     Niech \( G = (V, E) \) będzie grafem nieskierowanym, gdzie:\\
-        - \( V \) — zbiór wierzchołków,\\
-        - \( E \subseteq V \times V \) — zbiór krawędzi.\\
+        - \( V \) - zbiór wierzchołków,\\
+        - \( E \subseteq V \times V \) - zbiór krawędzi.\\
 
-        Definiujemy funkcję celu jako minimalizację liczby wierzchołków w zbiorze dominującym:
+        Należy zdefiniować funkcję celu jako minimalizację liczby wierzchołków w zbiorze dominującym:
         \[
         Z: \min \sum_{v \in V} x_v
         \]
 
-        Definiujemy następujące zmienne decyzyjne:
-       
-        \begin{itemize}
-            \item \( x_v \in \{0, 1\} \) — czy wierzchołek \( v \in V \) należy do zbioru dominującego (CDS),
-            \item \( f_{uv} \in {Z}_{\geq 0} \) — ilość jednostek przepływu z \( u \) do \( v \), dla każdej krawędzi \( (u, v) \in E \).
-        \end{itemize}
-
-        Oraz ograniczenia:
-
-        Dominacja — każdy wierzchołek musi być zdominowany (sam lub przez sąsiada):
+        Należy zdefiniować następujące zmienne decyzyjne:
         \[
-        \forall v \in V:\quad x_v + \sum_{u \in N(v)} x_u \geq 1
+        x_v =
+        \begin{cases}
+        1, & \text{jeśli } v \in \text{CDS} \\
+        0, & \text{jeśli } v \notin \text{CDS}
+        \end{cases}
+        \]
+        oraz \( f_{uv} \in {Z}_{\geq 0} \) — ilość jednostek przepływu z \( u \) do \( v \), dla każdej krawędzi \( (u, v) \in E \)
+
+        Ograniczenia:
+
+        Dominacja — każdy wierzchołek musi być zdominowany sam lub przez sąsiada:
+        \[
+        \forall v \in V:\quad x_v + \sum_{u \in N(v)} x_u \geq 1, \tag{1}
         \]
 
         Bilans przepływu dla każdego wierzchołka \( v \neq r \):
         \[
-        \forall v \in V \setminus \{r\}:\quad \sum_{u \in N(v)} f_{uv} - \sum_{u \in N(v)} f_{vu} = x_v
+        \forall v \in V \setminus \{r\}:\quad \sum_{u \in N(v)} f_{uv} - \sum_{u \in N(v)} f_{vu} = x_v, \tag{2}
         \]
 
-        Źródło przepływu (root) — wysyła dokładnie \( \sum x_v - 1 \) jednostek przepływu:
+        Źródło przepływu — wysyła dokładnie \( \sum x_v - 1 \) jednostek przepływu:
         \[
-        \sum_{u \in N(r)} f_{ru} = \sum_{v \in V} x_v - 1
+        \sum_{u \in N(r)} f_{ru} = \sum_{v \in V} x_v - 1, \tag{3}
         \]
 
         Ograniczenie przepływu — przepływ możliwy tylko między wierzchołkami należącymi do CDS:
         \[
-        \forall (u, v) \in E:\quad f_{uv} \leq (|V| - 1) \cdot x_u \quad \text{oraz} \quad f_{uv} \leq (|V| - 1) \cdot x_v
+        \forall (u, v) \in E:\quad f_{uv} \leq (|V| - 1) \cdot x_u \quad \text{oraz} \quad f_{uv} \leq (|V| - 1) \cdot x_v, \tag{4}
         \]
-    \item Dla wierzchołków CDS przypisywana jest wartość 2, dla pozostałych wierzchołków przypisujemy wartość 0.
+    \item Dla wierzchołków CDS przypisywana jest wartość 2, dla pozostałych wierzchołków przypisywana jest wartość 0.
 \end{enumerate}
 
 \subsection{Poprawność}
@@ -1009,28 +1012,28 @@ Algorytm opiera się na wyznaczeniu spójnego zbioru dominującego (CDS) przy po
 
 Model zawiera zmienne binarne \( x_v \) określające, czy wierzchołek \( v \in V \) należy do zbioru dominującego. Warunki modelu:
 
-\begin{enumerate}
-    \item \textbf{Dominacja:} dla każdego wierzchołka \( v \in V \), zachodzi:
+\begin{itemize}
+    \item Dominacja: dla każdego wierzchołka \( v \in V \), zachodzi:
     \[
     x_v + \sum_{u \in N(v)} x_u \geq 1
     \]
-    — gwarantuje, że każdy wierzchołek jest albo w CDS, albo sąsiaduje z wierzchołkiem z CDS.
+    co gwarantuje, że każdy wierzchołek jest albo w CDS, albo sąsiaduje z wierzchołkiem z CDS.
 
-    \item \textbf{Spójność:} warunki przepływu zapewniają, że zbiór \( \{v : x_v = 1\} \) tworzy spójny podgraf:
+    \item Spójność: warunki przepływu zapewniają, że zbiór \( \{v : x_v = 1\} \) tworzy spójny podgraf:
     \begin{itemize}
-        \item Jedno źródło (korzeń \( r \)) wysyła \( \sum x_v - 1 \) jednostek przepływu.
+        \item Jedno źródło  \( r \) wysyła \( \sum x_v - 1 \) jednostek przepływu.
         \item Każdy inny wierzchołek w CDS musi otrzymać dokładnie jedną jednostkę.
         \item Przepływ \( f_{uv} \) jest dozwolony tylko wtedy, gdy \( x_u = 1 \) i \( x_v = 1 \).
     \end{itemize}
     Taka konstrukcja odpowiada przesyłaniu przepływu po drzewie rozpinającym na CDS, co zapewnia jego spójność.
-\end{enumerate}
+\end{itemize}
 
 \subsection{Złożoność i wydajność}
 
-W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O(2^n)$, aby przeszukać całą przestrzeń binarną. Model zawiera $n$ zmiennych $x_v$ oraz $2m$ zmiennych przepływu $f_{uv}$. Dodatkowo zawiera $n + 2m$ ograniczeń. Zatem liczba zmiennych oraz ograniczeń dają złożoności $O(∣n+m)$.
+W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O(2^n)$, aby przeszukać całą przestrzeń binarną. Model zawiera $n$ zmiennych $x_v$ oraz $2m$ zmiennych przepływu $f_{uv}$. Dodatkowo zawiera $n + 2m$ ograniczeń. Zatem liczba zmiennych oraz ograniczeń daje złożoność $O(n+m)$.
 
 \subsection{Pseudokod}
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption*{Algorytm aproksymacyjny}
     \begin{algorithmic}[1]
         \Function{ComputeDominatingSet}{$G$}
@@ -1058,7 +1061,7 @@ W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O
             \State Ensure: $f_{uv} \leq (|N|-1) \cdot x_v$ \Comment{Warunki spójności}
         \EndFor
     
-        \State Solve ILP
+        \State Solve
         \State \Return $\{v \in N : x_v = 1\}$
     \EndFunction
         \Function{Execute}{$G$}
@@ -1081,22 +1084,22 @@ W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O
     \subsection{Działanie}
     
     \begin{enumerate}
-        \item Poczatkowo definiujemy zbiory wierzchołków chronionych (początkowo pusty) i niechronionych (początkowo wszystkie wierzchołki grafu).
-        \item Wybieramy wierzchołek o największym stopniu, jako wierzchołek startowy. Ustawiamy mu wartość 2, a następnie dodajemy go do zbioru wierzchołków chronionych, usuwając go z niechronionych. Analogicznie postepujemy z sąsiadami tego wierzchołka, tj. usuwamy ich ze zbioru wierzchołków niechronionych, dodając do chronionych. 
+        \item Początkowo nalezy zdefiniować zbiory wierzchołków chronionych (początkowo pusty) i niechronionych (początkowo wszystkie wierzchołki grafu).
+        \item Wybierany jest wierzchołek o największym stopniu, jako wierzchołek startowy. Przypisywana mu jest wartość 2, a następnie jest on dodawany do zbioru wierzchołków chronionych, usuwając go z niechronionych. Analogicznie postepowanie jest z sąsiadami tego wierzchołka, tj. usunięcie ich ze zbioru wierzchołków niechronionych, dodając do chronionych. 
         \item Nastepnie, dopóki istnieją wierzchołki w zbiorze wierzchołków niechronionych:
         \begin{itemize}
-            \item Iterujemy po zbiorze wierzchołków chronionych, wyznaczając ich sąsiadów. Jeśli znajdzie się wierzchołek niechroniony, dodajemy go do zbioru wierzchołków ,,kandydujących".
-            \item Jeśli zbiór ,,kandydatów" jest pusty, wychodzimy z pętli,
-            \item W przypadku znalezienia ,,kandydatów", wybieramy wierzchołek, który zabezpieczy jak najwięcej wierzchołków jeszcze niechronionych.
-            \item Następnie sprawdzamy, czy będą istnieć nowo-ochronieni sąsiedzi. Jeśli nie, to nie ma potrzeby ustawiać temu wierzchołkowi wartości 2, ustawiamy mu wartość 1. Jeśli istnieją tacy sasiedzi, to ustawiamy wierzchołkowi wartość 2. 
+            \item Iteracja po zbiorze wierzchołków chronionych, wyznaczając ich sąsiadów. Jeśli znajdzie się wierzchołek niechroniony, jest on dodawany do zbioru wierzchołków ,,kandydujących''.
+            \item Jeśli zbiór ,,kandydatów'' jest pusty, pętla jest przerywana,
+            \item W przypadku znalezienia ,,kandydatów'', wybierany jest wierzchołek, który zabezpieczy jak najwięcej wierzchołków jeszcze niechronionych.
+            \item Następnie wykonywane jest sprawdzenie, czy będą istnieć nowo-ochronieni sąsiedzi. Jeśli nie, to nie ma potrzeby ustawiać temu wierzchołkowi wartości 2, przypisywana jest mu wartość 1. Jeśli istnieją tacy sasiedzi, to przypisywana jest temu wierzchołkowi wartość 2. 
         \end{itemize}
     \end{enumerate}
 
     \subsection{Poprawność}
 
-    Algorytm zachłanny działa dla grafów spójnych i nie gwarantuje rozwiązania optymalnego, natomiast zapewnia, że zwracane jest WCRDF. Dowód poprawności opiera się na dwóch kluczowych własnościach:
+    Algorytm zachłanny działa dla grafów spójnych i nie gwarantuje rozwiązania optymalnego, natomiast zapewnia, że zwracane jest WCRDF zgodne z definicją. Dowód poprawności opiera się na dwóch kluczowych własnościach:
 
-    \paragraph{1. Warunek dominacji rzymskiej}
+    \paragraph{Warunek dominacji rzymskiej}
 
     Algorytm rozpoczyna od przypisania wartości 2 wierzchołkowi o największym stopniu oraz zabezpieczenia jego sąsiadów. Następnie, dopóki istnieją wierzchołki niechronione (czyli z przypisaną wartością 0), wybierany jest wierzchołek $v$, który dominuje jak największą liczbę sąsiadów.
 
@@ -1109,13 +1112,13 @@ W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O
 
     W ten sposób każdy wierzchołek z wartością $f(v) = 0$ musi być sąsiadem jakiegoś wierzchołka z $f = 2$, ponieważ algorytm nie zatrzymuje się, dopóki zbiór niechronionych wierzchołków nie jest pusty.
 
-    \paragraph{2. Warunek słabej spójności}
+    \paragraph{Warunek słabo spójności}
 
     Zbiór $D = \{v \in V : f(v) \in \{1,2\} \}$ jest budowany iteracyjnie. W każdej iteracji dodawany jest do niego wierzchołek $v$, który jest sąsiadem jakiegoś wcześniej dodanego wierzchołka, wybranego ze zbioru ,,kandydatów".
 
     Zatem:
     \begin{itemize}
-        \item pierwszy wierzchołek startowy tworzy zalążek spójnego zbioru $D$,
+        \item pierwszy wierzchołek startowy tworzy początek spójnego zbioru $D$,
         \item każdy kolejny dodany wierzchołek jest połączony z wcześniejszym,
         \item czyli zbiór $D$ rozszerza się w sposób, który zapewnia spójność grafu słabo indukowanego przez $D$.
     \end{itemize}
@@ -1126,7 +1129,7 @@ W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O
 
     Załóżmy, że $n = |V|$ to liczba wierzchołków grafu $G$ oraz $m = |E|$ to liczba krawędzi grafu $G$. 
     Inicjacja wszystkich zmiennych wykonuje się w czasie liniowym. Iteracyjna ochrona wszystkich wierzchołków w najgorszym przypadku może wynieść $O(n)$, bo każda iteracja zabezpiecza przynajmniej jeden wierzchołek. Dodatkowo iterujemy przez niezabezpieczone jeszcze wierzchołki w maksymalnie $O(n)$ oraz ich sąsiadów, czyli w najgorszym wypadku po wszystkich krawędziach grafu - $O(m)$. Dodatkowe aktualizacje w głównej pętli wykonują się w czasie maksymalnie liniowym. Dlatego ostatecznie złożoność obliczeniowa wynosi $O(n(m+n))$. Zakładając, że dla grafów rzadkich $m=O(n)$, a dla grafów gęstych $m=O(n^2)$ to złożoność czasowa wynosi odpowiednio $O(n^2)$ oraz $O(n^3)$.\\
-    Złożoność pamięciowa obejmuje struktury danych przechowujące wierzchołki grafu wejściowego, dlatego wynosi ona $O(n)$.\\
+    Złożoność pamięciowa obejmuje struktury danych przechowujące graf wejściowy, dlatego wynosi ona $O(n+m)$.\\
     Algorytm nie jest dokładny, natomiast w stosunku do innych proponowanych algorytmów, charakteryzuje się wielomianową złożonością obliczeniową.
     
     \subsection{Pseudokod}
