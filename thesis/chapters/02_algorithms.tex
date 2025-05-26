@@ -397,7 +397,7 @@ Definiujemy funkcję celu, czyli minimalizację wagi zbioru dominującego rzymsk
 \]
 
 oraz ograniczenia:\\
-Wierzchołek o wartości 0, bedzie miał co najmniej jednego sasiada z wartością 2:
+Wierzchołek o wartości 0, bedzie miał co najmniej jednego sąsiada z wartością 2:
 \[
     a_v + \sum_{k \in N_G(v)} b_k \geq 1, \quad v \in V, \tag{1}
 \]
@@ -809,7 +809,7 @@ gdzie:\\
 - \( \tau_{ij} \) to poziom feromonów na krawędzi \( (i,j) \),\\
 - \( \eta_i = |N(i)| \) to liczba sąsiadów wierzchołka \( i \) będąca heurystyką
 
-    \item rozwiązanie sprawdzane jest pod katem poprawności względem definicji. Sprawdzane jest, czy wierzchołki z wartościami 0, posiadają sasiada z wartościami 2 oraz warunek słabo spójności. Jeśli warunek nie jest spełniony, rozwiązanie otrzymuje nieskończoną wartość wagi, co sprawia, że nie jest brane pod uwagę w rozwiązaniu. W przeciwnym razie wartości na wierzchołkach grafu są sumowane.
+    \item rozwiązanie sprawdzane jest pod katem poprawności względem definicji. Sprawdzane jest, czy wierzchołki z wartościami 0, posiadają sąsiada z wartościami 2 oraz warunek słabo spójności. Jeśli warunek nie jest spełniony, rozwiązanie otrzymuje nieskończoną wartość wagi, co sprawia, że nie jest brane pod uwagę w rozwiązaniu. W przeciwnym razie wartości na wierzchołkach grafu są sumowane.
 \end{enumerate}
 Po przejściu wszystkich mrówek, uaktualniamy wartości feromonów na grafie, zmniejszając ich wartość o współczynnik ewaporacji oraz aktualizację wartości feromonów na podstawie najlepszego dotychczasowego rozwiązania.
 
