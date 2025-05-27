@@ -1,8 +1,8 @@
 \chapter{Wprowadzenie teoretyczne}
 
 \section{Geneza historyczna}
-Problem swoją nazwę zawdzięcza imperium rzymskiemu. Po raz pierwszy został opisany w artykule ,,Defend Roman Empire!" \cite{defendRomanEmpire}.
-Obrazuje on problem następująco: Każdy wierzchołek grafu reprezentuje pewną lokalizację (miasto, wzgórze) w Imperium Rzymskim. Lokalizacja (wierzchołek $v$) jest niechroniona, jeśli nie stacjonują w niej żadne legiony wojska ($f(v) = 0$) oraz chroniona jeśli ($f(v) \in {1,2} $). Wartości te oznaczają liczbę legionów stacjonujących w danej lokalizacji. Niechroniona lokalizacja może być ochroniona poprzez wysłanie legionu stacjonującego w lokalizacji sąsiadującej. W czwartym wieku cesarz Konstantyn Wielki wydał dekret zakazujący przemieszczenia się legionu do lokalizacji sąsiadującej, jeśli sprawi to, że aktualna lokalizacja pozostanie niechroniona. Dlatego, żeby móc wysłać legion do sąsiedniej lokacji, w aktualnej muszą stacjonować dwa legiony. Oczywiście, cesarzowi zależało na jak najmniejszych kosztach utrzymywania legionów, a zatem, żeby było ich jak najmniej \cite{theoryWCRDF}. Problem możemy zatem zinterpretować grafowo, gdzie lokalizacje to wierzchołki grafu, liczba legionów to wartości na wierzchołkach. W celu zachowania ciągłości efektywnej komunikacji między legionami wymagana jest słaba spójność zbioru dominującego.
+Problem swoją nazwę zawdzięcza imperium rzymskiemu. Po raz pierwszy został opisany w artykule ,,Defend Roman Empire!'' \cite{defendRomanEmpire}.
+Obrazuje on problem następująco: Każdy wierzchołek grafu reprezentuje pewną lokalizację (miasto, wzgórze) w Imperium Rzymskim. Lokalizacja (wierzchołek $v$) jest niechroniona, jeśli nie stacjonują w niej żadne legiony wojska ($f(v) = 0$) oraz chroniona jeśli ($f(v) \in {1,2} $). Wartości te oznaczają liczbę legionów stacjonujących w danej lokalizacji. Niechroniona lokalizacja może być ochroniona poprzez wysłanie legionu stacjonującego w lokalizacji sąsiadującej. W czwartym wieku cesarz Konstantyn Wielki wydał dekret zakazujący przemieszczenia się legionu do lokalizacji sąsiadującej, jeśli sprawi to, że aktualna lokalizacja pozostanie niechroniona. Dlatego, żeby móc wysłać legion do sąsiedniej lokacji, w aktualnej muszą stacjonować dwa legiony. Oczywiście, cesarzowi zależało na jak najmniejszych kosztach utrzymywania legionów, a zatem, żeby było ich jak najmniej \cite{theoryWCRDF}. Problem można zatem zinterpretować grafowo, gdzie lokalizacje to wierzchołki grafu, liczba legionów to wartości na wierzchołkach. W celu zachowania ciągłości efektywnej komunikacji między legionami wymagana jest słaba spójność zbioru dominującego.
 
 \section{Definicja problemu}
 Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadzając następujące pojęcia \cite{theoryWCRDF}:
@@ -22,7 +22,7 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
 \end{definition}
 
 \begin{definition}
-    Wagę funkcji dominującej rzymskiej słabo spójnej definiujemy jako $f(V) = \sum_{u \in V}{f(u)}$. Minimalną wartość tej funkcji nazywamy liczbą dominowania rzymskiego słabo spójnego - $\gamma_{R}^{\text{wc}}(G)$. 
+    Wagę funkcji dominującej rzymskiej słabo spójnej definiujemy jako $f(V) = \sum_{u \in V}{f(u)}$. Najmniejszą wartość tej funkcji nazywamy liczbą dominowania rzymskiego słabo spójnego - $\gamma_{R}^{\text{wc}}(G)$. 
 \end{definition}
 
 \begin{definition}
@@ -36,13 +36,13 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
     \label{fig:przykladWCRDF}
 \end{figure}
 
-Od tego momentu zbiór dominujący rzymski słabo spójny będzie definiowany jako $WCRDS$, funkcja dominowania rzymskiego słabo spójnego to $WCRDF$. Problem dominowania rzymskiego słabo spójnego będzie oznaczany jako $WCRDP$.
+Od tego momentu funkcja dominowania rzymskiego słabo spójnego będzie definiowana jako $WCRDF$. Problem dominowania rzymskiego słabo spójnego będzie oznaczany jako $WCRDP$.
 
 \section{Złożoność obliczeniowa}
-Poniższy szkic dowodu został przedstawiony w artykule: ,,Weakly connected Roman domination in graphs"  \cite{theoryWCRDF}. 
-Za pomocą redukcji alfa problem WCRDF zostanie sprowadzony do NP-zupełnego problemu dokładnego pokrycia 3 zbiorami (Exact Cover by 3-Sets, X3C) \cite{X3C}, czym zostanie udowodniona NP-zupełność wersji decyzyjnej WCRDF. Naturalnie, wersja minimalizycjna - poszukiwanie $\gamma_{R}^{\text{wc}}(G)$ jest wtedy NP-trudne.\\
+Poniższy szkic dowodu został przedstawiony w artykule: ,,Weakly connected Roman domination in graphs'' \cite{theoryWCRDF}. 
+Za pomocą redukcji alfa NP-zupełny problem dokładnego pokrycia 3 zbiorami (Exact Cover by 3-Sets, X3C) \cite{X3C} zostanie sprowadzony do problemu WCRDF, czym zostanie udowodniona NP-zupełność jego wersji decyzyjnej. Naturalnie, wersja minimalizycjna - poszukiwanie $\gamma_{R}^{\text{wc}}(G)$ jest wtedy NP-trudne.\\
 \textbf{Dane:} Spójny graf $G$ oraz dodatnia liczba całkowita $k$.\\
-\textbf{Pytanie:} Czy istnieje słabo spójna funkcja dominacji rzymskiej w grafie $G$ o wadze co najwyżej $k$?\\
+\textbf{Pytanie:} Czy istnieje słabo spójna funkcja dominująca rzymska w grafie $G$ o wadze co najwyżej $k$?\\
 
 \textbf{Problem WCRDF jest NP-zupełny, nawet dla grafów podziału (graf, w którym można wydzielić klikę oraz zbiór niezależny) oraz grafów dwudzielnych.}\\
 
@@ -53,7 +53,7 @@ Redukcja jest przeprowadzana z problemu dokładnego pokrycia 3-zbiorami (Exact C
 
 Dla każdego elementu $x_i \in X$ oraz zbioru $C_j \in \mathcal{C}$ tworzone są wierzchołki. Dodaje się krawędź między $x_i$ a $C_j$ wtedy i tylko wtedy, gdy $x_i \in C_j$. Dodatkowo wierzchołki odpowiadające zbiorom $C_j$ tworzą klikę $K_m$ (poprzez połączenie tych wierzchołków krawędziami). Przyjęto: $k = 2q$.
 
-Można wykazać, że $\mathcal{C}$ zawiera dokładne pokrycie zbioru $X$ wtedy i tylko wtedy, gdy graf $G$ posiada słabo spójną funkcję dominacji rzymskiej o wadze co najwyżej $k$.\\
+Można wykazać, że $\mathcal{C}$ zawiera dokładne pokrycie zbioru $X$ wtedy i tylko wtedy, gdy graf $G$ posiada słabo spójną funkcję dominującą rzymską o wadze co najwyżej $k$.\\
 
 Przykładową konstrukcję można zdefiniować następująco:
 \begin{align*}
@@ -72,8 +72,8 @@ q &= 2 \\
 k &= 2q = 4
 \end{align*}
 
-Zgodnie z konstrukcją, wierzchołki $x$ zostaną połączone z wierzchołkami $C$, zgodnie z  $x_i \in C_j$. W tym przypadku liczba zbiorów dokładnego pokrycia 3-zbiorami wynosi 2 i są to zbiory $C_1$ oraz $C_2$. Je również należy połączyć krawędzią. Wierzchołki należące do WCRDS to $C_1$ oraz $C_2$. Skonstruowany graf $G$ składa się z wierzchołków zbioru $X$ i $C_1$ oraz $C_2$. Zgodnie z WCRDF, nadanie wierzchołkom $C_1$ oraz $C_2$ wartości 2 spełnia jego definicję. \\
-Poniżej umieszczono rysunek poglądowy (na czerwono wierzchołki należące do WCRDS, a wierzchołek $C_2$ nie należy do grafu $G$, istnieje na rysunku tylko dla celów poglądowych):
+Zgodnie z konstrukcją, wierzchołki $x$ zostaną połączone z wierzchołkami $C$, zgodnie z  $x_i \in C_j$. W tym przypadku liczba zbiorów dokładnego pokrycia 3-zbiorami wynosi 2 i są to zbiory $C_1$ oraz $C_3$. Je również należy połączyć krawędzią. Wierzchołki należące do zbioru dominującego to $C_1$ oraz $C_3$. Skonstruowany graf $G$ składa się z wierzchołków zbioru $X$ i $C_1$ oraz $C_3$. Zgodnie z WCRDF, nadanie wierzchołkom $C_1$ oraz $C_3$ wartości 2 spełnia jego definicję. \\
+Poniżej umieszczono rysunek poglądowy (na czerwono wierzchołki należące do zbioru dominującego):
 
 \begin{center}
 \begin{tikzpicture}[
@@ -99,22 +99,24 @@ Poniżej umieszczono rysunek poglądowy (na czerwono wierzchołki należące do 
 \draw (C1) -- (x1);
 \draw (C1) -- (x2);
 \draw (C1) -- (x3);
+\draw (C1) -- (C2);
 
-\draw[dotted] (C2) -- (x2);
-\draw[dotted] (C2) -- (x4);
-\draw[dotted] (C2) -- (x5);
+\draw (C2) -- (x2);
+\draw (C2) -- (x4);
+\draw (C2) -- (x5);
 
 \draw (C3) -- (x4);
 \draw (C3) -- (x5);
 \draw (C3) -- (x6);
+\draw (C3) -- (C2);
 \draw (C3) to[bend right] (C1);
 
 \end{tikzpicture}
 \end{center}
 
-Aby uzyskać wynik również dla grafów dwudzielnych, naleźy zmodyfikować konstrukcję: zamiast dodawać krawędzie między wierzchołkami $C_j$, dodajemy cztery nowe wierzchołki $y_0, y_1, y_2, y_3$ oraz krawędzie $y_0y_1$, $y_0y_2$, $y_0y_3$ i $y_0C_j$ dla każdego $j$. Ustawiamy wtedy $k = 2q + 2$.\\
+Aby uzyskać wynik również dla grafów dwudzielnych, naleźy zmodyfikować konstrukcję: zamiast dodawać krawędzie między wierzchołkami $C_j$, dodane zostaną cztery nowe wierzchołki $y_0, y_1, y_2, y_3$ oraz krawędzie $y_0y_1$, $y_0y_2$, $y_0y_3$ i $y_0C_j$ dla każdego $j$. Wtedy $k = 2q + 2$.\\
 
-Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek. k będzie wynosiło 6.\\
+Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek. $k$ będzie wynosiło 6.\\
 
 \begin{center}
 \begin{tikzpicture}[
@@ -147,9 +149,9 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 \draw (C1) -- (x2);
 \draw (C1) -- (x3);
 
-\draw[dotted] (C2) -- (x2);
-\draw[dotted] (C2) -- (x4);
-\draw[dotted] (C2) -- (x5);
+\draw (C2) -- (x2);
+\draw (C2) -- (x4);
+\draw (C2) -- (x5);
 
 \draw (C3) -- (x4);
 \draw (C3) -- (x5);
@@ -157,6 +159,7 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 
 % Krawędzie od y0 do C
 \draw (y0) -- (C1);
+\draw (y0) -- (C2);
 \draw (y0) -- (C3);
 
 % Krawędzie y0-y1/y2/y3
@@ -168,15 +171,14 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 \end{center}
 
 \section{Przegląd literatury}
-W 2004 roku zdefiniowano formalnie funkcję dominowania rzymskiego (RDF) \cite{RDF} i od tego czasu w wielu publikacjach analizowano właściwości tego parametru oraz inne wersje dominowania rzymskiego, m.in. silną, mieszaną, totalną dominację rzymską.\\ 
-Henning i Hedetniemi w 2003 roku udowodnili, że problem słabego dominowania rzymskiego jest NP-zupełny w wersji decyzyjnej, nawet dla grafów dwudzielnych \cite{NEW_STRATEGY}. \\ 
-W artykule z 2019 roku \cite{theoryWCRDF} wprowadzono pojęcie słabo spójnego dominowania rzymskiego. Zdefiniowano WCRDF oraz $\gamma_{R}^{\text{wc}}(G)$ oraz następujące właściwości:
+W 2004 roku zdefiniowano formalnie funkcję dominowania rzymskiego (RDF) \cite{RDF} i od tego czasu w wielu publikacjach analizowano właściwości tego parametru oraz inne wersje dominowania rzymskiego, m.in. silne, mieszane, totalne dominowanie rzymskie.\\ 
+W artykule z 2019 roku \cite{theoryWCRDF} wprowadzono pojęcie słabo spójnego dominowania rzymskiego. Zdefiniowano WCRDF oraz $\gamma_{R}^{\text{wc}}(G)$ oraz zbadano następujące właściwości:
 \begin{itemize}
     \item Dla każdego spójnego grafu $G$ zachodzi:
     \[
     \gamma_{\text{wc}}(G) \leq \gamma_{R}^{\text{wc}}(G) \leq 2\gamma_{\text{wc}}(G)
     \]
-    co oznacza, że liczba słabo spójnej dominacji rzymskiej jest ograniczona od dołu przez klasyczną liczbę słabo spójnej dominacji oraz od góry przez jej podwojenie.
+    co oznacza, że liczba słabo spójnego dominowania rzymskiego jest ograniczona od dołu przez klasyczną liczbę słabo spójnej dominacji oraz od góry przez jej podwojenie.
 
     \item Dla spójnego grafu $G$, $\gamma_{\text{wc}}(G) = \gamma_{R}^{\text{wc}}(G)$ zachodzi wtedy i tylko wtedy, gdy $G = K_1$.
 
@@ -186,16 +188,18 @@ W artykule z 2019 roku \cite{theoryWCRDF} wprowadzono pojęcie słabo spójnego 
     \]
     z równością wtedy i tylko wtedy, gdy $G \in \{K_1, K_2\}$.
 
-    \item Jeżeli $\gamma_{R}^{\text{wc}}(G) < n$ oraz $f = (V_0, V_1, V_2)$ jest funkcją minimalną WCRDF, to zachodzi:
+    \item Jeżeli $\gamma_{R}^{\text{wc}}(G) < n$ oraz $f = (V_0, V_1, V_2)$ jest funkcją WCRDF, to zachodzi:
     \[
-    |V_0| > 0 \quad \text{oraz} \quad |V_2| > 0
-    \]
+    |V_0| > 0 \quad \text{oraz} \quad |V_2| > 0,
+    \] 
     czyli co najmniej jeden wierzchołek musi mieć wartość 0, a co najmniej jeden wartość 2.
 \end{itemize}
 Dodatkowo pokazano, że problem ten jest NP-zupełny, nawet dla grafów dwudzielnych.\\
-W 2021 rozszerzono wiedzę z poprzedniej publikacji o charakteryzację słabo spójnych drzew rzymskich oraz pokazano, że sprawdzenie, czy graf dwudzielny jest rzymski słabo spójny jest co-NP-trudne \cite{PROGRESS}.\\
-W 2021 roku Chakradhar i współautorzy zaproponowali dwa nowe modele programowania liniowego całkowitoliczbowego oraz algorytm $2(1+\epsilon)(1 + \ln(\Delta - 1))$-aproksymacyjny. W ramach niniejszej pracy, analizowane będą te dwa modele programowania liniowego oraz aproksymacyjny \cite{ILP}. Dodatkowo analizowane będą propozycje własne rozwiązania tego problemu.\\
-W 2023 roku ukazał się artykuł proponujący GRASP (Greedy Randomized Adaptive Search Procedure) - zachłanna losowa procedura adaptacyjnego przeszukiwania dla problemu znajdowania $\gamma_{R}^{\text{wc}}(G)$, poprzez zdefiniowanie funkcji zachłannych: Dscore (dominacja) i Nscore (sąsiedztwo), strategie tabu w celu uniknięcia zapętlenia oraz lokalnych przeszukiwań w celu optymalizacji rozwiązania. Jednakże, autorzy artykułu źle zrozumieli definicję WCRDP, dlatego jego wyniki nie zostały dalej analizowane \cite{GRASP}.\\
+W 2021 rozszerzono wiedzę z poprzedniej publikacji o charakterystykę słabo spójnych drzew rzymskich oraz pokazano, że sprawdzenie, czy graf dwudzielny jest rzymski słabo spójny jest co-NP-trudne \cite{PROGRESS}.
+
+W 2021 roku Chakradhar i współautorzy zaproponowali dwa nowe modele programowania liniowego całkowitoliczbowego oraz algorytm $2(1+\epsilon)(1 + \ln(\Delta - 1))$-aproksymacyjny. W ramach niniejszej pracy, analizowane będą te dwa modele programowania liniowego oraz algorytm aproksymacyjny \cite{ILP}. Dodatkowo analizowane będą propozycje własne rozwiązania tego problemu.\\
+W 2023 roku ukazał się artykuł proponujący GRASP (Greedy Randomized Adaptive Search Procedure) - zachłanna losowa procedura adaptacyjnego przeszukiwania dla problemu znajdowania $\gamma_{R}^{\text{wc}}(G)$, poprzez zdefiniowanie funkcji zachłannych: Dscore (dominowanie) i Nscore (sąsiedztwo), strategie tabu w celu uniknięcia zapętlenia oraz lokalnych przeszukiwań w celu optymalizacji rozwiązania. Jednakże, autorzy artykułu źle zrozumieli definicję WCRDP, dlatego jego wyniki nie zostały dalej analizowane \cite{GRASP}.
+
 Literatura proponuje również praktyczne zastosowanie rozwiązania tego problemu w obecnych czasach. Mianowicie, kosztowne pojazdy służb ratunkowych powinny być rozmieszczane tak, aby były w stanie udzielić pomocy potrzebującym, przy możliwie dużej redukcji kosztów utrzymania takiego pojazdu. Dlatego, na wzór legionów rzymskich, w budynkach służb ratunkowych powinien znajdować się pojazd, bądź być możliwość wypożyczenia go z sąsiedniej (najbliższej) lokalizacji służb ratunkowych \cite{improvedILP}.
 
 \section{Metody badań}
@@ -210,7 +214,7 @@ W celu implementacji i testowania wydajności oraz poprawności algorytmów, stw
     \item itertools - do zagadnień kombinatorycznych
 \end{itemize}
 
-Program umożliwia wprowadzenie dowolnego grafu w postaci listy wierzchołków oraz krawędzi, jak i wygenerowanie losowego grafu. Następnie wybrane algorytmy analizują dany graf poprzez przypisywanie odpowiednich wartości wierzchołkom oraz wyliczania liczby dominowania rzymskiego słabo spójnego. Dla każdego z algorytmów wyliczany i zapisywany jest ich czas działania. Na końcu program wyświetla wykres z nadanymi wartościami na wierzchołkach.\\
+Program umożliwia wprowadzenie dowolnego grafu w postaci listy wierzchołków oraz krawędzi, jak i wygenerowanie losowego grafu. Następnie wybrane algorytmy analizują dany graf poprzez przypisywanie odpowiednich wartości wierzchołkom oraz wyliczania liczby dominowania rzymskiego słabo spójnego. Dla każdego z algorytmów wyznaczany i zapisywany jest ich czas działania. Na końcu program wyświetla rysunek grafu z nadanymi wartościami na wierzchołkach, odpowiadającym WCRDF.\\
 
 W celu przeprowadzenia testów wygenerowano oraz zapisano w plikach grafy następujących klas: 
 \begin{itemize}
@@ -220,7 +224,7 @@ W celu przeprowadzenia testów wygenerowano oraz zapisano w plikach grafy nastę
     \item bezskalowe - \textit{nx.barabasi\_albert\_graph()} - grafy nieregularne, z powodu hipotetycznych zastosowań praktycznych, dobrze odzwierciedlają naturalnie powstające na świecie grafy np. sieci społecznościowych, komputerowych, energetycznych.
 \end{itemize}
 
-Grafy te wygenerowano kilka razy dla konkretnej liczby wierzchołków. Liczby wierzchołków, dla których przeprowadzano analizę to $[10, 20, 30, 40, 50]$. Wszystkie algorytmy zostały użyte dla tego samego zestawu grafów, w celu zachowania miarodajności przy analizie porównawczej. Wszystkie wyniki działania algorytmów na wszystkich wygenerowanych przykładowych grafach zostały zapisane w pliku csv. Zapisano tam również pomiary czasu oraz WCRDF oraz wyznaczoną $\gamma_{R}^{\text{wc}}(G)$. Dodatkowo zapisano też wykresy grafów wraz z przypisanymi wartościami WCRDF.\\
+Grafy te wygenerowano kilka razy dla konkretnej liczby wierzchołków. Liczby wierzchołków, dla których przeprowadzano analizę to $[10, 20, 30, 40, 50]$. Wszystkie algorytmy zostały użyte dla tego samego zestawu grafów, w celu zachowania miarodajności przy analizie porównawczej. Wszystkie wyniki działania algorytmów na wszystkich wygenerowanych przykładowych grafach zostały zapisane w pliku csv. Zapisano tam również pomiary czasu, WCRDF oraz wyznaczoną $\gamma_{R}^{\text{wc}}(G)$. Dodatkowo zapisano też rysunki grafów wraz z przypisanymi wartościami WCRDF.\\
 
 Czas mierzono za pomocą funkcji \textit{time.perf\_counter\_ns()}, dając wyniki w nanosekundach o dokładności pomiaru 100 [ns]. Wyniki pomiaru czasu działania są uśrednione, wykonywane pięciokrotnie, aby uniknąć niespodziewanych odchyleń.\\
 

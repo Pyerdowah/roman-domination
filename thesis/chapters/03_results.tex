@@ -2,15 +2,15 @@
 
 \section{Wprowadzenie}
 
-Dla wszystkich, zaimplementowanych w poprzednim rozdziale algorytmów przeprowadzono testy pokazujące skuteczność ich działania na wybranych klasach grafów. Na początku przeprowadzono testy dla różnych kombinacji hiperparametrów algorytmu mrówkowego, w celu uzyskania najlepszego zestawu parametrów dla tego problemu, który będzie następnie wykorzystywany w dalszych rozważaniach. Następnie przedstawiono wyniki dla wybranych klas grafów:
+Dla wszystkich zaimplementowanych w poprzednim rozdziale algorytmów przeprowadzono testy pokazujące skuteczność ich działania na wybranych klasach grafów. Na początku przeprowadzono testy dla różnych kombinacji hiperparametrów algorytmu mrówkowego, w celu uzyskania najlepszego zestawu parametrów dla tego problemu, który będzie następnie wykorzystywany w dalszych rozważaniach. Następnie przedstawiono wyniki dla wybranych klas grafów:
 \begin{itemize}
     \item grafy rzadkie
     \item grafy gęste
     \item drzewa
-    \item grafy bezskalowe
+    \item grafy bezskalowe,
 \end{itemize}
-Grafy każdej klasy wygenerowano z następującą liczbą wierzchołków: $[10, 20, 30, 40, 50]$, dla każdej liczby wierzchołków po 3 razy. Dla spójności, wszystkie algorytmy, tam gdzie to ma sens, testowano na tych samych wygenerowanych grafach. Dalej w tabelach zostaną przedstawione wyniki poglądowe jednego z trzech takich zestawów. 
-Wszystkie średnie pomiary czasów w tabelach przedstawiono w sekundach. Pomiary dla każdego przypadku wykonywano pięciokrotnie w celu otrzymania wiarygodnego wyniku. Pomiary mierzono w nanosekundach z niepewnością pomiaru wynoszącą 100 nanosekund, wykorzystując funkcję \textit{time.perf\_counter\_ns()}. Dodatkowo dla każdej klasy przedstawiono wykresy grafów z WCRDF po użyciu algorytmów oraz wykres porównujący czas działania każdego z algorytmów w zależności od liczby wierzchołków, w skali logarytmicznej.\\
+Grafy każdej klasy wygenerowano z następującą liczbą wierzchołków: ${10, 20, 30, 40, 50}$, dla każdej liczby wierzchołków po 3 razy. Dla spójności, wszystkie algorytmy, tam gdzie to ma sens, testowano na tych samych wygenerowanych grafach. Dalej w tabelach zostaną przedstawione wyniki poglądowe jednego z trzech takich zestawów. 
+Wszystkie średnie pomiary czasów w tabelach przedstawiono w sekundach. Pomiary dla każdego przypadku wykonywano pięciokrotnie w celu otrzymania wiarygodnego wyniku. Pomiary mierzono w nanosekundach z niepewnością pomiaru wynoszącą 100 nanosekund, wykorzystując funkcję \textit{time.perf\_counter\_ns()}. Dodatkowo dla każdej klasy przedstawiono rysunki grafów z WCRDF po użyciu algorytmów oraz wykres porównujący czas działania każdego z algorytmów w zależności od liczby wierzchołków, w skali logarytmicznej.\\
 W późniejszej części rozdziału rozważano również skuteczność algorytmów wyznaczających prawidłowe WCRDF, ale niekoniecznie optymalne $\gamma^{\text{wc}}_R(G)$.\\
 Na podstawie wyników zostaną przedstawione obserwacje oraz wnioski dla każdej z klasy grafów oraz dla algorytmów niedokładnie wyznaczających $\gamma^{\text{wc}}_R(G)$.
 
@@ -60,9 +60,12 @@ Kolejna tabela przedstawia zestaw parametrów z najmniejszym średnim błędem d
 \caption{Wpływ kombinacji hiperparametrów na błąd rozwiązania na konkretnych klasach grafów}
 \end{table}
 
-Dla grafów gęstych udało się dobrać korzystny zestaw hiperparametrów, dający stosunkowo niski średni błąd. W tym przypadku algorytm woli bardziej się skupić na heurystyce lokalnej niż na wpływie feromonów, co jest spodziewanym zachowaniem ze względu na to, że w grafach gęstych bardzo często dla WCRDF to wierzchołki o największym stopniu są najbardziej promowane.\\
-Dla grafów rzadkich widoczny jest dodatkowo większy wpływ feromonów. Ze względu na rzadszą strukturę grafu, korzystnym zachowaniem jest zapamiętanie dobrego rozwiązania, a następnie eksploatowanie go. Podobnie dla grafów bezskalowych, jednakże kładziony jest tutaj nacisk na większą eksplorację, ze względu na to, że struktura grafu jest podobna do grafów rzadkich.\\
-Drzewa w stosunku do pozostałych klas grafu mają najbardziej specyficzną strukturę i w tych wynikach się to również odzwierciedla. W tym przypadku nie jest kładziony nacisk na heurystykę lokalną, ponieważ w drzewach bardzo często wierzchołki o wysokich stopniach niekoniecznie należą do zbioru dominującego. Algorytm w tym przypadku jest bardziej nastawiony na eksplorację, bo można zaobserwować zrównoważony wpływ heurystyki lokalnej i feromonu, przy dużym współczynniku parowania.\\
+Dla grafów gęstych udało się dobrać korzystny zestaw hiperparametrów, dający stosunkowo niski średni błąd. W tym przypadku algorytm woli bardziej się skupić na heurystyce lokalnej niż na wpływie feromonów, co jest spodziewanym zachowaniem ze względu na to, że w grafach gęstych bardzo często dla WCRDF to wierzchołki o największym stopniu są najbardziej promowane.
+
+Dla grafów rzadkich widoczny jest dodatkowo większy wpływ feromonów. Ze względu na rzadszą strukturę grafu, korzystnym zachowaniem jest zapamiętanie dobrego rozwiązania, a następnie eksploatowanie go. Podobnie dla grafów bezskalowych, jednakże kładziony jest tutaj nacisk na większą eksplorację, ze względu na to, że struktura grafu jest podobna do grafów rzadkich.
+
+Drzewa w stosunku do pozostałych klas grafu mają najbardziej specyficzną strukturę i w tych wynikach się to również odzwierciedla. W tym przypadku nie jest kładziony nacisk na heurystykę lokalną, ponieważ w drzewach bardzo często wierzchołki o wysokich stopniach niekoniecznie należą do zbioru dominującego. Algorytm w tym przypadku jest bardziej nastawiony na eksplorację, bo można zaobserwować zrównoważony wpływ heurystyki lokalnej i feromonu, przy dużym współczynniku parowania.
+
 Na podstawie powyższych parametrów można stwierdzić, że są one adekwatne do właściwości konkretnej struktury klasy grafu. Mimo to, średni błąd we wszystkich przypadkach jest znaczny, ale dosyć stabilny, nie ma wielkich różnic między klasami grafów.\\
 
 Po tej analizie dokonano wyboru hiperparametrów, które będą użyte w dalszych rozważaniach. Został wybrany jeden zestaw ze względu na stabilność wartości średniego błędu między różnymi zestawami hiperparametrów, jak i między klasami grafów. Hiperparametry te zostały przedstawione w poniższej tabeli.
@@ -81,11 +84,11 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
 
 \section{Wyniki działania algorytmów}
 
-Wybrane wyniki działania algorytmów zostały przedstawione w tabelach. Wyniki podzielono na sekcje względem liczby wierzchołków oraz posortowano według rosnącego czasu działania w obrębie każdej z sekcji.  Algorytmy ILP, ILP2, Brute Force oraz TreeLinear dla drzew są w tych przypadkach algorytmami optymalnie wyznaczającymi wartość $\gamma^{\text{wc}}_R(G)$ i to one stanowią wartość odniesienia się do dokładności pozostałych algorytmów.\\
+Wybrane wyniki działania algorytmów zostały przedstawione w tabelach. Wyniki podzielono na sekcje względem liczby wierzchołków oraz posortowano według rosnącego czasu działania w obrębie każdej z sekcji.  Algorytmy ILP, ILP2, Brute Force oraz TreeLinear dla drzew są w tych przypadkach algorytmami optymalnie wyznaczającymi wartość $\gamma^{\text{wc}}_R(G)$ i to one stanowią wartość odniesienia dla dokładności pozostałych algorytmów.\\
 
-Dodatkowo zostaną zaprezentowane wykresy przedstawiające średni czas działania każdego z algorytmów w stosunku do liczby wierzchołków w skali logarytmicznej. Mierzone punkty zostały połączone liniami w celu lepszej wizualizacji i odzwierciedlenia tendencji wzrostu.\\
+Dodatkowo zostaną zaprezentowane wykresy przedstawiające średni czas działania każdego z algorytmów w stosunku do liczby wierzchołków w skali logarytmicznej. Wyniki zostały połączone liniami w celu lepszej wizualizacji i odzwierciedlenia tendencji wzrostu.\\
 
-Następnie przedstawiono grafiki ukazujące rozkłady WCRDF dokonane przez algorytmy dla przykładowego, 20-wierzchołkowego grafu analizowanej klasy, gdzie wartości 0 to żółte wierzchołki, 1 - niebieskie, a 2 to czerwone.
+Następnie przedstawiono grafiki ukazujące WCRDF znalezione przez algorytmy dla przykładowego, 20-wierzchołkowego grafu analizowanej klasy, gdzie wartości 0 to żółte wierzchołki, 1 - niebieskie, a 2 to czerwone.
 
 \subsection{Grafy rzadkie}
 
@@ -132,8 +135,10 @@ Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż mak
     \caption{Wyniki dla grafów rzadkich}
     \end{table}
 
-    Analizując powyższe wyniki można zauważyć, że algorytm zachłanny Greedy działa bardzo dobrze dla rzadkich grafów. Charakteryzuje się bardzo szybkim czasem działania, a jakość rozwiązania jest bliska optymalnej.\\
-    Algorytm mrówkowy wraz ze wzrostem liczby wierzchołków zaczyna dawać coraz gorsze wyniki, mimo wyboru dobrego dla tej klasy zestawu parametrów. Warto zaznaczyć również, że jest jednym z wolniej działających algorytmów.\\
+    Analizując powyższe wyniki można zauważyć, że algorytm zachłanny Greedy charakteryzuje się bardzo szybkim czasem działania, a jakość rozwiązania jest bliska optymalnej.
+
+    Algorytm mrówkowy wraz ze wzrostem liczby wierzchołków zaczyna dawać coraz gorsze wyniki, mimo wyboru dobrego dla tej klasy zestawu parametrów. Warto zaznaczyć również, że jest jednym z wolniej działających algorytmów.
+
     Wynik dla algorytmu Brute Force można zaobserwować wyłącznie dla 10 wierzchołków. Dzieje się tak, ponieważ zgodnie z pierwotnymi założeniami, już dla kilkunastu wierzchołków w dowolnym grafie, algorytm ten przestał zwracać wyniki w rozsądnym czasie.
 
     \begin{figure}[H]
@@ -143,7 +148,8 @@ Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż mak
         \label{fig:sparsePlot}
     \end{figure}
 
-    W tym przypadku znacznie odznacza się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytmy ILP i ILP2 dają optymalny wynik, w rozsądnym czasie działania, przy czym ILP jest szybszy.\\
+    W tym przypadku znacznie wyróżnia się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytmy ILP i ILP2 dają optymalny wynik, w rozsądnym czasie działania, przy czym ILP jest szybszy.
+
     Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm będzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów. Pozostałe algorytmy notują znaczny skok w czasie działania, zwłaszcza dla większej liczby wierzchołków.
 
     \begin{figure}[H]
@@ -174,7 +180,7 @@ Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż mak
 
 \subsection{Grafy gęste}
 
-Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| \ll \frac{n(n - 1)}{2}$. Wierzchołki mają duże stopnie i dominacja jednego wierzchołka pokrywa znaczną część grafu. Dlatego algorytmy przybliżone powinny łatwo i szybko znajdować dobre rozwiązania. Z racji dużej liczby zmiennych i ograniczeń algorytmy ILP/ILP2 powinny charakteryzować się dłuższym czasem działania.
+Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| \leq \frac{n(n - 1)}{2}$. Wierzchołki mają duże stopnie i dominowanie jednego wierzchołka pokrywa znaczną część grafu. Dlatego algorytmy przybliżone powinny łatwo i szybko znajdować dobre rozwiązania. Z racji dużej liczby zmiennych i ograniczeń algorytmy ILP/ILP2 powinny charakteryzować się dłuższym czasem działania.
 
 \begin{table}[H]
     \centering
@@ -227,12 +233,14 @@ Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| \ll \fr
         \label{fig:densePlot}
     \end{figure}
 
-    W tym przypadku znacznie odznacza się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytm Approx jest również efektywny czasowo, mimo, że do jego konstrukcji użyto programowania liniowego. Najprawdopodobniej powodem takiego wyniku jest korzystna struktura grafu dla tego algorytmu.\\
-    Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm będzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów.\\
+    W tym przypadku znacznie wyróżnia się algorytm Greedy, który działa ponad 1000 razy szybciej niż pozostałe algorytmy, przy czym nie osiąga wyników znacznie odbiegających od optymalnego. Algorytm Approx jest również efektywny czasowo, mimo, że do jego konstrukcji użyto programowania liniowego. Najprawdopodobniej powodem takiego wyniku jest korzystna struktura grafu dla tego algorytmu.
+
+    Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm będzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów.
+
     Algorytmy ILP i ILP2 notują mocny skok czasowy dla $n \geq 40 $. Jest on wyraźniejszy i większy niż dla grafów rzadkich, co jest spodziewanym zachowaniem, z racji większej liczby krawędzi do przeanalizowania. W tym przypadku udało się potwierdzić hipotezę, że algorytm ILP2 będzie szybszy od ILP, co ma miejsce dla większej liczby wierzchołków. Wynika to z dużej liczby cykli grafu gęstego do przeanalizowania przez algorytm ILP. ILP2, oparty na przepływach, działa znacznie szybciej. \\
     Algorytm mrówkowy w stosunku do pozostałych jest dosyć stabilny czasowo, jednakże jego jakość jest mierna.\\
     
-    Gęste grafy posiadają dużo krawędzi, więc posiadają one wiele możliwości pokrycia dominującego. Algorytmy Approx i Greedy wykorzystują ochronę wielu wierzchołków z jednego wybranego, dlatego w tym przypadku wypadają one bardzo korzystnie czasowo i jakościowo. Ze względu na wzrost krawędzi, cierpią na tym algorytmy dokładne, ILP i ILP2. Heurystyka algorytmu mrówkowego jest nieefektywna dla tej klasy grafu.
+    Gęste grafy posiadają dużo krawędzi, więc posiadają one wiele zbiorów dominujących. Algorytmy Approx i Greedy wykorzystują ochronę wielu wierzchołków z jednego wybranego, dlatego w tym przypadku wypadają one bardzo korzystnie czasowo i jakościowo. Ze względu na wzrost krawędzi, cierpią na tym algorytmy dokładne, ILP i ILP2. Heurystyka algorytmu mrówkowego jest nieefektywna dla tej klasy grafu.
 
     \begin{figure}[H]
         \centering
@@ -262,7 +270,7 @@ Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| \ll \fr
 
 \subsection{Drzewa}
 
-Drzewa to grafy acykliczne, posiadające n-1 krawędzi dla n wierzchołków. Są to grafy bardzo rzadkie, przez co posiadają rozproszoną strukturę dominacji. Dlatego algorytmy deterministyczne i przybliżone, które nie są specjalnie dostosowane pod drzewa, mogą osiągać niezadowalające wyniki. Dla takiej uporządkowanej struktury za to można znaleźć efektywny algorytm specjalny tylko dla tej klasy grafu.
+Drzewa to grafy acykliczne, posiadające $n-1$ krawędzi dla $n$ wierzchołków. Są to grafy bardzo rzadkie, przez co ich zbiór dominujący jest bardzo często liczniejszy w stosunku do innych klas grafów o podobnym rozmiarze. Dlatego algorytmy deterministyczne i przybliżone, które nie są specjalnie dostosowane pod drzewa, mogą osiągać niezadowalające wyniki. Dla takiej uporządkowanej struktury za to można znaleźć efektywny algorytm specjalny tylko dla tej klasy grafu.
 
 \begin{table}[H]
     \centering
@@ -354,7 +362,7 @@ Drzewa to grafy acykliczne, posiadające n-1 krawędzi dla n wierzchołków. Są
 
 \subsection{Grafy bezskalowe}
 
-Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykład w biologii, sieciach WWW i społecznościowych i są analizowane ze względu na potencjalne zastosowania praktyczne problemu WRCDF. Grafy te charakteryzują się wieloma wierzchołkami o małym stopniu i kilkoma wierzchołkami o dużym stopniu. Są to huby. Rozkład stopni wierzchołków w grafach tego typu jest potęgowy. Graf ten nie jest typowo gęsty, bo przeważają wierzchołki o niskim stopniu. Dlatego korzystne wyniki powinny osiągać algorytmy oparte na programowaniu liniowym.
+Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykład w biologii, sieciach WWW i społecznościowych, i są analizowane ze względu na potencjalne zastosowania praktyczne problemu WRCDF. Grafy te charakteryzują się wieloma wierzchołkami o małym stopniu i kilkoma wierzchołkami o dużym stopniu. Są to huby. Rozkład stopni wierzchołków w grafach tego typu jest potęgowy. Graf ten nie jest typowo gęsty, bo przeważają wierzchołki o niskim stopniu. Dlatego korzystne wyniki powinny osiągać algorytmy oparte na programowaniu liniowym.
 
 \begin{table}[H]
     \centering
@@ -446,9 +454,11 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
     \label{fig:antsPlot}
 \end{figure}
 
-Wraz ze wzrostem liczby wierzchołków można zaobserwować coraz większą rozbieżność od wyniku optymalnego. Dla mniejszych grafów prościej trafić na rozwiązanie optymalne, niż eksplorowanie całej przestrzeni rozwiązań w większych grafach.\\
-Największą rozbieżność można zaobserwować dla grafów gęstych, gdzie błąd względy osiąga nawet 600\%. Wynika to z tego, że w grafach gęstych jest dużo wierzchołków o wysokich stopniach, więc heurystyka oparta na stopniach wierzchołków nie jest w stanie wyróżnić wierzchołków najbardziej nadających się do zbioru dominującego.\\
-W odróżnieniu do grafów gęstych, algorytm osiągał zadowalające wyniki dla drzew. Wynika to z tego, że drzewa są grafami rzadkimi i nie ma tam wielu połączeń wierzchołkowych do analizy. W odróżnieniu do innych klas grafów, struktura drzew sprzyja lokalnym decyzjom dotyczącym dominacji, dlatego też algorytm mrówkowy radzi sobie nienajgorzej, chociaż wciąż mocno odbiega od optymalnego wyniku.\\
+Wraz ze wzrostem liczby wierzchołków można zaobserwować coraz większą rozbieżność od najmniejszej $\gamma^{\text{wc}}_R(G)$. Dla mniejszych grafów prościej trafić na rozwiązanie optymalne, niż eksplorowanie całej przestrzeni rozwiązań w większych grafach.
+
+Największą rozbieżność można zaobserwować dla grafów gęstych, gdzie błąd względny osiąga nawet 600\%. Wynika to z tego, że w grafach gęstych jest dużo wierzchołków o wysokich stopniach, więc heurystyka oparta na stopniach wierzchołków nie jest w stanie wyróżnić wierzchołków najbardziej nadających się do zbioru dominującego.
+
+W odróżnieniu do grafów gęstych, algorytm osiągał zadowalające wyniki dla drzew. Wynika to z tego, że drzewa są grafami rzadkimi i nie ma tam wielu połączeń wierzchołkowych do analizy. W odróżnieniu do innych klas grafów, struktura drzew sprzyja lokalnym decyzjom dotyczącym dominowania, dlatego też algorytm mrówkowy radzi sobie nienajgorzej, chociaż wciąż mocno odbiega od optymalnego wyniku.\\
 Pośrednie wyniki osiągają grafy rzadkie i bezskalowe.
 
 \subsection{Algorytm zachłanny}
@@ -460,10 +470,13 @@ Pośrednie wyniki osiągają grafy rzadkie i bezskalowe.
     \label{fig:greedyPlot}
 \end{figure}
 
-Algorytm zachłanny charakteryzuje się ogólnie niskim błędem względnym na tle innych prezentowanych algorytmów. Godny odnotowania jest fakt, że wraz ze wzrostem liczby wierzchołków w grafach, algorytm nie traci znacznie na jakości, dlatego na podstawie tych przykładu można wysnuć hipotezę, że algorytm może być jakościowo skalowalny.\\
-Największy średni błąd względny algorytm osiąga dla grafów rzadkich i bezskalowych. Prawdopodobnym powodem tego są nieregularne struktury tych grafów i konieczność nieoczywistych decyzji odnośnie wyboru wierzchołka należącego do zbioru dominującego słabo spójnego.\\
-Algorytm zachłanny wyjątkowo dobrze radzi sobie z grafami gęstymi. Wynika to z tego, że promowane są wierzchołki, które pokrywają jak najwięcej sąsiadów. Dla grafów gęstych strategia ta jest bardzo korzystna i sprawia, że algorytm jest w stanie osiągnąć wynik optymalny, bądź bardzo bliski optymalnemu.\\
-Z racji tego, że algorytm zachłanny tworzy dominację bardziej lokalnie, od wierzchołka o największym stopniu, bez zwrócenia uwagi na całą strukturę grafu, to w zależności od konkretnego przypadku testowego drzewa, wyniki mogą być bardzo dobre, bądź wysoce nieoptymalne. Na prezentowanym wykresie taki przypadek, największego błędu względnego: ponad 60\%, jest właśnie dla drzewa.  
+Algorytm zachłanny charakteryzuje się ogólnie niskim błędem względnym na tle innych prezentowanych algorytmów. Godny odnotowania jest fakt, że wraz ze wzrostem liczby wierzchołków w grafach, algorytm nie traci znacznie na jakości, dlatego na podstawie tych przykładu można wysnuć hipotezę, że algorytm może być jakościowo skalowalny.
+
+Największy średni błąd względny algorytm osiąga dla grafów rzadkich i bezskalowych. Prawdopodobnym powodem tego są nieregularne struktury tych grafów i konieczność nieoczywistych decyzji odnośnie wyboru wierzchołka należącego do zbioru dominującego słabo spójnego.
+
+Algorytm zachłanny wyjątkowo dobrze radzi sobie z grafami gęstymi. Wynika to z tego, że promowane są wierzchołki, które pokrywają jak najwięcej sąsiadów. Dla grafów gęstych strategia ta jest bardzo korzystna i sprawia, że algorytm jest w stanie osiągnąć wynik optymalny, bądź bardzo bliski optymalnemu.
+
+Z racji tego, że algorytm zachłanny tworzy dominowanie bardziej lokalnie, od wierzchołka o największym stopniu, bez zwrócenia uwagi na całą strukturę grafu, to w zależności od konkretnego przypadku testowego drzewa, wyniki mogą być bardzo dobre, bądź wysoce nieoptymalne. Na prezentowanym wykresie przypadek, największego błędu względnego: ponad 60\%, zaobserwowano właśnie dla drzewa.  
 
 \subsection{Algorytm aproksymacyjny}
 
@@ -474,11 +487,13 @@ Z racji tego, że algorytm zachłanny tworzy dominację bardziej lokalnie, od wi
     \label{fig:approxPlot}
 \end{figure}
 
-Dla grafów gęstych algorytm Approx osiąga bardzo dobre wyniki, w wielu przypadkach optymalne, ze względu na dużą możliwość dominacji. Algorytm w sposób dokładny wyznacza spójny zbiór dominujący, dla grafów gęstych takie sposób wyznaczania WCRDF okazuje się być w wielu przypadkach wystarczający.\\
-Z kolei dla drzew jest to bardzo zła strategia. Algorytm przez to, że wyznacza CDS i przypisuje wszystkim wierzchołkom CDS wartości 2, sprawia, że istnieje bardzo dużo nadmiernych przypisań, przez co dla drzew algorytm potrafi osiągnąć nawet ponad 100\% błędu względnego.\\
+Dla grafów gęstych algorytm Approx osiąga bardzo dobre wyniki, w wielu przypadkach optymalne, ze względu na dużą liczbę małych zbiorów dominujących.
+
+Z kolei dla drzew jest to bardzo zła strategia. Algorytm przez to, że wyznacza CDS i przypisuje wszystkim wierzchołkom CDS wartości 2, sprawia, że istnieje bardzo dużo nadmiernych przypisań, przez co dla drzew algorytm potrafi osiągnąć nawet ponad 100\% błędu względnego.
+
 Algorytm aproksymacyjny radzi sobie dobrze z grafami rzadkimi i bezskalowymi, z błędem względnym na poziomie 20-40\%. Wyznacza on prawidłowo CDS i dla tych klas grafów najwyraźniej wystarcza to dla osiągnięcia niskiego poziomu błędu względnego.\\
 
-Wykres przedstawia porównanie rzeczywistego współczynnika aproksymacji algorytmu Approx z jego teoretyczną granicą ustaloną w artykule \cite{ILP} wynoszącą $2(1+\epsilon)(1 + \ln(\Delta - 1))$ w zależności od maksymalnego stopnia w grafie.
+Wykres przedstawia porównanie rzeczywistego współczynnika aproksymacji algorytmu Approx z jego teoretyczną granicą ustaloną w artykule \cite{ILP} wynoszącą $2(1+\epsilon)(1 + \ln(\Delta - 1))$ w zależności od maksymalnego stopnia wierzchołka w grafie.
 
 \begin{figure}[H]
     \centering
@@ -487,7 +502,7 @@ Wykres przedstawia porównanie rzeczywistego współczynnika aproksymacji algory
     \label{fig:approxPlot}
 \end{figure}
 
-Można zauważyć, że wszystkie wygenerowane przypadki testowe mieszczą się w granicy teoretycznej. Granica teoretyczna znajduje się daleko od wygenerowanych przykładowych grafów. Zatem w praktyce algorytm radzi sobie znacznie lepiej niż granica teoretyczna zakłada. Prawdopodobnie istnieją przypadki znajdujące się blisko tej granicy, ale taki przypadek nie został odnaleziony w procesie testowania. Dlatego można potwierdzić fakt, że algorytm jest zgodny z współczynnikiem aproksymacji i nie przekracza przewidzianego maksimum, a przynajmniej nie znaleziono przypadku, żeby tak nie było. Można też zauważyć, że wraz ze wzrostem maksymalnego stopnia wierzchołka w testowym grafie, współczynnik aproksymacyjny algorytmu jest coraz niższy. Można z tego wywnioskować fakt, że algorytm jest w stanie dobrze wykorzystać obecność wierzchołków o wysokim stopniu, gdyż bardzo często są one częścią zbioru dominującego.
+Można zauważyć, że wszystkie wygenerowane przypadki testowe mieszczą się w granicy teoretycznej błędu. Granica teoretyczna znajduje się daleko od wygenerowanych przykładowych grafów. Zatem w praktyce algorytm radzi sobie znacznie lepiej niż granica teoretyczna zakłada. Prawdopodobnie istnieją przypadki znajdujące się blisko tej granicy, ale taki przypadek nie został odnaleziony w procesie testowania. Dlatego można potwierdzić fakt, że algorytm jest zgodny z współczynnikiem aproksymacji i nie przekracza przewidzianego maksimum, a przynajmniej nie znaleziono przypadku, żeby tak nie było. Można też zauważyć, że wraz ze wzrostem maksymalnego stopnia wierzchołka w testowym grafie, współczynnik aproksymacyjny algorytmu jest coraz niższy. Można z tego wywnioskować fakt, że algorytm jest w stanie dobrze wykorzystać obecność wierzchołków o wysokim stopniu, gdyż bardzo często są one częścią zbioru dominującego.
 
 \subsection{Porównanie algorytmów przybliżonych}
 
@@ -498,6 +513,6 @@ Można zauważyć, że wszystkie wygenerowane przypadki testowe mieszczą się w
     \label{fig:approxPlot}
 \end{figure}
 
-W ujęciu porównawczym wszystkich algorytmów wyznaczających $\gamma^{\text{wc}}_R(G)$ w sposób przybliżony, algorytm zachłanny prezentuje najlepszy stosunek czasu działania do jakości rozwiązania. Jego rozwiązanie, dla wygenerowanych przepadków testowych można otrzymać w przedziale $10^{-5}$ do $10^{-3}$, a błąd względny utrzymuje się na poziomie 0\%-50\%.\\
+W ujęciu porównawczym wszystkich algorytmów wyznaczających $\gamma^{\text{wc}}_R(G)$ w sposób przybliżony, algorytm zachłanny prezentuje najlepszy stosunek czasu działania do jakości rozwiązania. Jego rozwiązanie, dla wygenerowanych przepadków testowych można otrzymać w przedziale $10^{-5}$ do $10^{-3}$ sekund, a błąd względny utrzymuje się na poziomie 0\%-50\%.\\
 Algorytm Approx prezentuje czas działania w przedziale kilku sekund, potrafi znaleźć więcej lepszych rozwiązań niż Greedy, o czym świadczy większe zagęszczenie niebieskich punktów na poziomie ,,0'' niż w przypadku Greedy. Jednak czasem, zwłaszcza dla drzew, algorytm ten daje nieoptymalne wyniki.\\
 Algorytm mrówkowy, w porównaniu z resztą radzi sobie najgorzej. Czas działania jest najdłuższy, bo rzędu od kilku do kilkudziesięciu sekund, dając przy tym znacznie gorsze wyniki, z największymi błędami względnymi. Świadczy to o tym, że w obecnej konfiguracji i dobranej heurystyce, algorytm mrówkowy nie radzi sobie z tym problemem.
