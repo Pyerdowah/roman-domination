@@ -3,49 +3,63 @@
 \section{Podsumowanie wyników}
 
 Celem badawczym pracy było opisanie istniejących i opracowanie własnych algorytmów znajdujących funkcje dominujące rzymskie słabo spójne, ich analiza oraz porównanie skuteczności i wyciągnięcie wniosków na temat możliwości ich praktycznego zastosowania.\\
-\textbf{Udało się zrealizować wszystkie postawione zadania, mianowicie:}
+Udało się zrealizować wszystkie postawione zadania, mianowicie:
 \begin{itemize}
     \item przedstawienie problemu WCRDF oraz jego złożoności obliczeniowej,
-    \item przedstawienie algorytmów znajdujących WCRDF oraz algorytmy znajdujące dokładną  $\gamma^{\text{wc}}_R(G)$ oraz przybliżoną, korzystając z różnych technik programowania,
+    \item zdefiniować i zweryfikować problemy oraz hipotezy badawcze,
+    \item przedstawienie algorytmów znajdujących WCRDF oraz algorytmy znajdujące dokładną $\gamma^{\text{wc}}_R(G)$ oraz przybliżoną, korzystając z różnych technik programowania,
     \item zaimplementowanie i przetestowanie wybranych algorytmów,
     \item wyciągnięcie wniosków na podstawie wyników testów,
     \item dokonanie analizy pod kątem praktycznego zastosowania rozwiązania tego problemu.
 \end{itemize}
-
-\textbf{W pracy przetestowano siedem algorytmów:}
+W pracy przetestowano siedem algorytmów:
 \begin{itemize}
     \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: Brute Force, ILP i ILP2 oraz TreeLinear - liniowy dla drzew,
-    \item algorytmy przybliżone: zachłanny - Greedy, aproksymacyjny - Approx i mrówkowy - AntColony.
+    \item algorytmy heurystyczne wyznaczające WCRDF: zachłanny - Greedy, aproksymacyjny - Approx i mrówkowy - AntColony.
 \end{itemize}
 
 Eksperymenty przeprowadzono na grafach gęstych, rzadkich, drzewach oraz bezskalowych. Dodatkowo sprawdzono działanie niektórych algorytmów na grafach rzeczywistych. \\
-\textbf{Wyniki wskazują, że:}
+Wyniki wskazują, że:
 \begin{itemize}
-    \item Algorytm BruteForce, chociaż prezentuje dokładne, minimalne rozwiązanie problemu, jest najgorzej skalowalny. Już dla kilkunastu wierzchołków grafu, czas działania robi się nierozsądnie długi.
-    \item Algorytmy ILP i ILP2 zapewniają najlepsze jakościowo rozwiązania, lecz ich czas działania rośnie znacząco wraz z rozmiarem badanego grafu, co wynika ze złożoności obliczeniowej. Dla grafów gęstych, o dużej liczbie cykli, algorytm ILP2 oparty na przepływach faktycznie zaczyna działać szybciej niż ILP, opartym na ograniczeniach cyklicznych.
-    \item Algorytm liniowy dla drzew znajduje optymalne rozwiązanie w szybkim czasie i jest skalowalny dla większych instancji drzew. Niestety jego prawidłowe działanie ograniczone jest do jednej klasy grafów.
-    \item Algorytm Greedy wyróżnia się ekstremalnie niskim czasem działania oraz zaskakująco dobrą jakością rozwiązań w wielu klasach grafów. Jako jedyny spośród prezentowanych algorytmów jest skalowalny do większych grafów.
-    \item Approx zapewnia stabilne i poprawne rozwiązania, z niskim błędem względnym, jednak znacząco pogarsza się dla drzew i struktur bardzo rzadkich. Ponadto udało się zweryfikować, że dla testowanych przykładów grafów udało się pokazać, że wyniki są zgodne z prezentowanym w literaturze współczynnikiem aproksymacji.
-    \item AntColony prezentuje najgorszy spośród wszystkich algorytmów czas działania oraz jakość rozwiązania.
+    \item algorytm BruteForce, chociaż prezentuje dokładne, minimalne rozwiązanie problemu, jest najgorzej skalowalny, przez co niepraktyczny. Już dla kilkunastu wierzchołków grafu, czas działania robi się nierozsądnie długi.
+    \item algorytmy ILP i ILP2 zapewniają najlepsze jakościowo rozwiązania, lecz ich czas działania rośnie znacząco wraz z rozmiarem badanego grafu, co wynika ze złożoności obliczeniowej. Dla grafów gęstych, o dużej liczbie cykli, algorytm ILP2 oparty na przepływach faktycznie zaczyna działać szybciej niż ILP, opartym na ograniczeniach cyklicznych.
+    \item algorytm liniowy dla drzew znajduje optymalne rozwiązanie w szybkim czasie i jest skalowalny dla większych instancji drzew. Niestety jego prawidłowe działanie ograniczone jest do jednej klasy grafów.
+    \item algorytm Greedy wyróżnia się ekstremalnie niskim czasem działania oraz zaskakująco dobrą jakością rozwiązań w wielu klasach grafów. Jako jedyny spośród prezentowanych algorytmów jest skalowalny do większych grafów.
+    \item Approx zapewnia stabilne i poprawne rozwiązania, z niskim błędem względnym, jednak znacząco pogarsza się dla drzew i struktur bardzo rzadkich. Ponadto, dla testowanych przykładów grafów udało się pokazać, że wyniki są zgodne z prezentowanym w literaturze współczynnikiem aproksymacji.
+    \item AntColony prezentuje najgorszy spośród wszystkich algorytmów czas działania oraz jakość rozwiązania. Źle dobrana heurystyka sprawia, że algorytm staje się niepraktyczny i nieskuteczny na tle pozostałych analizowanych algorytmów.
 \end{itemize}
 
-Ponadto wykazano, że wyniki algorytmów różnią się w zależności od klasy grafu, co sugeruje konieczność doboru metody w zależności od specyfiki problemu.
+Wyniki algorytmów różnią się w zależności od klasy grafu, co sugeruje konieczność doboru algorytmu w zależności od specyfiki problemu i charakterystyki grafu.
+\begin{itemize}
+    \item grafy rzadkie - algorytm Greedy prezentuje bardzo dobrą jakość rozwiązania w stosunku do czasu działania dla tej klasy. Podobnie ILP, który mimo, że jest oparty na programowaniu liniowym, wyznacza dokładnie $\gamma^{\text{wc}}_R(G)$ w stosunkowo krótkim czasie działania. Algorytmy Approx i AntColony prezentują słabą jakość i czas rozwiązania dla grafów rzadkich. ILP2 znajduje dokładne rozwiązanie w czasie dłuższym niż ILP. Wynika to z stosunkowo niewielkiej liczby cykli grafów rzadkich, na czym zyskuje ILP, którego czas działania wzrasta wraz z liczbą cykli w grafie do przeanalizowania,
+    \item grafy gęste - bardzo dobrze w tej klasie grafów wypadają algorytmy heurystyczne, dając niemalże optymalne wyniki w krótkim czasie. ILP tym razem z powodu dużej liczby cykli w grafie znacznie spowalnia i można odnotować, że ILP2 oparty na przepływach daje wynik w krótszym czasie dla większej liczby wierzchołków,
+    \item drzewa - godny odnotowania jest fakt, że udało się skonstruować algorytm specjalny dla tej klasy grafów, działający w czasie liniowym. Ten dedykowany algorytm prezentuje optymalne wyniki w bardzo krótkim czasie działania. ILP działa najkrócej dla wszystkich przypadków testowych z prezentowanych algorytmów opartych na programowaniu liniowym. Drzewa to grafy acykliczne, więc brak cykli znacznie skraca czas działania tego algorytmu. Algorytm Approx dla tej klasy daje wysoce nieoptymalne wyniki, ze względu na wiele nadmiernych przypisań. Approx wyznacza CDS, więc dla struktur takich jak drzewa, spójność jest nadmierna dla tego problemu,
+    \item grafy bezskalowe - dla tej klasy grafów dobre wyniki dają algorytmy oparte na programowaniu liniowym, zarówno dokładne jak i heurystyczny. Greedy prezentuje nieco gorszą jakość rozwiązania.
+\end{itemize}
 
 \section{Wnioski i dalsze kierunki badań}
+Na podstawie przeprowadzonych badań i analiz sformułowano wnioski. Praca pozwala również uzyskać odpowiedzi na wszystkie postawione pytania badawcze. Odpowiedzi te podsumowano poniżej.
 
-\textbf{Na podstawie przeprowadzonych badań i analiz sformułowano następujące wnioski:}
+Udało znaleźć istniejące w publikacjach rozwiązania oraz zaprojektować samodzielnie, a także we współpracy z promotorką, algorytmy dokładne oraz heurystyczne. Algorytmy wyznaczające optymalnie $\gamma^{\text{wc}}_R(G)$ to ILP, ILP2, BruteForce oraz TreeLinear, a heurystyczne to Greedy, Approx i AntColony.
+
+Na podstawie analizy można wywnioskować, że jakość i czas działania algorytmów jest uzależniony od klasy i własności testowanych grafów. Konieczny zatem jest dobór właściwego algorytmu do grafu.
 \begin{itemize}
-    \item WCRDF może stanowić potencjalnie użyteczny model do minimalizacyjnego rozmieszczania zabezpieczeń w sieciach społecznościowych, czy innych naturalnie utworzonych grafach.
-    \item Algorytmy dokładne (ILP, ILP2) są dobrym punktem, ale niestety są mało skalowalne.
-    \item Algorytm Greedy może być z powodzeniem stosowany w praktyce, szczególnie w dużych instancjach wymagających szybkich przybliżeń.
-    \item AntColony w obecnej implementacji nie nadaje się do skutecznego rozwiązywania tego problemu. Dla każdej klasy grafu i prezentował najbardziej niekorzystne wyniki wśród wszystkich testowanych algorytmów.
-    \item Zastosowanie WCRDF do problemów praktycznych, czyli np. rozmieszczenia zabezpieczeń w sieci energetycznej czy agentów wykrywających oszustwa w sieci społecznościowej zostało uzasadnione i warte dalszych badań.
+    \item jeśli ważne jest otrzymanie wyniku w czasie rzeczywistym, bądź dla bardzo dużych grafów warto skorzystać z algorytmu Greedy,
+    \item jeśli czas nie jest istotny, a dokładność wyniku, to warto skorzystać z algorytmów programowania liniowego, po wcześniejszej analizie struktury grafu. Dla grafów gęstych dobrym wyborem będzie ILP2, w pozostałych przypadkach ILP,
+    \item dla drzew bez wątpienia najlepszym wyborem będzie dedykowany algorytm liniowy TreeLinear,
 \end{itemize}
 
-\textbf{Dalsze kierunki badań mogą obejmować:}
+Warto zwrócić uwagę również na algorytmy heurystyczne, głównie Greedy i Approx. Są one w stanie dość dobrze przybliżyć wartość $\gamma^{\text{wc}}_R(G)$ w czasie krótszym niż algorytmy dokładne, zwłaszcza algorytm zachłanny.
+
+Kolejnym wnioskiem jest słaba jakość rozwiązań algorytmu mrówkowego. Mimo przeprowadzenia testów pozwalających wybrać najlepszy zestaw parametrów, jego wyniki są bardzo niezadowalające czasowo i jakościowo. W tej implementacji nie ma potrzeby wykorzystywać algorytmu do rozwiązania tego problemu, gdyż pokazano, że istnieją lepsze alternatywy. Użyta heurystyka lokalna w postaci liczby sąsiadów wierzchołka była złym, bądź niekoniecznie dobrze rozwiniętym wyborem implementacyjnym.
+
+Zastosowanie WCRDF do problemów praktycznych, czyli np. rozmieszczenia zabezpieczeń w sieci energetycznej czy agentów wykrywających oszustwa w sieci społecznościowej zostało uzasadnione i warte dalszych badań. Może stanowić potencjalnie użyteczny model do minimalizacyjnego rozmieszczania zabezpieczeń w naturalnie utworzonych grafach.
+
+Dalsze kierunki badań mogą obejmować:
 \begin{itemize}
-    \item Rozszerzenie testów na inne klasy, jak i na inne wielkości grafów.
-    \item Podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej oraz badania w celu znalezienia jak najlepszej heurystyki.
-    \item Próba opracowania algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów.
-    \item Weryfikacja i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
+    \item implementację i testy potencjalnych ulepszeń dla algorytmu Greedy. Z racji szybkiego czasu działania, algorytm można wykonywać kilka razy i wybierać najlepsze rozwiązanie. Wymagałoby to wprowadzenia losowości do implementacji.
+    \item rozszerzenie testów na inne klasy, jak i na inne wielkości grafów.
+    \item podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej oraz badania w celu znalezienia jak najlepszej heurystyki.
+    \item próbę opracowania algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów.
+    \item weryfikację i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
 \end{itemize}

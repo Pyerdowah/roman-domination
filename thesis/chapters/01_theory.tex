@@ -10,7 +10,7 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
 \newtheorem{definition}{Definicja}
 
 \begin{definition}
-    Funkcja dominująca rzymska zdefiniowana jest dla grafu $G = (V, E)$, gdzie $f: V -> \{0,1,2\}$ spełnia warunek, że dla każdego wierzchołka $u$, dla którego $f(u) = 0$ jest sąsiadem przynajmniej jednego wierzchołka $v$, dla którego $f(v) = 2$.
+    Funkcję dominującą rzymską na grafie $G = (V, E)$, definiuje się jako funkcję $f: V -> \{0,1,2\}$, która spełnia warunek, że każdy wierzchołek $u$, dla którego $f(u) = 0$, ma wśród swoich sąsiadów co najmniej jeden wierzchołek $v$ taki, że $f(v) = 2$.
 \end{definition}
 
 \begin{definition}
@@ -18,7 +18,7 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
 \end{definition}
 
 \begin{definition}
-    Funkcja dominująca rzymska słabo spójna na grafie $G$ będzie funkcją dominującą rzymską, taką, że zbiór $\{u \in V: f(u) \in \{1,2\}\}$ jest jednocześnie zbiorem dominującym słabo spójnym.
+    Funkcję dominującą rzymską słabo spójną na grafie $G$ definiuje się jako taką funkcję dominującą rzymską, dla której zbiór wierzchołków $\{u \in V: f(u) \in \{1,2\}\}$ stanowi jednocześnie słabo spójny zbiór dominujący.
 \end{definition}
 
 \begin{definition}
@@ -170,6 +170,25 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 \end{tikzpicture}
 \end{center}
 
+\section{Problemy i hipotezy badawcze}
+
+Z racji tego, że znajdowanie WCRDF jest problemem NP-zupełnym, w wersja minimalizacyjna tego problemu, czyli znalezienie $\gamma_{R}^{\text{wc}}(G)$ jest NP-trudne, nie są znane zatem dokładne algorytmy rozwiązujące i weryfikujące problem w czasie wielomianowym. W związku z tym nasuwa się pierwsze pytanie badawcze:
+
+\textbf{Jakie algorytmy są w stanie znaleźć WCRDF? Które z nich są w stanie znaleźć dodatkowo najmniejszą $\gamma_{R}^{\text{wc}}(G)$?}
+
+Już podczas dowodu złożoności tego problemu należało rozpatrzeć przypadki dla różnych klas grafów. Stąd kolejne pytanie:
+
+\textbf{Czy czas i jakość działania algorytmów będzie uzależnione od klasy grafów?}
+
+Bardzo ważne dla problemu tej klasy mogą być algorytmy heurystyczne, czyli w tym kontekście wyznaczające WCRDF zgodnie z definicją, lecz niekoniecznie wyznaczające optymalne $\gamma_{R}^{\text{wc}}(G)$. Niniejsza praca powinna zweryfikować następujący problem badawczy:
+
+\textbf{Czy i jakie algorytmy heurystyczne mogą skutecznie przybliżyć wartość $\gamma_{R}^{\text{wc}}(G)$ w czasie krótszym niż dokładne algorytmy?}
+
+Wśród algorytmów heurystycznych analizowany będzie algorytm mrówkowy, wybrany ze względu na to, że potrafi dawać zadowalające wyniki w wielu problemach optymalizacyjnych, przykładowo dla problemu komiwojażera \cite{TRAVEL}. Z racji dużej parametryzacji tego algorytmu należy zweryfikować następujące pytanie:
+
+\textbf{Czy hiperparametry algorytmu mrówkowego można dostroić w taki sposób, aby ten algorytm znajdował $\gamma_{R}^{\text{wc}}(G)$ bliskie optymalnemu?}\\
+Dodatkowo będzie weryfikowana hipoteza, czy heurystyka lokalna w postaci liczby sąsiadów wierzchołka, będzie dawać $\gamma_{R}^{\text{wc}}(G)$ bliską optymalnej.
+
 \section{Przegląd literatury}
 W 2004 roku zdefiniowano formalnie funkcję dominowania rzymskiego (RDF) \cite{RDF} i od tego czasu w wielu publikacjach analizowano właściwości tego parametru oraz inne wersje dominowania rzymskiego, m.in. silne, mieszane, totalne dominowanie rzymskie.\\ 
 W artykule z 2019 roku \cite{theoryWCRDF} wprowadzono pojęcie słabo spójnego dominowania rzymskiego. Zdefiniowano WCRDF oraz $\gamma_{R}^{\text{wc}}(G)$ oraz zbadano następujące właściwości:
@@ -201,6 +220,8 @@ W 2021 roku Chakradhar i współautorzy zaproponowali dwa nowe modele programowa
 W 2023 roku ukazał się artykuł proponujący GRASP (Greedy Randomized Adaptive Search Procedure) - zachłanna losowa procedura adaptacyjnego przeszukiwania dla problemu znajdowania $\gamma_{R}^{\text{wc}}(G)$, poprzez zdefiniowanie funkcji zachłannych: Dscore (dominowanie) i Nscore (sąsiedztwo), strategie tabu w celu uniknięcia zapętlenia oraz lokalnych przeszukiwań w celu optymalizacji rozwiązania. Jednakże, autorzy artykułu źle zrozumieli definicję WCRDP, dlatego jego wyniki nie zostały dalej analizowane \cite{GRASP}.
 
 Literatura proponuje również praktyczne zastosowanie rozwiązania tego problemu w obecnych czasach. Mianowicie, kosztowne pojazdy służb ratunkowych powinny być rozmieszczane tak, aby były w stanie udzielić pomocy potrzebującym, przy możliwie dużej redukcji kosztów utrzymania takiego pojazdu. Dlatego, na wzór legionów rzymskich, w budynkach służb ratunkowych powinien znajdować się pojazd, bądź być możliwość wypożyczenia go z sąsiedniej (najbliższej) lokalizacji służb ratunkowych \cite{improvedILP}.
+
+Na podstawie przeglądu literatury można zauważyć, że WCRDP nie jest powszechnie znany i poza prezentowanymi powyżej publikacjami nie znaleziono więcej godnych uwagi pozycji dotyczących konkretnie tej wersji problemu. 
 
 \section{Metody badań}
 W celu implementacji i testowania wydajności oraz poprawności algorytmów, stworzono program w języku Python, ze wsparciem następujących bibliotek:
