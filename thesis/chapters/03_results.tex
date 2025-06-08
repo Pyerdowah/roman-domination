@@ -94,7 +94,7 @@ Następnie przedstawiono grafiki ukazujące WCRDF znalezione przez algorytmy dla
 
 \subsection{Grafy rzadkie}
 
-Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż maksymalna możliwa, czyli $|E| \ll \frac{n(n - 1)}{2}$ oraz posiadają przede wszystkim wierzchołki o niskim stopniu. Z racji mniejszej liczby krawędzi algorytmy programowania liniowego mogą sobie dobrze radzić, ze względu na mniejszą liczbę ograniczeń i zmiennych. Ze względu na nieregularną strukturę i komponenty o różnym stopniu połączenia, algorytmy deterministyczne mogą znacząco odbiegać od optymalnego wyniku.
+Grafy rzadkie charakteryzują się znacznie mniejszą liczbą krawędzi niż maksymalna możliwa, czyli $|E| \ll \frac{n(n - 1)}{2}$ oraz posiadają przede wszystkim wierzchołki o niskim stopniu. Z racji mniejszej liczby krawędzi algorytmy programowania liniowego mogą sobie dobrze radzić, ze względu na mniejszą liczbę ograniczeń i zmiennych. Ze względu na nieregularną strukturę i komponenty o różnym stopniu połączenia, algorytmy heurystyczne mogą znacząco odbiegać od optymalnego wyniku.
 
 \begin{table}[H]
     \centering
@@ -417,7 +417,7 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
         \label{fig:scaleFreePlot}
     \end{figure}
 
-    Algorytmy Approx i Greedy są czasowo najefektywniejsze. Należy pamiętać, że Approx został zaimplementowany na podstawie programowania liniowego, więc wraz ze wzrostem liczby wierzchołków może zacząć działać bardzo długo. Algorytmy dokładne ILP/ILP2 działają w podobnym czasie co Approx. Algorytm mrówkowy jest przynajmniej 10 razy wolniejszy od innych algorytmów, co czyni go bardzo nieefektywnym.
+    Algorytmy Approx i Greedy działają czasowo efektywnie. Należy pamiętać, że Approx został zaimplementowany na podstawie programowania liniowego, więc wraz ze wzrostem liczby wierzchołków może zacząć działać bardzo długo. Algorytmy dokładne ILP/ILP2 działają w podobnym czasie co Approx. Algorytm mrówkowy jest przynajmniej 10 razy wolniejszy od innych algorytmów, co czyni go bardzo nieefektywnym.
 
     \begin{figure}[H]
         \centering
@@ -445,7 +445,9 @@ Grafy bezskalowe to grafy naturalnie występujące w rzeczywistości, na przykł
         \label{fig:tree}
     \end{figure}
 
-\section{Wyniki algorytmów niedokładnych}
+\section{Wyniki algorytmów heurystycznych}
+
+W poniższej sekcji zostaną przedstawione wyniki osiągnięte przez algorytmy heurystyczne. Zostaną również przedstawione wykresy zależności błędu względnego algorytmów od liczby wierzchołków. W celu lepszej wizualizacji, wykresy podzielono na obszary odpowiadające konkretnej liczbie wierzchołków testowanych grafów, a wyniki w postaci punktów rozproszono na wykresie, żeby się nie pokrywały.
 
 \subsection{Algorytm mrówkowy}
 
@@ -517,5 +519,6 @@ Można zauważyć, że wszystkie wygenerowane przypadki testowe mieszczą się w
 \end{figure}
 
 W ujęciu porównawczym wszystkich algorytmów wyznaczających $\gamma^{\text{wc}}_R(G)$ w sposób przybliżony, algorytm zachłanny prezentuje najlepszy stosunek czasu działania do jakości rozwiązania. Jego rozwiązanie, dla wygenerowanych przepadków testowych można otrzymać w przedziale $10^{-5}$ do $10^{-3}$ sekund, a błąd względny utrzymuje się na poziomie 0\%-60\%.\\
-Algorytm Approx prezentuje czas działania w przedziale kilku sekund, potrafi znaleźć więcej lepszych rozwiązań niż Greedy, o czym świadczy większe zagęszczenie niebieskich punktów na poziomie ,,0'' niż w przypadku Greedy. Jednak czasem, zwłaszcza dla drzew, algorytm ten daje nieoptymalne wyniki.\\
-Algorytm mrówkowy, w porównaniu z resztą radzi sobie najgorzej. Czas działania jest najdłuższy, bo rzędu od kilku do kilkudziesięciu sekund, dając przy tym znacznie gorsze wyniki, z największymi błędami względnymi. Świadczy to o tym, że w obecnej konfiguracji i dobranej heurystyce, algorytm mrówkowy nie radzi sobie z tym problemem.
+Algorytm Approx prezentuje czas działania w przedziale kilku sekund, potrafi znaleźć więcej lepszych rozwiązań niż Greedy, o czym świadczy więcej rozwiązań na poziomie ,,0'' niż w przypadku Greedy. Jednak czasem, zwłaszcza dla drzew, algorytm ten daje nieoptymalne wyniki.
+
+Algorytm mrówkowy, w porównaniu z resztą, radzi sobie najgorzej. Czas działania jest najdłuższy, bo rzędu od kilku do kilkudziesięciu sekund, dając przy tym znacznie gorsze wyniki, z największymi błędami względnymi. Świadczy to o tym, że w obecnej konfiguracji i dobranej heurystyce, algorytm mrówkowy nie radzi sobie z tym problemem.

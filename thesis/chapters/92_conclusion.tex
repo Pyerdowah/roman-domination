@@ -12,10 +12,10 @@ Udało się zrealizować cel pracy oraz wszystkie postawione zadania, mianowicie
     \item wyciągnięcie wniosków na podstawie wyników testów,
     \item dokonanie analizy pod kątem praktycznego zastosowania rozwiązania tego problemu.
 \end{itemize}
-W pracy przetestowano siedem algorytmów:
+W pracy przedstawiono i przetestowano siedem algorytmów:
 \begin{itemize}
-    \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: Brute Force, ILP i ILP2 oraz TreeLinear - liniowy dla drzew,
-    \item algorytmy heurystyczne wyznaczające WCRDF: zachłanny - Greedy, aproksymacyjny - Approx i mrówkowy - AntColony.
+    \item algorytmy optymalnie wyznaczające wartość $\gamma^{\text{wc}}_R(G)$: Brute Force, ILP i ILP2 oraz TreeLinear - liniowy dla drzew, z czego ILP i ILP2 zostały zaproponowane przez istniejącą literaturę, a Brute Force i TreeLinear to nowe propozycje rozwiązań,
+    \item algorytmy heurystyczne wyznaczające WCRDF: zachłanny - Greedy, aproksymacyjny - Approx i mrówkowy - AntColony, gdzie Approx to rozwiązanie z literatury, a mrówkowy i zachłanny to propozycje własne algorytmów.
 \end{itemize}
 
 Eksperymenty przeprowadzono na grafach gęstych, rzadkich, drzewach oraz bezskalowych. Dodatkowo sprawdzono działanie niektórych algorytmów na grafach rzeczywistych. \\
@@ -33,20 +33,21 @@ Wyniki algorytmów różnią się w zależności od klasy grafu, co sugeruje kon
 \begin{itemize}
     \item grafy rzadkie - algorytm Greedy prezentuje bardzo dobrą jakość rozwiązania w stosunku do czasu działania dla tej klasy. Podobnie ILP, który mimo, że jest oparty na programowaniu liniowym, wyznacza dokładnie $\gamma^{\text{wc}}_R(G)$ w stosunkowo krótkim czasie działania. Algorytmy Approx i AntColony prezentują słabą jakość i czas rozwiązania dla grafów rzadkich. ILP2 znajduje dokładne rozwiązanie w czasie dłuższym niż ILP. Wynika to z stosunkowo niewielkiej liczby cykli grafów rzadkich, na czym zyskuje ILP, którego czas działania wzrasta wraz z liczbą cykli w grafie do przeanalizowania,
     \item grafy gęste - bardzo dobrze w tej klasie grafów wypadają algorytmy heurystyczne, dając niemalże optymalne wyniki w krótkim czasie. ILP tym razem z powodu dużej liczby cykli w grafie znacznie spowalnia i można odnotować, że ILP2 oparty na przepływach daje wynik w krótszym czasie dla większej liczby wierzchołków,
-    \item drzewa - godny odnotowania jest fakt, że udało się skonstruować algorytm specjalny dla tej klasy grafów, działający w czasie liniowym. Ten dedykowany algorytm prezentuje optymalne wyniki w bardzo krótkim czasie działania. ILP działa najkrócej dla wszystkich przypadków testowych z prezentowanych algorytmów opartych na programowaniu liniowym. Drzewa to grafy acykliczne, więc brak cykli znacznie skraca czas działania tego algorytmu. Algorytm Approx dla tej klasy daje wysoce nieoptymalne wyniki, ze względu na wiele nadmiernych przypisań. Approx wyznacza CDS, więc dla struktur takich jak drzewa, spójność jest nadmierna dla tego problemu,
+    \item drzewa - godny odnotowania jest fakt, że udało się skonstruować algorytm specjalny dla tej klasy grafów, działający w czasie liniowym. Ten dedykowany algorytm prezentuje optymalne wyniki w bardzo krótkim czasie działania. ILP działa najkrócej dla wszystkich przypadków testowych z prezentowanych algorytmów opartych na programowaniu liniowym. Drzewa to grafy acykliczne, więc brak cykli znacznie skraca czas działania tego algorytmu. Algorytm Approx dla tej klasy daje wysoce nieoptymalne wyniki, ze względu na wiele nadmiernych przypisań. Approx wyznacza CDS, więc dla struktur takich jak drzewa, zwykła spójność, zamiast słabej spójności jest nadmierna dla tego problemu,
     \item grafy bezskalowe - dla tej klasy grafów dobre wyniki dają algorytmy oparte na programowaniu liniowym, zarówno dokładne jak i heurystyczny. Greedy prezentuje nieco gorszą jakość rozwiązania.
 \end{itemize}
+Dla grafów gęstych algorytmy charakteryzują się najdłuższym czasem działania spośród wszystkich testowanych klas grafów dla danej liczby wierzchołków grafu. Algorytmy pozostałych klas wykonują się szybciej niż dla grafów gęstych, z powodu mniejszej liczby krawędzi.
 
 \section{Wnioski i dalsze kierunki badań}
 Na podstawie przeprowadzonych badań i analiz sformułowano wnioski. Praca pozwala również uzyskać odpowiedzi na wszystkie postawione pytania badawcze. Odpowiedzi te podsumowano poniżej.
 
-Udało znaleźć istniejące w publikacjach rozwiązania oraz zaprojektować samodzielnie, a także we współpracy z promotorką, algorytmy dokładne oraz heurystyczne. Algorytmy wyznaczające optymalnie $\gamma^{\text{wc}}_R(G)$ to ILP, ILP2, BruteForce oraz TreeLinear, a heurystyczne to Greedy, Approx i AntColony.
+Udało znaleźć istniejące w publikacjach rozwiązania oraz zaprojektować nowe, a także we współpracy z promotorką, algorytmy dokładne oraz heurystyczne. Algorytmy wyznaczające optymalnie $\gamma^{\text{wc}}_R(G)$ to ILP, ILP2, BruteForce oraz TreeLinear, a heurystyczne to Greedy, Approx i AntColony.
 
 Na podstawie analizy można wywnioskować, że jakość i czas działania algorytmów jest uzależniony od klasy i własności testowanych grafów. Konieczny zatem jest dobór właściwego algorytmu do grafu.
 \begin{itemize}
-    \item jeśli ważne jest otrzymanie wyniku w czasie rzeczywistym, bądź dla bardzo dużych grafów warto skorzystać z algorytmu Greedy,
+    \item jeśli ważne jest otrzymanie wyniku w czasie niemal rzeczywistym, bądź dla bardzo dużych grafów warto skorzystać z algorytmu Greedy,
     \item jeśli czas nie jest istotny, a dokładność wyniku, to warto skorzystać z algorytmów programowania liniowego, po wcześniejszej analizie struktury grafu. Dla grafów gęstych dobrym wyborem będzie ILP2, w pozostałych przypadkach ILP,
-    \item dla drzew bez wątpienia najlepszym wyborem będzie dedykowany algorytm liniowy TreeLinear,
+    \item dla drzew bez wątpienia najlepszym wyborem będzie dedykowany algorytm liniowy TreeLinear. Przykład ten pokazuje, że warto tworzyć algorytmy dla konkretnych klas grafów.
 \end{itemize}
 
 Warto zwrócić uwagę również na algorytmy heurystyczne, głównie Greedy i Approx. Są one w stanie dość dobrze przybliżyć wartość $\gamma^{\text{wc}}_R(G)$ w czasie krótszym niż algorytmy dokładne, zwłaszcza algorytm zachłanny.

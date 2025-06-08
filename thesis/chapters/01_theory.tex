@@ -2,7 +2,7 @@
 
 \section{Geneza historyczna}
 Problem swoją nazwę zawdzięcza imperium rzymskiemu. Po raz pierwszy został opisany w artykule ,,Defend Roman Empire!'' \cite{defendRomanEmpire}.
-Obrazuje on problem następująco: Każdy wierzchołek grafu reprezentuje pewną lokalizację (miasto, wzgórze) w Imperium Rzymskim. Lokalizacja (wierzchołek $v$) jest niechroniona, jeśli nie stacjonują w niej żadne legiony wojska ($f(v) = 0$) oraz chroniona jeśli ($f(v) \in {1,2} $). Wartości te oznaczają liczbę legionów stacjonujących w danej lokalizacji. Niechroniona lokalizacja może być ochroniona poprzez wysłanie legionu stacjonującego w lokalizacji sąsiadującej. W czwartym wieku cesarz Konstantyn Wielki wydał dekret zakazujący przemieszczenia się legionu do lokalizacji sąsiadującej, jeśli sprawi to, że aktualna lokalizacja pozostanie niechroniona. Dlatego, żeby móc wysłać legion do sąsiedniej lokacji, w aktualnej muszą stacjonować dwa legiony. Oczywiście, cesarzowi zależało na jak najmniejszych kosztach utrzymywania legionów, a zatem, żeby było ich jak najmniej \cite{theoryWCRDF}. Problem można zatem zinterpretować grafowo, gdzie lokalizacje to wierzchołki grafu, liczba legionów to wartości na wierzchołkach. W celu zachowania ciągłości efektywnej komunikacji między legionami wymagana jest słaba spójność zbioru dominującego.
+Obrazuje on problem następująco: Każdy wierzchołek grafu reprezentuje pewną lokalizację (miasto, wzgórze) w Imperium Rzymskim. Lokalizacja (wierzchołek $v$) jest niechroniona, jeśli nie stacjonują w niej żadne legiony wojska ($f(v) = 0$) oraz chroniona jeśli ($f(v) \in \{1,2\} $). Wartości te oznaczają liczbę legionów stacjonujących w danej lokalizacji. Niechroniona lokalizacja może być ochroniona poprzez wysłanie legionu stacjonującego w lokalizacji sąsiadującej. W czwartym wieku cesarz Konstantyn Wielki wydał dekret zakazujący przemieszczenia się legionu do lokalizacji sąsiadującej, jeśli sprawi to, że aktualna lokalizacja pozostanie niechroniona. Dlatego, żeby móc wysłać legion do sąsiedniej lokacji, w aktualnej muszą stacjonować dwa legiony. Oczywiście, cesarzowi zależało na jak najmniejszych kosztach utrzymywania legionów, a zatem, żeby było ich jak najmniej \cite{theoryWCRDF}. Problem można zatem zinterpretować grafowo, gdzie lokalizacje to wierzchołki grafu, krawędzie to drogi pomiędzy nimi, a liczba legionów to wartości na wierzchołkach. W celu zachowania ciągłości efektywnej komunikacji między legionami wymagana jest słaba spójność zbioru dominującego.
 
 \section{Definicja problemu}
 Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadzając następujące pojęcia \cite{theoryWCRDF}:
@@ -10,7 +10,7 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
 \newtheorem{definition}{Definicja}
 
 \begin{definition}
-    Funkcję dominującą rzymską na grafie $G = (V, E)$, definiuje się jako funkcję $f: V -> \{0,1,2\}$, która spełnia warunek, że każdy wierzchołek $u$, dla którego $f(u) = 0$, ma wśród swoich sąsiadów co najmniej jeden wierzchołek $v$ taki, że $f(v) = 2$.
+    Funkcję dominującą rzymską w grafie $G = (V, E)$, definiuje się jako funkcję $f: V \to \{0,1,2\}$, która spełnia warunek, że każdy wierzchołek $u$, dla którego $f(u) = 0$, ma wśród swoich sąsiadów co najmniej jeden wierzchołek $v$ taki, że $f(v) = 2$.
 \end{definition}
 
 \begin{definition}
@@ -32,15 +32,15 @@ Jako, że problem nie jest powszechnie znany, należy go zdefiniować, wprowadza
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{assets/phase2.png}
-    \caption{Przykład grafu rzymskiego słabo spójnego.}
+    \caption{Przykład grafu rzymskiego słabo spójnego. Wartości 0 to żółte wierzchołki, 1 - niebieskie, a 2 to czerwone.}
     \label{fig:przykladWCRDF}
 \end{figure}
 
 Od tego momentu funkcja dominowania rzymskiego słabo spójnego będzie definiowana jako $WCRDF$. Problem dominowania rzymskiego słabo spójnego będzie oznaczany jako $WCRDP$.
 
 \section{Złożoność obliczeniowa}
-Poniższy szkic dowodu został przedstawiony w artykule: ,,Weakly connected Roman domination in graphs'' \cite{theoryWCRDF}. 
-Za pomocą redukcji alfa NP-zupełny problem dokładnego pokrycia 3 zbiorami (Exact Cover by 3-Sets, X3C) \cite{X3C} zostanie sprowadzony do problemu WCRDF, czym zostanie udowodniona NP-zupełność jego wersji decyzyjnej. Naturalnie, wersja minimalizycjna - poszukiwanie $\gamma_{R}^{\text{wc}}(G)$ jest wtedy NP-trudne.\\
+Poniższy szkic dowodu, wskazujący na NP-zupełność problemu znajdowania WCRDF, został przedstawiony w artykule: ,,Weakly connected Roman domination in graphs'' \cite{theoryWCRDF}. 
+Za pomocą redukcji alfa NP-zupełny problem dokładnego pokrycia 3 zbiorami (Exact Cover by 3-Sets, X3C) \cite{X3C} zostanie sprowadzony do problemu WCRDF, czym zostanie udowodniona NP-zupełność znajdowania WCRDF w wersji decyzyjnej. Naturalnie, wersja minimalizycjna - poszukiwanie $\gamma_{R}^{\text{wc}}(G)$ jest wtedy NP-trudne.\\
 \textbf{Dane:} Spójny graf $G$ oraz dodatnia liczba całkowita $k$.\\
 \textbf{Pytanie:} Czy istnieje słabo spójna funkcja dominująca rzymska w grafie $G$ o wadze co najwyżej $k$?\\
 
@@ -174,11 +174,12 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 
 Z racji tego, że znajdowanie WCRDF jest problemem NP-zupełnym, w wersja minimalizacyjna tego problemu, czyli znalezienie $\gamma_{R}^{\text{wc}}(G)$ jest NP-trudne, nie są znane zatem dokładne algorytmy rozwiązujące i weryfikujące problem w czasie wielomianowym. W związku z tym nasuwa się pierwsze pytanie badawcze:
 
-\textbf{Jakie algorytmy są w stanie znaleźć WCRDF? Które z nich są w stanie znaleźć dodatkowo najmniejszą $\gamma_{R}^{\text{wc}}(G)$?}
+\textbf{Jakie algorytmy są w stanie znaleźć WCRDF? Które z nich są w stanie znaleźć dodatkowo $\gamma_{R}^{\text{wc}}(G)$?}
 
-Już podczas dowodu złożoności tego problemu należało rozpatrzeć przypadki dla różnych klas grafów. Stąd kolejne pytanie:
+Już podczas dowodu złożoności tego problemu należało rozpatrzeć przypadki dla różnych klas grafów. Stąd kolejne pytania:
 
 \textbf{Czy czas i jakość działania algorytmów będzie uzależniona od klasy grafów?}
+\textbf{Czy warto tworzyć algorytmy dla konkretnych klas grafów?}
 
 Bardzo ważne dla problemu tej klasy mogą być algorytmy heurystyczne, czyli w tym kontekście wyznaczające WCRDF zgodnie z definicją, lecz niekoniecznie wyznaczające optymalne $\gamma_{R}^{\text{wc}}(G)$. Niniejsza praca powinna zweryfikować następujący problem badawczy:
 
@@ -186,7 +187,7 @@ Bardzo ważne dla problemu tej klasy mogą być algorytmy heurystyczne, czyli w 
 
 Wśród algorytmów heurystycznych analizowany będzie algorytm mrówkowy, wybrany ze względu na to, że potrafi dawać zadowalające wyniki w wielu problemach optymalizacyjnych, przykładowo dla problemu komiwojażera \cite{TRAVEL}. Z racji dużej parametryzacji tego algorytmu należy zweryfikować następujące pytanie:
 
-\textbf{Czy hiperparametry algorytmu mrówkowego można dostroić w taki sposób, aby ten algorytm znajdował $\gamma_{R}^{\text{wc}}(G)$ bliskie optymalnemu?}\\
+\textbf{Czy hiperparametry algorytmu mrówkowego można dostroić w taki sposób, aby ten algorytm znajdował $\gamma_{R}^{\text{wc}}(G)$ bliską optymalnej?}\\
 Dodatkowo będzie weryfikowana hipoteza, czy heurystyka lokalna w postaci liczby sąsiadów wierzchołka, będzie dawać $\gamma_{R}^{\text{wc}}(G)$ bliską optymalnej.
 
 \section{Przegląd literatury}
@@ -197,7 +198,7 @@ W artykule z 2019 roku \cite{theoryWCRDF} wprowadzono pojęcie słabo spójnego 
     \[
     \gamma_{\text{wc}}(G) \leq \gamma_{R}^{\text{wc}}(G) \leq 2\gamma_{\text{wc}}(G)
     \]
-    co oznacza, że liczba słabo spójnego dominowania rzymskiego jest ograniczona od dołu przez klasyczną liczbę słabo spójnej dominacji oraz od góry przez jej podwojenie.
+    co oznacza, że liczba słabo spójnego dominowania rzymskiego jest ograniczona od dołu przez klasyczną liczbę słabo spójnego dominowania oraz od góry przez jej podwojenie.
 
     \item Dla spójnego grafu $G$, $\gamma_{\text{wc}}(G) = \gamma_{R}^{\text{wc}}(G)$ zachodzi wtedy i tylko wtedy, gdy $G = K_1$.
 
