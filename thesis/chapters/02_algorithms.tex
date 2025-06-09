@@ -114,7 +114,7 @@ Algorytm ten został zaprojektowany i zaimplementowany we współpracy z promoto
 
 \subsection{Działanie}
 
-Dla każdego wierzchołka definiujemy następujące parametry:
+Dla każdego wierzchołka zdefiniowano następujące parametry:
 \begin{itemize}
     \item $v['R']$ - wartość funkcji dominowania rzymskiego słabo spójnego w wierzchołku $v$, z założeniem, że $v['R']\in\{0,1,2\}$
     \item $v['n00']$ - oznacza liczbę dzieci z $R=0$ oraz bez sąsiada z $R=2$ (dziecko niezdominowane)
@@ -129,7 +129,7 @@ Dla każdego wierzchołka definiujemy następujące parametry:
 Algorytm ma 2 fazy. W obu fazach rozpatrywane są wszystkie wierzchołki drzewa według odwrotnego porządku drzewa, czyli od ostatniego wierzchołka do korzenia (reverse tree-order). Wszystkie początkowo zdefiniowane wartości wynoszą 0. W bardzo ogólnym rozumieniu, rozpatrywany jest każdy wierzchołek na podstawie sąsiedztwa, relacji ojciec-dziecko oraz wartości zdefiniowanych parametrów i aktualizację ich w obu fazach. Wartości $R$ przy każdym wierzchołku, to wartości funkcji dominowania rzymskiego słabo spójnego.
 
 Z racji sporego stopnia skomplikowania algorytmu, jego działanie zostanie przedstawione na przykładzie.
-Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakładamy, że wyznaczenie ojca każdego z wierzchołków jest trywialne, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
+Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowanych wartościami od 0 do 9. Zakłada się, że wyznaczenie ojca każdego z wierzchołków jest trywialne, dlatego podczas rozważań wyznaczanie ojca wierzchołka będzie pomijane.
 
 \begin{figure}[H]
     \centering
@@ -154,7 +154,7 @@ Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowa
         \item Sprawdzenie czy wierzchołek posiada tylko jedno niezdominowane dziecko i posiada ojca. W tym przypadku ojciec będzie wierzchołkiem wspierającym. \\
         T[6]['sw'] = 1 (od wierzchołka 7)\\
         T[0]['sw'] = 2 (od wierzchołka 4 i 2)
-        \item Sprawdzenie sumy wartości dzieci zdominowanych, niezdominowanych oraz liczby dzieci dla których wierzchołek jest wspierający. Jeśli ta suma jest większa od 1, to wartość tego wierzchołka ustawiamy na 2, a parametr 'ch' na 1.\\
+        \item Sprawdzenie sumy wartości dzieci zdominowanych, niezdominowanych oraz liczby dzieci dla których wierzchołek jest wspierający. Jeśli ta suma jest większa od 1, to wartość tego wierzchołka ustawia się na 2, a parametr 'ch' na 1.\\
         T[0]['R'] = 2  (od wierzchołka 0)\\
         T[0]['ch'] = 1  (od wierzchołka 0)
         \begin{enumerate}
@@ -177,7 +177,7 @@ Dany jest graf $G$ będący drzewem ukorzenionym o 10 wierzchołkach, ponumerowa
         T[5]['n01'] = 1  (od wierzchołka 6)
         \item Jeśli wartość wierzchołka wynosi 0, nie posiada on dzieci z wartością 2 oraz ojca, to zostaje zwiększona wartość ojca 'n00' o 1,\\
     \end{enumerate}
-    \item Korzeń należy rozpatrzeć dodatkowo. Jeśli nie posiada on dzieci z wartościami 2 i sam ma wartość 0, to przypisujemy mu $R=2$,
+    \item Korzeń należy rozpatrzeć dodatkowo. Jeśli nie posiada on dzieci z wartościami 2 i sam ma wartość 0, to przypisuje się mu $R=2$,
     \item Jeśli liczba dzieci korzenia z $R=1$ jest równa liczbie dzieci pomniejszonej o 1, to korzeń również ma wartość 1.
 \end{enumerate}
 
@@ -216,7 +216,7 @@ Poprawność algorytmu dla drzew zostanie wyznaczona poprzez szkic dowodu indukc
     \item Dla $|V| = 2$: liść otrzymuje $R = 0$, a korzeń $R = 2$, ponieważ nie ma innych dzieci dominujących. Sytuacja zostaje poprawnie wykryta na podstawie $n00 = 1$, $n01 = 0$, co daje przypisanie $R=2$ ojcu. 
 \end{itemize}
 \textbf{Krok indukcyjny:}\\ 
-Załóżmy, że algorytm wyznacza poprawnie $\gamma_R^{\text{wc}}(T)$ dla wszystkich drzew o liczbie wierzchołków mniejszych od $n$. Wykażemy, że działa również dla dowolnego drzewa $T$ o $|V| = n$.
+Zakłada się, że algorytm wyznacza poprawnie $\gamma_R^{\text{wc}}(T)$ dla wszystkich drzew o liczbie wierzchołków mniejszych od $n$. Należy wykazać, że działa również dla dowolnego drzewa $T$ o $|V| = n$.
 
 Niech $r$ będzie korzeniem drzewa $T$, a $T_1, \dots, T_k$ jego poddrzewami o korzeniach $v_1, \dots, v_k$. Z założenia indukcyjnego dla każdego $T_i$ funkcja $f_i$ wyznaczona przez algorytm spełnia warunki WCRDF i jest najmniejsza na $T_i$.\\
 \textbf{Spójność i dominowanie:}
@@ -385,7 +385,7 @@ b_v =
 \]
 gdzie \( v \in V \), \( e \in E \) i \( T' \) to drzewo rozpinające podgrafu \( G' \).
 
-Definiujemy funkcję celu, czyli minimalizację wagi zbioru dominującego rzymskiego słabo spójnego:
+Zdefiniowano funkcję celu, czyli minimalizację wagi zbioru dominującego rzymskiego słabo spójnego:
 
 \[
 \text{Z: } \min \left( \sum_{v \in V} a_v + \sum_{v \in V} b_v \right)
@@ -440,7 +440,7 @@ Rozważane jest dowolne przypisanie zmiennych $a_v, b_v, x_e, y_e$ spełniające
 \end{itemize}
 \textbf{Każda poprawna funkcja WCRDF może być zakodowana jako przypisanie zmiennych.}
 
-Dla dowolnej funkcji $f : V \to \{0,1,2\}$ spełniającej definicję WCRDF, możemy przypisać:
+Dla dowolnej funkcji $f : V \to \{0,1,2\}$ spełniającej definicję WCRDF, można przypisać:
 \[
 a_v = \begin{cases}
 1 & \text{jeśli } f(v) > 0 \\
@@ -676,7 +676,7 @@ y_i =
 \end{cases}
 \]
 
-Zbiór \( D = \{i : x_i = 1\} \) indukuje spójny graf \( G' \), więc można wybrać \( a_e \) dla jego krawędzi i zdefiniować przepływ \( v_e \), \( u_i \) zgodnie ze standardową metodą budowania drzew przepływu. Wybierając dowolny wierzchołek z \( f = 2 \) jako korzeń ($t_i = 1$), spełniamy wszystkie ograniczenia.
+Zbiór \( D = \{i : x_i = 1\} \) indukuje spójny graf \( G' \), więc można wybrać \( a_e \) dla jego krawędzi i zdefiniować przepływ \( v_e \), \( u_i \) zgodnie ze standardową metodą budowania drzew przepływu. Wybierając dowolny wierzchołek z \( f = 2 \) jako korzeń ($t_i = 1$), zostają spełnione wszystkie ograniczenia.
 
 \textbf{Minimalizacja funkcji celu.}
 
@@ -1114,7 +1114,7 @@ W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O
 
     \subsection{Złożoność i wydajność}
 
-    Inicjacja wszystkich zmiennych wykonuje się w czasie liniowym. Iteracyjna ochrona wszystkich wierzchołków w najgorszym przypadku może wynieść $O(n)$, bo każda iteracja zabezpiecza przynajmniej jeden wierzchołek. Dodatkowo iterujemy przez niezabezpieczone jeszcze wierzchołki w maksymalnie $O(n)$ oraz ich sąsiadów, czyli w najgorszym wypadku po wszystkich krawędziach grafu - $O(m)$. Dodatkowe aktualizacje w głównej pętli wykonują się w czasie maksymalnie liniowym. Dlatego ostatecznie złożoność obliczeniowa wynosi $O(n(m+n))$. Zakładając, że dla grafów rzadkich $m=O(n)$, a dla grafów gęstych $m=O(n^2)$, to złożoność czasowa wynosi odpowiednio $O(n^2)$ oraz $O(n^3)$.\\
+    Inicjacja wszystkich zmiennych wykonuje się w czasie liniowym. Iteracyjna ochrona wszystkich wierzchołków w najgorszym przypadku może wynieść $O(n)$, bo każda iteracja zabezpiecza przynajmniej jeden wierzchołek. Dodatkowo należy dokonać iteracji przez niezabezpieczone jeszcze wierzchołki w maksymalnie $O(n)$ oraz ich sąsiadów, czyli w najgorszym wypadku po wszystkich krawędziach grafu - $O(m)$. Dodatkowe aktualizacje w głównej pętli wykonują się w czasie maksymalnie liniowym. Dlatego ostatecznie złożoność obliczeniowa wynosi $O(n(m+n))$. Zakładając, że dla grafów rzadkich $m=O(n)$, a dla grafów gęstych $m=O(n^2)$, to złożoność czasowa wynosi odpowiednio $O(n^2)$ oraz $O(n^3)$.\\
     Złożoność pamięciowa obejmuje struktury danych przechowujące graf wejściowy, dlatego wynosi ona $O(n+m)$.\\
     Algorytm nie jest dokładny, natomiast w stosunku do innych proponowanych algorytmów, charakteryzuje się wielomianową złożonością obliczeniową.
     
