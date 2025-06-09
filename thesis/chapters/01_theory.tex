@@ -73,8 +73,9 @@ k &= 2q = 4
 \end{align*}
 
 Zgodnie z konstrukcją, wierzchołki $x$ zostaną połączone z wierzchołkami $C$, zgodnie z  $x_i \in C_j$. W tym przypadku liczba zbiorów dokładnego pokrycia 3-zbiorami wynosi 2 i są to zbiory $C_1$ oraz $C_3$. Je również należy połączyć krawędzią. Wierzchołki należące do zbioru dominującego to $C_1$ oraz $C_3$. Skonstruowany graf $G$ składa się z wierzchołków zbioru $X$ i $C_1$ oraz $C_3$. Zgodnie z WCRDF, nadanie wierzchołkom $C_1$ oraz $C_3$ wartości 2 spełnia jego definicję. \\
-Poniżej umieszczono rysunek poglądowy (na czerwono wierzchołki należące do zbioru dominującego):
+Poniżej umieszczono rysunek poglądowy:
 
+\begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}[
     vertex/.style={circle,draw,thick,minimum size=1cm},
@@ -112,12 +113,15 @@ Poniżej umieszczono rysunek poglądowy (na czerwono wierzchołki należące do 
 \draw (C3) to[bend right] (C1);
 
 \end{tikzpicture}
+\caption{Rysunek poglądowy konstrukcji grafu dla zadanych $X$ i $C$. Na czerwono zaznaczono wierzchołki należące do zbioru dominującego.}
 \end{center}
+\end{figure}
 
 Aby uzyskać wynik również dla grafów dwudzielnych, naleźy zmodyfikować konstrukcję: zamiast dodawać krawędzie między wierzchołkami $C_j$, dodane zostaną cztery nowe wierzchołki $y_0, y_1, y_2, y_3$ oraz krawędzie $y_0y_1$, $y_0y_2$, $y_0y_3$ i $y_0C_j$ dla każdego $j$. Wtedy $k = 2q + 2$.\\
 
 Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek. $k$ będzie wynosiło 6.\\
 
+\begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}[
     vertex/.style={circle,draw,thick,minimum size=1cm},
@@ -168,7 +172,9 @@ Konstrukcję dla przykładowego grafu dwudzielnego przedstawia poniższy rysunek
 \draw (y0) -- (y3);
 
 \end{tikzpicture}
+\caption{Rysunek poglądowy konstrukcji grafu dwudzielnego dla zadanych $X$ i $C$. Na czerwono zaznaczono wierzchołki należące do zbioru dominującego.}
 \end{center}
+\end{figure}
 
 \section{Problemy i hipotezy badawcze}
 
