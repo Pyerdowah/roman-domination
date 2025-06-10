@@ -9,10 +9,10 @@ Dla wszystkich zaimplementowanych w poprzednim rozdziale algorytmów przeprowadz
     \item drzewa
     \item grafy bezskalowe,
 \end{itemize}
-Grafy każdej klasy wygenerowano z następującą liczbą wierzchołków: ${10, 20, 30, 40, 50}$, dla każdej liczby wierzchołków po 3 razy. Dla spójności, wszystkie algorytmy, tam gdzie to ma sens, testowano na tych samych wygenerowanych grafach. Dalej w tabelach zostaną przedstawione wyniki poglądowe jednego z trzech takich zestawów. 
+Grafy każdej klasy wygenerowano z następującą liczbą wierzchołków: ${10, 20, 30, 40, 50}$, dla każdej liczby wierzchołków po 3 razy, w sumie 60 grafów. Dla spójności, wszystkie algorytmy, tam gdzie to ma sens, testowano na tych samych wygenerowanych grafach. Dalej w tabelach zostaną przedstawione wyniki poglądowe jednego z trzech takich zestawów, gdyż każdy zestaw dawał analogiczne obserwacje i wnioski.
 Wszystkie średnie pomiary czasów w tabelach przedstawiono w sekundach. Pomiary dla każdego przypadku wykonywano pięciokrotnie w celu otrzymania wiarygodnego wyniku. Pomiary mierzono w nanosekundach z niepewnością pomiaru wynoszącą 100 nanosekund, wykorzystując funkcję \textit{time.perf\_counter\_ns()}. Dodatkowo dla każdej klasy przedstawiono rysunki grafów z WCRDF po użyciu algorytmów oraz wykres porównujący czas działania każdego z algorytmów w zależności od liczby wierzchołków, w skali logarytmicznej.\\
 W późniejszej części rozdziału rozważano również skuteczność algorytmów wyznaczających prawidłowe WCRDF, ale niekoniecznie optymalne $\gamma^{\text{wc}}_R(G)$.\\
-Na podstawie wyników zostaną przedstawione obserwacje oraz wnioski dla każdej z klasy grafów oraz dla algorytmów niedokładnie wyznaczających $\gamma^{\text{wc}}_R(G)$.
+Na podstawie wyników zostaną przedstawione obserwacje oraz wnioski dla każdej z klasy grafów oraz dla algorytmów heurystycznie wyznaczających $\gamma^{\text{wc}}_R(G)$.
 
 \section{Hiperparametry algorytmu mrówkowego}
 
@@ -86,7 +86,7 @@ Wybór ten oznacza, że heurystyka lokalna w postaci stopnia wierzchołka grafu 
 
 Wybrane wyniki działania algorytmów zostały przedstawione w tabelach. Wyniki podzielono na sekcje względem liczby wierzchołków oraz posortowano według rosnącego czasu działania w obrębie każdej z sekcji.  Algorytmy ILP, ILP2, Brute Force oraz TreeLinear dla drzew są w tych przypadkach algorytmami optymalnie wyznaczającymi wartość $\gamma^{\text{wc}}_R(G)$ i to one stanowią wartość odniesienia dla dokładności pozostałych algorytmów.
 
-Dla algorytmu mrówkowego należy podkreślić, że dla danego przypadku testowego może on dawać różne wyniki, wynikające z obecnej w algorytmie losowości. W związku z tym, dla każdego przypadku testowego wybrano najlepszy wynik, czyli taki, gdzie $\gamma^{\text{wc}}_R(G)$ było najmniejsze spośród wszystkich otrzymanych pięciu pomiarów.
+Dla algorytmu mrówkowego należy podkreślić, że dla danego przypadku testowego może on dawać różne wyniki, wynikające z obecnej w algorytmie losowości. W związku z tym, dla każdego przypadku testowego wybrano najlepszy wynik, czyli taki, gdzie suma wag WCRDF była najmniejsza spośród wszystkich otrzymanych pięciu pomiarów.
 
 Dodatkowo zostaną zaprezentowane wykresy przedstawiające średni czas działania każdego z algorytmów w stosunku do liczby wierzchołków w skali logarytmicznej. Wyniki zostały połączone liniami w celu lepszej wizualizacji i odzwierciedlenia tendencji wzrostu.\\
 
@@ -239,8 +239,9 @@ Grafy gęste charakteryzują się dużą liczbą krawędzi, bliską $|E| = \frac
 
     Naturalnie, wraz ze wzrostem liczby wierzchołków, a co za tym idzie i krawędzi, czas pracy wszystkich algorytmów wydłuża się. Dla algorytmu zachłannego są to jednak na tyle krótkie czasy, że można stwierdzić, że algorytm będzie skalowalny i również wykonywalny w rozsądnym czasie dla większych grafów.
 
-    Algorytmy ILP i ILP2 notują mocny skok czasowy dla $n \geq 40 $. Jest on wyraźniejszy i większy niż dla grafów rzadkich, co jest spodziewanym zachowaniem, z racji większej liczby krawędzi do przeanalizowania. W tym przypadku udało się potwierdzić hipotezę, że algorytm ILP2 będzie szybszy od ILP, co ma miejsce dla większej liczby wierzchołków. Wynika to z dużej liczby cykli grafu gęstego do przeanalizowania przez algorytm ILP. ILP2, oparty na przepływach, działa znacznie szybciej. \\
-    Algorytm mrówkowy w stosunku do pozostałych jest dosyć stabilny czasowo, jednakże jego jakość jest mierna.\\
+    Algorytmy ILP i ILP2 notują mocny skok czasowy dla $n \geq 40 $. Jest on wyraźniejszy i większy niż dla grafów rzadkich, co jest spodziewanym zachowaniem, z racji większej liczby krawędzi do przeanalizowania. W tym przypadku udało się potwierdzić hipotezę, że algorytm ILP2 będzie szybszy od ILP, co ma miejsce dla większej liczby wierzchołków. Wynika to z dużej liczby cykli grafu gęstego do przeanalizowania przez algorytm ILP. ILP2, oparty na przepływach, działa znacznie szybciej. 
+
+    Algorytm mrówkowy w stosunku do pozostałych jest dosyć stabilny czasowo, jednakże jego jakość jest mierna.
     
     Gęste grafy posiadają dużo krawędzi, więc posiadają one wiele zbiorów dominujących. Algorytmy Approx i Greedy wykorzystują ochronę wielu wierzchołków z jednego wybranego, dlatego w tym przypadku wypadają one bardzo korzystnie czasowo i jakościowo. Ze względu na wzrost liczby krawędzi, cierpią na tym algorytmy dokładne, ILP i ILP2. Heurystyka algorytmu mrówkowego jest nieefektywna dla tej klasy grafu.
 

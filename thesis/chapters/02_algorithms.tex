@@ -13,18 +13,22 @@ Niniejszy rozdział opisuje algorytmy znajdujące funkcje dominujące rzymskie s
     \item algorytm zachłanny - Greedy.
 \end{itemize}
 
+Algorytmy wyznaczające WCRDF oraz optymalną $\gamma^{\text{wc}}_R(G)$ to: Brute Force, TreeLinear, ILP, ILP2. Będą one później zwane także algorytmami dokładnymi.
+
+Algorytmy wyznaczające WCRDF, ale niekoniecznie optymalną $\gamma^{\text{wc}}_R(G)$ to: AntColony, Approx, Greedy. Będą one później zwane także algorytmami niedokładnymi, przybliżonymi, bądź heurystycznymi.
+
 \section{Algorytm Brute Force}
 
    Poprawny algorytm Brute Force dla tego problemu nie został znaleziony wśród istniejących rozwiązań, dlatego został on zaprojektowany i zaimplementowany w ramach tej pracy.
 
 \subsection{Działanie}
-Jest to w zasadzie trywialna implementacja dokładnego algorytmu wyznaczającego WCRDF poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabo spójności w następujący sposób:
+Jest to w zasadzie trywialna implementacja algorytmu wyznaczającego WCRDF poprzez sprawdzenie każdej kombinacji wartości \{0, 1, 2\} na wierzchołkach grafu wejściowego. Każda kombinacja sprawdzana jest pod względem poprawności według definicji słabo spójności w następujący sposób:
 \begin{itemize}
     \item wyznaczany jest zbiór indukowany, który składa się ze zbioru dominującego (wierzchołki z wartościami \{1, 2\}) oraz sąsiadów wierzchołków zbioru dominującego,
     \item sprawdzenie, czy wszystkie wierzchołki z wartością 0 mają sąsiada z wartością 2,
     \item dla każdego wierzchołka ze zbioru indukowanego dodawane są krawędzie, ale tylko te wychodzące z wierzchołków zbioru dominującego
     \item następnie sprawdzenie, czy powstały graf jest spójny. Jeśli jest, to zbiór spełnia założenia definicji,
-    \item ze wszystkich prawidłowych kombinacji wybierana jest ta o najmniejszej sumie WCRDF.
+    \item ze wszystkich prawidłowych kombinacji wybierana jest ta o najmniejszej sumie wag WCRDF.
 \end{itemize}
 
 \subsection{Poprawność}
@@ -354,7 +358,7 @@ Jest to algorytm programowania liniowego zaimplementowany na podstawie artykułu
 
 \subsection{Działanie}
 
-Dany jest graf $G$ o zbiorze wierzchołków $V$ i zbiorze krawędzi $E$. $G'$ to podgraf indukowany powstały z wierzchołków zbioru dominującego. Ten model programowania liniowego wymaga zdefiniowania następujących zmiennych:
+Dany jest $G'$ jako podgraf indukowany powstały z wierzchołków zbioru dominującego grafu $G$. Ten model programowania liniowego wymaga zdefiniowania następujących zmiennych:
 
 \[
 x_e =
@@ -478,8 +482,8 @@ Liczba zmiennych dla grafu o $n$ wierzchołkach i $m$ krawędziach wynosi $O(n+m
 \end{enumerate}
 
 Zatem w najgorszym przypadku liczba ograniczeń wynosi $	O(n+m+2^n)$.
-Złożoność obliczeniowa wynosi $O(2^n)$. Ze względu na ograniczenia cykliczne trudność rozwiązywania jest niestabilna.\\
-Złożoność pamięciowa wynosi $O(n+m+2^n)$ ze względu na przechowywanie zmiennych i ograniczeń.
+Złożoność czasowa jest wykładnicza w liczbie zmiennych. Ze względu na ograniczenia cykliczne trudność rozwiązywania jest niestabilna.\\
+Złożoność pamięciowa również w najgorszym przypadku jest wykładnicza ze względu na przechowywanie zmiennych i ograniczeń.
 
 \subsection{Pseudokod}
 
@@ -998,7 +1002,7 @@ $2(1+\epsilon)(1 + \ln(\Delta - 1))$, gdzie $\epsilon$ to współczynnik dokład
 
 \subsection{Poprawność}
 
-Poniżej przedstawiona zostanie analiza poprawności algorytmu Approx. Algorytm opiera się na wyznaczeniu CDS przy pomocy programowania liniowego, a następnie przypisaniu wszystkim wierzchołkom należącym do tego zbioru wartości \( f(v) = 2 \), a pozostałym \( f(v) = 0 \). Wystarczy zatem wykazać, że model wyznacza spójny zbiór dominujący, a takie przypisanie będzie spełniało definicję WCRDF, ale niekoniecznie optymalnie.\\
+Poniżej przedstawiona zostanie analiza poprawności algorytmu Approx. Algorytm opiera się na wyznaczeniu CDS przy pomocy programowania liniowego, a następnie przypisaniu wszystkim wierzchołkom należącym do tego zbioru wartości \( f(v) = 2 \), a pozostałym \( f(v) = 0 \). Wystarczy zatem wykazać, że model wyznacza spójny zbiór dominujący, a takie przypisanie będzie spełniało definicję WCRDF z niekoniecznie optymalną sumą wag.\\
 \textbf{Poprawność modelu ILP wyznaczającego CDS}
 
 Model zawiera zmienne binarne \( x_v \) określające, czy wierzchołek \( v \in V \) należy do zbioru dominującego. Warunki modelu:
@@ -1021,7 +1025,7 @@ Model zawiera zmienne binarne \( x_v \) określające, czy wierzchołek \( v \in
 
 \subsection{Złożoność i wydajność}
 
-W pesymistycznym przypadku rozwiązanie modelu programowania liniowego wynosi $O(2^n)$, aby przeszukać całą przestrzeń binarną. Model zawiera $n$ zmiennych $x_v$ oraz $2m$ zmiennych przepływu $f_{uv}$. Dodatkowo zawiera $n + 2m$ ograniczeń. Zatem liczba zmiennych oraz ograniczeń wynosi $O(n+m)$.
+W pesymistycznym przypadku złożoność czasowa modelu programowania liniowego jest wykładnicza, bo należy przeszukać całą przestrzeń binarną. Model zawiera $n$ zmiennych $x_v$ oraz $2m$ zmiennych przepływu $f_{uv}$. Dodatkowo zawiera $n + 2m$ ograniczeń. Zatem liczba zmiennych oraz ograniczeń wynosi $O(n+m)$. Złożoność pamięciowa to również $O(n+m)$. 
 
 \subsection{Pseudokod}
 \begin{algorithm}[H]

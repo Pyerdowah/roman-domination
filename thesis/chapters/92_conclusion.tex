@@ -7,7 +7,7 @@ Udało się zrealizować cel pracy oraz wszystkie postawione zadania, mianowicie
 \begin{itemize}
     \item przedstawienie problemu WCRDF oraz jego złożoności obliczeniowej,
     \item zdefiniować i zweryfikować problemy oraz hipotezy badawcze,
-    \item przedstawienie algorytmów znajdujących WCRDF oraz algorytmy znajdujące dokładną $\gamma^{\text{wc}}_R(G)$ oraz przybliżoną, korzystając z różnych technik programowania,
+    \item przedstawienie algorytmów znajdujących WCRDF oraz algorytmy znajdujące optymalną $\gamma^{\text{wc}}_R(G)$ oraz przybliżoną, korzystając z różnych technik programowania,
     \item zaimplementowanie i przetestowanie wybranych algorytmów,
     \item wyciągnięcie wniosków na podstawie wyników testów,
     \item dokonanie analizy pod kątem praktycznego zastosowania rozwiązania tego problemu.
@@ -18,8 +18,8 @@ W pracy przedstawiono i przetestowano siedem algorytmów:
     \item algorytmy heurystyczne wyznaczające WCRDF: zachłanny - Greedy, aproksymacyjny - Approx i mrówkowy - AntColony, gdzie Approx to rozwiązanie z literatury, a mrówkowy i zachłanny to propozycje własne algorytmów.
 \end{itemize}
 
-Eksperymenty przeprowadzono na grafach gęstych, rzadkich, drzewach oraz bezskalowych. Dodatkowo sprawdzono działanie niektórych algorytmów na grafach rzeczywistych. \\
-Wyniki wskazują, że:
+Eksperymenty przeprowadzono na przykładach grafów gęstych, rzadkich, drzewach oraz bezskalowych. Dodatkowo sprawdzono działanie niektórych algorytmów na grafach rzeczywistych. \\
+Wyniki sugerują, że:
 \begin{itemize}
     \item algorytm BruteForce, chociaż prezentuje dokładne, minimalne rozwiązanie problemu, jest najgorzej skalowalny, przez co niepraktyczny. Już dla kilkunastu wierzchołków grafu, czas działania robi się nierozsądnie długi.
     \item algorytmy ILP i ILP2 zapewniają najlepsze jakościowo rozwiązania, lecz ich czas działania rośnie znacząco wraz z rozmiarem badanego grafu, co wynika ze złożoności obliczeniowej. Dla grafów gęstych, o dużej liczbie cykli, algorytm ILP2 oparty na przepływach faktycznie zaczyna działać szybciej niż ILP, opartym na ograniczeniach cyklicznych.
@@ -43,7 +43,7 @@ Na podstawie przeprowadzonych badań i analiz sformułowano wnioski. Praca pozwa
 
 Udało znaleźć istniejące w publikacjach rozwiązania oraz zaprojektować nowe, a także we współpracy z promotorką, algorytmy dokładne oraz heurystyczne. Algorytmy wyznaczające optymalnie $\gamma^{\text{wc}}_R(G)$ to ILP, ILP2, BruteForce oraz TreeLinear, a heurystyczne to Greedy, Approx i AntColony.
 
-Na podstawie analizy można wywnioskować, że jakość i czas działania algorytmów jest uzależniony od klasy i własności testowanych grafów. Konieczny zatem jest dobór właściwego algorytmu do grafu.
+Na podstawie analizy można wywnioskować, że jakość i czas działania algorytmów są uzależnione od klasy i własności testowanych grafów. Konieczny zatem jest dobór właściwego algorytmu do grafu. Chociaż wnioski są oparte na testowanych grafach przykładowych o ograniczonej liczbie, to mogą one obrazować tendencje zachowania się całych klas testowanych grafów.
 \begin{itemize}
     \item jeśli ważne jest otrzymanie wyniku w czasie niemal rzeczywistym, bądź dla bardzo dużych grafów warto skorzystać z algorytmu Greedy,
     \item jeśli czas nie jest istotny, a dokładność wyniku, to warto skorzystać z algorytmów programowania liniowego, po wcześniejszej analizie struktury grafu. Dla grafów gęstych dobrym wyborem będzie ILP2, w pozostałych przypadkach ILP,
@@ -59,7 +59,7 @@ Zastosowanie WCRDF do problemów praktycznych, czyli np. rozmieszczenia zabezpie
 Dalsze kierunki badań mogą obejmować:
 \begin{itemize}
     \item implementację i testy potencjalnych ulepszeń dla algorytmu Greedy. Z racji szybkiego czasu działania, algorytm można wykonywać kilka razy i wybierać najlepsze rozwiązanie. Wymagałoby to wprowadzenia losowości do implementacji.
-    \item rozszerzenie testów na inne klasy, jak i na inne wielkości grafów.
+    \item rozszerzenie testów na inne klasy, jak i na inne wielkości grafów, w celu potencjalnego sformułowania wniosków ogólnych,
     \item podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej oraz badania w celu znalezienia jak najlepszej heurystyki.
     \item próbę opracowania algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów.
     \item weryfikację i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
