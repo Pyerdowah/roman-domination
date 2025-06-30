@@ -1,0 +1,169 @@
+\documentclass[polish,aspectratio=169]{beamer}
+
+% wide screen
+% \documentclass[aspectratio=169]{beamer}
+
+
+%%% YOUR PACKAGES HERE %%%
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage{biblatex}
+\addbibresource{bibliography/bibliography.bib}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% polish language
+\usepackage[polish]{babel}
+\usepackage{polski}
+
+
+
+%%% IMPORT PG PRESENTATION STYLE %%%
+\include{pgbeamer/pgbeamer}
+
+
+%%% YOUR OPTIONS HERE %%%
+
+\title[Analiza algorytmów dla dominowania rzymskiego słabo spójnego]{Analiza algorytmów dla dominowania rzymskiego słabo spójnego}
+\subtitle{Analysis of algorithms for weakly connected Roman domination}
+\author{inż. Paulina Brzęcka}
+\date{\today}
+
+\setbeamercovered{invisible}
+\begin{document}
+
+\pgtitleframe
+
+\begin{frame}{Definicja problemu}
+    \begin{block}{Definicja}
+        Funkcję dominującą rzymską słabo spójną (WCRDF) na grafie \( G \) definiuje się jako taką funkcję dominującą rzymską \( f \colon V(G) \to \{0, 1, 2\} \), dla której zbiór wierzchołków
+        \[
+        \{ u \in V(G) : f(u) \in \{1, 2\} \}
+        \]
+        stanowi jednocześnie słabo spójny zbiór dominujący.
+        
+        \vspace{1em}
+
+        Wagę funkcji \( f \) definiuje się jako:
+        \[
+        f(V) = \sum_{u \in V} f(u)
+        \]
+
+        Liczbą dominowania rzymskiego słabo spójnego grafu \( G \) nazywamy najmniejszą możliwą wagę funkcji \( f \) spełniającej powyższe warunki i oznaczamy ją symbolem:
+        \[
+        \gamma^{\mathrm{wc}}_R(G)
+        \]
+    \end{block}
+\end{frame}
+
+\begin{frame}{Cel pracy}
+    \begin{itemize}
+        \item analiza algorytmów dla dominowania rzymskiego słabo spójnego,
+        \item opisanie już istniejących rozwiązań i opracowanie własnych,
+        \item analiza i porównanie ich skuteczności,
+        \item znalezienie możliwych praktycznych zastosowań.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pytania badawcze}
+    \begin{itemize}
+        \item Jakie algorytmy są w stanie znaleźć WCRDF? Które z nich są w stanie znaleźć dodatkowo najmniejszą sumę wag WCRDF?
+        \item Czy czas i jakość działania algorytmów będzie uzależniony od klasy grafów?
+        \item Czy i jakie algorytmy heurystyczne mogą skutecznie przybliżyć wartość liczby dominowania rzymskiego słabo spójnego w czasie krótszym niż dokładne algorytmy?
+        \item Czy hiperparametry algorytmu mrówkowego można dostroić w taki sposób, aby ten algorytm znajdował liczbę dominowania rzymskiego słabo spójnego bliską optymalnej?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algorytmy}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Algorytm} & \textbf{Złożoność czasowa} \\
+        \hline
+        brute familyorce & $O(3^n \cdot n^2)$ \\
+        \hline
+        liniowy dla drzew & $O(n)$ \\
+        \hline
+        programowania liniowego 1 & wykładnicza \\
+        \hline
+        programowania liniowego 2 & wykładnicza \\
+        \hline
+        mrówkowy & $O(num\_iterations \cdot num\_ants \cdot n^2)$ \\
+        \hline
+        aproksymacyjny & wykładnicza \\
+        \hline
+        zachłanny & $O(n^2)$ - grafy rzadkie, $O(n^3)$ - grafy gęste \\
+        \hline
+        \end{tabular}
+        \caption{Porównanie złożoności czasowej różnych klas algorytmów}
+        \label{tab:algorithms_complexity}
+    \end{table}
+
+\end{frame}
+
+\begin{frame}{Wyniki}
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{images/trees.png}
+        \caption{Porównanie czasów działania algorytmów - grafy drzewiaste.}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Wyniki}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/image1.png}
+        \caption{Wybrane wyniki dla drzew.}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Wyniki}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{images/alorithms.png}
+        \caption{Porównanie algorytmów przybliżonych.}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Zastosowania praktyczne}
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{images/image.png}
+        \caption{Rozmieszczenie zabezpieczeń sieci energetycznych.}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Wnioski}
+    \begin{itemize}
+        \item udało się odpowiedzieć na pytania badawcze,
+        \item konieczność  doboru właściwego algorytmu do grafu lub klasy grafu,
+        \item słaba jakość rozwiązań algorytmu mrówkowego,
+        \item pokazanie potencjalnych rozwiązań praktycznych w ujęciu teoretycznym.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dalsze kierunki badań}
+    \begin{itemize}
+        \item implementację i testy potencjalnych ulepszeń dla algorytmu zachłannego,
+        \item rozszerzenie testów na inne klasy, jak i na inne wielkości grafów,
+        \item podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej
+        \item opracowanie algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów
+        \item weryfikację i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację
+
+    \end{itemize}
+\end{frame}
+
+% \setbeamercovered{transparent}
+% \begin{frame}{Bibliografia}
+%     \nocite{*}
+%     \printbibliography
+% \end{frame}
+
+\pglastframe
+
+\end{document}
