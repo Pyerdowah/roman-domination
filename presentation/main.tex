@@ -28,7 +28,7 @@
 
 %%% YOUR OPTIONS HERE %%%
 
-\title[Analiza algorytmów dla dominowania rzymskiego słabo spójnego]{Analiza algorytmów dla dominowania rzymskiego słabo spójnego}
+\title[Algorytmy dominowania rzymskiego słabo spójnego]{Analiza algorytmów dla dominowania rzymskiego słabo spójnego}
 \subtitle{Analysis of algorithms for weakly connected Roman domination}
 \author{inż. Paulina Brzęcka}
 \date{\today}
@@ -60,6 +60,14 @@
     \end{block}
 \end{frame}
 
+\begin{frame}{Przykład}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/image1.png}
+        \caption{Wybrane wyniki dla drzew.}
+    \end{figure}    
+\end{frame}
+
 \begin{frame}{Cel pracy}
     \begin{itemize}
         \item analiza algorytmów dla dominowania rzymskiego słabo spójnego,
@@ -79,31 +87,141 @@
 \end{frame}
 
 \begin{frame}{Algorytmy}
-    \begin{table}[h!]
+    \begin{itemize}
+        \item brute force - Brute Force,
+        \item liniowy dla drzew - TreeLinear,
+        \item programowania liniowego 1 - ILP,
+        \item programowania liniowego 2 - ILP2,
+        \item mrówkowy - AntColony,
+        \item aproksymacyjny - Approx,
+        \item zachłanny - Greedy.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algorytm brute force}
+    \begin{table}
         \centering
-        \begin{tabular}{|l|l|}
+        \begin{tabular}{|p{4cm}|p{10cm}|}
         \hline
-        \textbf{Algorytm} & \textbf{Złożoność czasowa} \\
+        Działanie & Generowanie wszystkich kombinacji przypisań wartości $\{0,1,2\}$ i sprawdzanie każdej pod względem spełnialności definicji WCRDF. Wybór kombinacji o najmniejszej sumie wag.  \\
         \hline
-        brute familyorce & $O(3^n \cdot n^2)$ \\
+        Złożoność & $O(3^n \cdot n^2)$  \\
         \hline
-        liniowy dla drzew & $O(n)$ \\
+        Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
-        programowania liniowego 1 & wykładnicza \\
-        \hline
-        programowania liniowego 2 & wykładnicza \\
-        \hline
-        mrówkowy & $O(num\_iterations \cdot num\_ants \cdot n^2)$ \\
-        \hline
-        aproksymacyjny & wykładnicza \\
-        \hline
-        zachłanny & $O(n^2)$ - grafy rzadkie, $O(n^3)$ - grafy gęste \\
+        Opracowanie & Samodzielne  \\
         \hline
         \end{tabular}
-        \caption{Porównanie złożoności czasowej różnych klas algorytmów}
-        \label{tab:algorithms_complexity}
+        \label{tab:brute_force}
     \end{table}
+\end{frame}
 
+\begin{frame}{Algorytm liniowy dla drzew}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Rozpatrywanie drzewa od liści do korzenia i nadawanie wierzchołkom wartości poprzez analizę relacji ojciec-syn i wartości zdefiniowanych parametrów. \\
+        \hline
+        Złożoność &  $O(n)$  \\
+        \hline
+        Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$ dla drzew.\\
+        \hline
+        Opracowanie & Wraz z promotorką  \\
+        \hline
+        \end{tabular}
+        \label{tab:liniowy}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Algorytm programowania liniowego 1}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Model programowania liniowego polegający na definiowaniu podgrafu indukowanego i jego drzewa rozpinającego.  \\
+        \hline
+        Złożoność & Wykładnicza  \\
+        \hline
+        Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
+        \hline
+        Opracowanie & Na podstawie literatury  \\
+        \hline
+        \end{tabular}
+        \label{tab:ilp}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Algorytm programowania liniowego 2}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Model programowania liniowego oparty na przepływach.  \\
+        \hline
+        Złożoność & Wykładnicza  \\
+        \hline
+        Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
+        \hline
+        Opracowanie & Na podstawie literatury  \\
+        \hline
+        \end{tabular}
+        \label{tab:ilp2}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Algorytm mrówkowy}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Budowanie rozwiązania poprzez heurystyki i poziom feromonów na wierzchołkach. Następnie sprawdzenie pod względem poprawności WCRDF i wybór najlepszego rozwiązania.  \\
+        \hline
+        Złożoność & $O(num\_iterations \cdot num\_ants \cdot n^2)$  \\
+        \hline
+        Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
+        \hline
+        Opracowanie & Samodzielne  \\
+        \hline
+        \end{tabular}
+        \label{tab:mrowkowy}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Algorytm aproksymacyjny}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Znajdowanie zbioru dominującego spójnego w grafie przy użyciu programowania liniowego. Następnie wierzchołkom zbioru dominującego przypisanie wartości 2.  \\
+        \hline
+        Złożoność & Wykładnicza  \\
+        \hline
+        Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$. Algorytm $2(1 + \varepsilon)(1 + \ln(\Delta - 1))$-aproksymacyjny.\\
+        \hline
+        Opracowanie & Na podstawie literatury  \\
+        \hline
+        \end{tabular}
+        \label{tab:aproksymacyjny}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Algorytm zachłanny}
+    \begin{table}
+        \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+        \hline
+        Działanie & Algorytm rozpoczyna od przypisania wartości 2 wierzchołkowi o największym stopniu oraz zabezpieczenia jego sąsiadów. Następnie, dopóki istnieją wierzchołki niechronione (czyli z przypisaną wartością 0), wybierany jest wierzchołek $v$, który dominuje jak największą liczbę sąsiadów. \\
+        \hline
+        Złożoność & $O(n^2)$ - grafy rzadkie, $O(n^3)$ - grafy gęste  \\
+        \hline
+        Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
+        \hline
+        Opracowanie & Samodzielne  \\
+        \hline
+        \end{tabular}
+        \label{tab:zachlanny}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Wyniki}
@@ -122,7 +240,15 @@
     \end{figure}    
 \end{frame}
 
-\begin{frame}{Wyniki}
+\begin{frame}{Wyniki algorytmu aproksymacyjnego}
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{images/image.png}
+        \caption{Porównanie algorytmów przybliżonych.}
+    \end{figure}    
+\end{frame}
+
+\begin{frame}{Wyniki algorytmów przybliżonych}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{images/alorithms.png}
@@ -133,29 +259,38 @@
 \begin{frame}{Zastosowania praktyczne}
     \begin{figure}
         \centering
-        \includegraphics[width=1\textwidth]{images/image.png}
+        \includegraphics[width=1\textwidth]{images/image2.png}
         \caption{Rozmieszczenie zabezpieczeń sieci energetycznych.}
     \end{figure}    
 \end{frame}
 
 \begin{frame}{Wnioski}
+\begin{itemize}
+    \item udało się odpowiedzieć na wszystkie pytania badawcze,
+    \item konieczność doboru właściwego algorytmu do rodzaju lub klasy grafu:
     \begin{itemize}
-        \item udało się odpowiedzieć na pytania badawcze,
-        \item konieczność  doboru właściwego algorytmu do grafu lub klasy grafu,
-        \item słaba jakość rozwiązań algorytmu mrówkowego,
-        \item pokazanie potencjalnych rozwiązań praktycznych w ujęciu teoretycznym.
+        \item np. TreeLinear dla drzew, ILP2 dla grafów gęstych, Greedy dla dużych instancji.
     \end{itemize}
+    \item algorytmy heurystyczne (Greedy, Approx) zapewniają szybkie i dobre przybliżenia,
+    \item słaba jakość rozwiązań algorytmu mrówkowego - niezalecane w tej implementacji,
+    \item wskazano potencjalne zastosowania praktyczne (np. sieci energetyczne, społeczne) - potwierdzono zasadność modelu WCRDF.
+\end{itemize}
 \end{frame}
+
 
 \begin{frame}{Dalsze kierunki badań}
     \begin{itemize}
-        \item implementację i testy potencjalnych ulepszeń dla algorytmu zachłannego,
+        \item implementacja i testy potencjalnych ulepszeń dla algorytmu zachłannego,
         \item rozszerzenie testów na inne klasy, jak i na inne wielkości grafów,
-        \item podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej
-        \item opracowanie algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów
-        \item weryfikację i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację
-
+        \item podniesienie jakości wyników algorytmu mrówkowego, między innymi poprzez inną implementację heurystyki lokalnej oraz strategii feromonowej,
+        \item opracowanie algorytmów dokładnych, rozwiązywalnych w czasie wielomianowym dla innych klas grafów,
+        \item weryfikacja i przełożenie teoretycznych rozważań na temat praktycznych zastosowań tego problemu na praktyczną analizę i realizację.
     \end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+    \centering
+    \Huge \textbf{Dziękuję za uwagę!}
 \end{frame}
 
 % \setbeamercovered{transparent}
