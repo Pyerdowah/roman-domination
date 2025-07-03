@@ -105,7 +105,7 @@
         \hline
         Działanie & Generowanie wszystkich kombinacji przypisań wartości $\{0,1,2\}$ i sprawdzanie każdej pod względem spełnialności definicji WCRDF. Wybór kombinacji o najmniejszej sumie wag.  \\
         \hline
-        Złożoność & $O(3^n \cdot n^2)$  \\
+        Złożoność czasowa & $O(3^n \cdot n^2)$  \\
         \hline
         Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
@@ -123,7 +123,7 @@
         \hline
         Działanie & Rozpatrywanie drzewa od liści do korzenia i nadawanie wierzchołkom wartości poprzez analizę relacji ojciec-syn i wartości zdefiniowanych parametrów. \\
         \hline
-        Złożoność &  $O(n)$  \\
+        Złożoność czasowa &  $O(n)$  \\
         \hline
         Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$ dla drzew.\\
         \hline
@@ -141,7 +141,7 @@
         \hline
         Działanie & Model programowania liniowego polegający na definiowaniu podgrafu indukowanego i jego drzewa rozpinającego.  \\
         \hline
-        Złożoność & Wykładnicza  \\
+        Złożoność czasowa & Wykładnicza  \\
         \hline
         Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
@@ -159,7 +159,7 @@
         \hline
         Działanie & Model programowania liniowego oparty na przepływach.  \\
         \hline
-        Złożoność & Wykładnicza  \\
+        Złożoność czasowa & Wykładnicza  \\
         \hline
         Jakość rozwiązania & Znalezienie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
@@ -177,7 +177,7 @@
         \hline
         Działanie & Budowanie rozwiązania poprzez heurystyki i poziom feromonów na wierzchołkach. Następnie sprawdzenie pod względem poprawności WCRDF i wybór najlepszego rozwiązania.  \\
         \hline
-        Złożoność & $O(num\_iterations \cdot num\_ants \cdot n^2)$  \\
+        Złożoność czasowa & $O(num\_iterations \cdot num\_ants \cdot n^2)$  \\
         \hline
         Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
@@ -195,7 +195,7 @@
         \hline
         Działanie & Znajdowanie zbioru dominującego spójnego w grafie przy użyciu programowania liniowego. Następnie wierzchołkom zbioru dominującego przypisanie wartości 2.  \\
         \hline
-        Złożoność & Wykładnicza  \\
+        Złożoność czasowa & Wykładnicza  \\
         \hline
         Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$. Algorytm $2(1 + \varepsilon)(1 + \ln(\Delta - 1))$-aproksymacyjny.\\
         \hline
@@ -213,7 +213,7 @@
         \hline
         Działanie & Algorytm rozpoczyna od przypisania wartości 2 wierzchołkowi o największym stopniu oraz zabezpieczenia jego sąsiadów. Następnie, dopóki istnieją wierzchołki niechronione (czyli z przypisaną wartością 0), wybierany jest wierzchołek $v$, który dominuje jak największą liczbę sąsiadów. \\
         \hline
-        Złożoność & $O(n^2)$ - grafy rzadkie, $O(n^3)$ - grafy gęste  \\
+        Złożoność czasowa & $O(n^2)$ - grafy rzadkie, $O(n^3)$ - grafy gęste  \\
         \hline
         Jakość rozwiązania & Znalezienie prawidłowej WCRDF, niekoniecznie optymalnej $\gamma^{\mathrm{wc}}_R(G)$.\\
         \hline
